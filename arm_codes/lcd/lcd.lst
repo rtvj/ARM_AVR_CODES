@@ -1,0 +1,556 @@
+   1              		.file	"lcd.c"
+   3              		.text
+   4              	.Ltext0:
+  32              		.align	2
+  35              		.global	delay
+  37              	delay:
+  39              	.Ltext1:
+   1:lcd_2148.h    **** #define LINE1	0x80
+   2:lcd_2148.h    **** #define LINE2	0xC0
+   3:lcd_2148.h    **** 
+   4:lcd_2148.h    **** void delay(unsigned int i)
+   5:lcd_2148.h    **** {
+  41              	.LM1:
+  42              		@ args = 0, pretend = 0, frame = 8
+  43              		@ frame_needed = 0, uses_anonymous_args = 0
+  44              		@ link register save eliminated.
+  45 0000 08D04DE2 		sub	sp, sp, #8
+   6:lcd_2148.h    **** 	volatile unsigned int j=0,k = 0;
+  47              	.LM2:
+  48              	.LBB2:
+  49 0004 0030A0E3 		mov	r3, #0
+  50 0008 04308DE5 		str	r3, [sp, #4]
+  51 000c 00308DE5 		str	r3, [sp, #0]
+   7:lcd_2148.h    **** 	for (j=0;j<i;j++)
+  53              	.LM3:
+  54 0010 04308DE5 		str	r3, [sp, #4]
+  55 0014 04309DE5 		ldr	r3, [sp, #4]
+  56 0018 000053E1 		cmp	r3, r0
+  58              	.LM4:
+  59              		@ lr needed for prologue
+  61              	.LM5:
+  62 001c 1800002A 		bcs	.L13
+  63              	.L11:
+   8:lcd_2148.h    **** 		for (k=0;k<6000;k++);	// 
+  65              	.LM6:
+  66 0020 0030A0E3 		mov	r3, #0
+  67 0024 00308DE5 		str	r3, [sp, #0]
+  68 0028 00309DE5 		ldr	r3, [sp, #0]
+  69 002c 3C209FE5 		ldr	r2, .L16
+  70 0030 020053E1 		cmp	r3, r2
+  71 0034 1200008A 		bhi	.L15
+  72              	.L10:
+  73 0038 00309DE5 		ldr	r3, [sp, #0]
+  74 003c 013083E2 		add	r3, r3, #1
+  75 0040 00308DE5 		str	r3, [sp, #0]
+  76 0044 00309DE5 		ldr	r3, [sp, #0]
+  77 0048 020053E1 		cmp	r3, r2
+  78 004c 0C00009A 		bls	.L10
+  79              	.L15:
+  81              	.LM7:
+  82 0050 04309DE5 		ldr	r3, [sp, #4]
+  83 0054 013083E2 		add	r3, r3, #1
+  84 0058 04308DE5 		str	r3, [sp, #4]
+  85 005c 04309DE5 		ldr	r3, [sp, #4]
+  86 0060 000053E1 		cmp	r3, r0
+  87 0064 0600003A 		bcc	.L11
+  88              	.L13:
+  89 0068 08D08DE2 		add	sp, sp, #8
+  90 006c 0EF0A0E1 		mov	pc, lr
+  91              	.L17:
+  92              		.align	2
+  93              	.L16:
+  94 0070 6F170000 		.word	5999
+  95              	.LBE2:
+ 101              		.align	2
+ 103              		.global	latch
+ 105              	latch:
+   9:lcd_2148.h    **** }
+  10:lcd_2148.h    **** 
+  11:lcd_2148.h    **** void latch(void)
+  12:lcd_2148.h    **** {
+ 107              	.LM8:
+ 108              		@ args = 0, pretend = 0, frame = 0
+ 109              		@ frame_needed = 1, uses_anonymous_args = 0
+ 110 0074 0DC0A0E1 		mov	ip, sp
+ 111 0078 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+  13:lcd_2148.h    **** 	delay(10);
+ 113              	.LM9:
+ 114 007c 0A00A0E3 		mov	r0, #10
+ 116              	.LM10:
+ 117 0080 04B04CE2 		sub	fp, ip, #4
+ 119              	.LM11:
+ 120 0084 FEFFFFEB 		bl	delay
+  14:lcd_2148.h    **** 	IOSET0 |= (1 << 18);	// LCD_EN = 1
+ 122              	.LM12:
+ 123 0088 24209FE5 		ldr	r2, .L19
+ 124 008c 003092E5 		ldr	r3, [r2, #0]
+ 125 0090 013783E3 		orr	r3, r3, #262144
+ 126 0094 003082E5 		str	r3, [r2, #0]
+  15:lcd_2148.h    **** 	delay(10);
+ 128              	.LM13:
+ 129 0098 0A00A0E3 		mov	r0, #10
+ 130 009c FEFFFFEB 		bl	delay
+  16:lcd_2148.h    **** 	IOCLR0 |= (1 << 18);
+ 132              	.LM14:
+ 133 00a0 10209FE5 		ldr	r2, .L19+4
+ 134 00a4 003092E5 		ldr	r3, [r2, #0]
+ 135 00a8 013783E3 		orr	r3, r3, #262144
+ 136 00ac 003082E5 		str	r3, [r2, #0]
+ 137 00b0 00A81BE9 		ldmea	fp, {fp, sp, pc}
+ 138              	.L20:
+ 139              		.align	2
+ 140              	.L19:
+ 141 00b4 048002E0 		.word	-536707068
+ 142 00b8 0C8002E0 		.word	-536707060
+ 144              		.align	2
+ 147              		.global	lcd2148_cmd
+ 149              	lcd2148_cmd:
+  17:lcd_2148.h    **** }
+  18:lcd_2148.h    **** 
+  19:lcd_2148.h    **** void lcd2148_cmd(unsigned char cmd)
+  20:lcd_2148.h    **** {
+ 151              	.LM15:
+ 152              		@ args = 0, pretend = 0, frame = 0
+ 153              		@ frame_needed = 1, uses_anonymous_args = 0
+ 154 00bc 0DC0A0E1 		mov	ip, sp
+ 155 00c0 70D82DE9 		stmfd	sp!, {r4, r5, r6, fp, ip, lr, pc}
+  21:lcd_2148.h    **** 	IOCLR0 |= (1 << 16);		// RS = 0, command
+ 157              	.LM16:
+ 158 00c4 58509FE5 		ldr	r5, .L22
+ 159 00c8 003095E5 		ldr	r3, [r5, #0]
+ 160 00cc 013883E3 		orr	r3, r3, #65536
+ 161 00d0 003085E5 		str	r3, [r5, #0]
+  22:lcd_2148.h    **** 
+  23:lcd_2148.h    **** 	IOCLR0 |= (0x0f << 19);
+ 163              	.LM17:
+ 164 00d4 003095E5 		ldr	r3, [r5, #0]
+ 165 00d8 1E3783E3 		orr	r3, r3, #7864320
+  24:lcd_2148.h    **** 	IOSET0 |= ((cmd & 0xf0) << 15);	// write higher nibble first
+ 167              	.LM18:
+ 168 00dc 44609FE5 		ldr	r6, .L22+4
+ 170              	.LM19:
+ 171 00e0 003085E5 		str	r3, [r5, #0]
+ 173              	.LM20:
+ 174 00e4 003096E5 		ldr	r3, [r6, #0]
+ 175 00e8 F02000E2 		and	r2, r0, #240
+ 176 00ec 823783E1 		orr	r3, r3, r2, asl #15
+ 177 00f0 003086E5 		str	r3, [r6, #0]
+ 179              	.LM21:
+ 180 00f4 04B04CE2 		sub	fp, ip, #4
+ 181 00f8 0040A0E1 		mov	r4, r0
+  25:lcd_2148.h    **** 	latch();
+ 183              	.LM22:
+ 184 00fc FEFFFFEB 		bl	latch
+  26:lcd_2148.h    **** 
+  27:lcd_2148.h    **** 	IOCLR0 |= (0x0f << 19);
+ 186              	.LM23:
+ 187 0100 003095E5 		ldr	r3, [r5, #0]
+ 188 0104 1E3783E3 		orr	r3, r3, #7864320
+ 189 0108 003085E5 		str	r3, [r5, #0]
+  28:lcd_2148.h    **** 	IOSET0 |= ((cmd & 0x0f) << 19);	// write lower nibble
+ 191              	.LM24:
+ 192 010c 003096E5 		ldr	r3, [r6, #0]
+ 193 0110 0F4004E2 		and	r4, r4, #15
+ 194 0114 843983E1 		orr	r3, r3, r4, asl #19
+ 195 0118 003086E5 		str	r3, [r6, #0]
+  29:lcd_2148.h    **** 	latch();
+ 197              	.LM25:
+ 198 011c 70681BE9 		ldmea	fp, {r4, r5, r6, fp, sp, lr}
+ 199 0120 FEFFFFEA 		b	latch
+ 200              	.L23:
+ 201              		.align	2
+ 202              	.L22:
+ 203 0124 0C8002E0 		.word	-536707060
+ 204 0128 048002E0 		.word	-536707068
+ 206              		.align	2
+ 208              		.global	lcd2148_init
+ 210              	lcd2148_init:
+  30:lcd_2148.h    **** }
+  31:lcd_2148.h    **** 
+  32:lcd_2148.h    **** 
+  33:lcd_2148.h    **** 
+  34:lcd_2148.h    **** void lcd2148_init(void)
+  35:lcd_2148.h    **** {
+ 212              	.LM26:
+ 213              		@ args = 0, pretend = 0, frame = 0
+ 214              		@ frame_needed = 1, uses_anonymous_args = 0
+ 215 012c 0DC0A0E1 		mov	ip, sp
+ 216 0130 30D82DE9 		stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+ 217 0134 04B04CE2 		sub	fp, ip, #4
+  36:lcd_2148.h    **** 	sys_init();//for pll
+ 219              	.LM27:
+ 220 0138 FEFFFFEB 		bl	sys_init
+  37:lcd_2148.h    **** 	PINSEL1&=~((1<<0)|(1<<1)|(1<<2)|(1<<3)|(1<<4)|(1<<5)|(1<<6)|(1<<7)|(1<<8)|(1<<9)|(1<<10)|(1<<11)|(
+ 222              	.LM28:
+ 223 013c E4209FE5 		ldr	r2, .L25
+ 224 0140 003092E5 		ldr	r3, [r2, #0]
+ 225 0144 FF3DC3E3 		bic	r3, r3, #16320
+ 226 0148 3F30C3E3 		bic	r3, r3, #63
+ 227 014c 003082E5 		str	r3, [r2, #0]
+  38:lcd_2148.h    **** 	IODIR0|=(1<<16)|(1<<17)|(1<<18)|(1<<19)|(1<<20)|(1<<21)|(1<<22);//AS O/P
+ 229              	.LM29:
+ 230 0150 D4209FE5 		ldr	r2, .L25+4
+ 231 0154 003092E5 		ldr	r3, [r2, #0]
+ 232 0158 7F3883E3 		orr	r3, r3, #8323072
+ 233 015c 003082E5 		str	r3, [r2, #0]
+  39:lcd_2148.h    **** 	IOCLR0 |= 0x00007F00;
+ 235              	.LM30:
+ 236 0160 C8409FE5 		ldr	r4, .L25+8
+ 237 0164 003094E5 		ldr	r3, [r4, #0]
+ 238 0168 7F3C83E3 		orr	r3, r3, #32512
+ 239 016c 003084E5 		str	r3, [r4, #0]
+  40:lcd_2148.h    **** 	
+  41:lcd_2148.h    **** 	delay(100);
+ 241              	.LM31:
+ 242 0170 6400A0E3 		mov	r0, #100
+ 243 0174 FEFFFFEB 		bl	delay
+  42:lcd_2148.h    **** 	IOCLR0 |= (0xf << 19);
+ 245              	.LM32:
+ 246 0178 003094E5 		ldr	r3, [r4, #0]
+ 247 017c 1E3783E3 		orr	r3, r3, #7864320
+  43:lcd_2148.h    **** 	IOSET0 |= (3 << 19);		// cmd(0x30)
+ 249              	.LM33:
+ 250 0180 AC509FE5 		ldr	r5, .L25+12
+ 252              	.LM34:
+ 253 0184 003084E5 		str	r3, [r4, #0]
+ 255              	.LM35:
+ 256 0188 003095E5 		ldr	r3, [r5, #0]
+ 257 018c 063783E3 		orr	r3, r3, #1572864
+ 258 0190 003085E5 		str	r3, [r5, #0]
+  44:lcd_2148.h    **** 	latch();
+ 260              	.LM36:
+ 261 0194 FEFFFFEB 		bl	latch
+  45:lcd_2148.h    **** 
+  46:lcd_2148.h    **** 	delay(5);
+ 263              	.LM37:
+ 264 0198 0500A0E3 		mov	r0, #5
+ 265 019c FEFFFFEB 		bl	delay
+  47:lcd_2148.h    **** 	IOCLR0 |= (0xf << 19);
+ 267              	.LM38:
+ 268 01a0 003094E5 		ldr	r3, [r4, #0]
+ 269 01a4 1E3783E3 		orr	r3, r3, #7864320
+ 270 01a8 003084E5 		str	r3, [r4, #0]
+  48:lcd_2148.h    **** 	IOSET0 |= (3 << 19);		// cmd(0x30)
+ 272              	.LM39:
+ 273 01ac 003095E5 		ldr	r3, [r5, #0]
+ 274 01b0 063783E3 		orr	r3, r3, #1572864
+ 275 01b4 003085E5 		str	r3, [r5, #0]
+  49:lcd_2148.h    **** 	latch();
+ 277              	.LM40:
+ 278 01b8 FEFFFFEB 		bl	latch
+  50:lcd_2148.h    **** 	
+  51:lcd_2148.h    **** 	delay(1);
+ 280              	.LM41:
+ 281 01bc 0100A0E3 		mov	r0, #1
+ 282 01c0 FEFFFFEB 		bl	delay
+  52:lcd_2148.h    **** 	IOCLR0 |= (0xf << 19);
+ 284              	.LM42:
+ 285 01c4 003094E5 		ldr	r3, [r4, #0]
+ 286 01c8 1E3783E3 		orr	r3, r3, #7864320
+ 287 01cc 003084E5 		str	r3, [r4, #0]
+  53:lcd_2148.h    **** 	IOSET0 |= (3 << 19);		// cmd(0x30)
+ 289              	.LM43:
+ 290 01d0 003095E5 		ldr	r3, [r5, #0]
+ 291 01d4 063783E3 		orr	r3, r3, #1572864
+ 292 01d8 003085E5 		str	r3, [r5, #0]
+  54:lcd_2148.h    **** 	latch();
+ 294              	.LM44:
+ 295 01dc FEFFFFEB 		bl	latch
+  55:lcd_2148.h    **** 
+  56:lcd_2148.h    **** 	IOCLR0 |= (0xf << 19);
+ 297              	.LM45:
+ 298 01e0 003094E5 		ldr	r3, [r4, #0]
+ 299 01e4 1E3783E3 		orr	r3, r3, #7864320
+ 300 01e8 003084E5 		str	r3, [r4, #0]
+  57:lcd_2148.h    **** 	IOSET0 |= (2 << 19);		// cmd(0x20), 4-bit mode
+ 302              	.LM46:
+ 303 01ec 003095E5 		ldr	r3, [r5, #0]
+ 304 01f0 013683E3 		orr	r3, r3, #1048576
+ 305 01f4 003085E5 		str	r3, [r5, #0]
+  58:lcd_2148.h    **** 	latch();					// LCD_EN pulse
+ 307              	.LM47:
+ 308 01f8 FEFFFFEB 		bl	latch
+  59:lcd_2148.h    **** 	
+  60:lcd_2148.h    **** 	lcd2148_cmd(0x28);			// 2 line display, 5x8 display
+ 310              	.LM48:
+ 311 01fc 2800A0E3 		mov	r0, #40
+ 312 0200 FEFFFFEB 		bl	lcd2148_cmd
+  61:lcd_2148.h    **** 	lcd2148_cmd(0x0f);			// display ON, cursor ON, blink ON
+ 314              	.LM49:
+ 315 0204 0F00A0E3 		mov	r0, #15
+ 316 0208 FEFFFFEB 		bl	lcd2148_cmd
+  62:lcd_2148.h    **** 	lcd2148_cmd(0x01);			// clear display
+ 318              	.LM50:
+ 319 020c 0100A0E3 		mov	r0, #1
+ 320 0210 FEFFFFEB 		bl	lcd2148_cmd
+  63:lcd_2148.h    **** 	lcd2148_cmd(0x02);			// cursor home
+ 322              	.LM51:
+ 323 0214 0200A0E3 		mov	r0, #2
+ 324 0218 FEFFFFEB 		bl	lcd2148_cmd
+  64:lcd_2148.h    **** 	lcd2148_cmd(0x06);			// increment cursor by 1, no shift
+ 326              	.LM52:
+ 327 021c 0600A0E3 		mov	r0, #6
+ 328 0220 30681BE9 		ldmea	fp, {r4, r5, fp, sp, lr}
+ 329 0224 FEFFFFEA 		b	lcd2148_cmd
+ 330              	.L26:
+ 331              		.align	2
+ 332              	.L25:
+ 333 0228 04C002E0 		.word	-536690684
+ 334 022c 088002E0 		.word	-536707064
+ 335 0230 0C8002E0 		.word	-536707060
+ 336 0234 048002E0 		.word	-536707068
+ 338              		.align	2
+ 341              		.global	lcd2148_data
+ 343              	lcd2148_data:
+  65:lcd_2148.h    **** }
+  66:lcd_2148.h    **** void lcd2148_data(unsigned char data)
+  67:lcd_2148.h    **** {
+ 345              	.LM53:
+ 346              		@ args = 0, pretend = 0, frame = 0
+ 347              		@ frame_needed = 1, uses_anonymous_args = 0
+ 348 0238 0DC0A0E1 		mov	ip, sp
+ 349 023c 70D82DE9 		stmfd	sp!, {r4, r5, r6, fp, ip, lr, pc}
+  68:lcd_2148.h    **** 	IOSET0 |= (1 << 16);		// RS = 1, data
+ 351              	.LM54:
+ 352 0240 58609FE5 		ldr	r6, .L28
+ 353 0244 003096E5 		ldr	r3, [r6, #0]
+ 354 0248 013883E3 		orr	r3, r3, #65536
+ 355 024c 003086E5 		str	r3, [r6, #0]
+  69:lcd_2148.h    **** 
+  70:lcd_2148.h    **** 	IOCLR0 |= (0x0f << 19);
+ 357              	.LM55:
+ 358 0250 4C509FE5 		ldr	r5, .L28+4
+ 359 0254 003095E5 		ldr	r3, [r5, #0]
+ 360 0258 1E3783E3 		orr	r3, r3, #7864320
+ 361 025c 003085E5 		str	r3, [r5, #0]
+  71:lcd_2148.h    **** 	IOSET0 |= ((data & 0xf0) << 15);	// write higher nibble first
+ 363              	.LM56:
+ 364 0260 003096E5 		ldr	r3, [r6, #0]
+ 365 0264 F02000E2 		and	r2, r0, #240
+ 366 0268 823783E1 		orr	r3, r3, r2, asl #15
+ 367 026c 003086E5 		str	r3, [r6, #0]
+ 369              	.LM57:
+ 370 0270 04B04CE2 		sub	fp, ip, #4
+ 371 0274 0040A0E1 		mov	r4, r0
+  72:lcd_2148.h    **** 	latch();
+ 373              	.LM58:
+ 374 0278 FEFFFFEB 		bl	latch
+  73:lcd_2148.h    **** 
+  74:lcd_2148.h    **** 	IOCLR0 |= (0x0f << 19);
+ 376              	.LM59:
+ 377 027c 003095E5 		ldr	r3, [r5, #0]
+ 378 0280 1E3783E3 		orr	r3, r3, #7864320
+ 379 0284 003085E5 		str	r3, [r5, #0]
+  75:lcd_2148.h    **** 	IOSET0 |= ((data & 0x0f) << 19);	// write lower nibble
+ 381              	.LM60:
+ 382 0288 003096E5 		ldr	r3, [r6, #0]
+ 383 028c 0F4004E2 		and	r4, r4, #15
+ 384 0290 843983E1 		orr	r3, r3, r4, asl #19
+ 385 0294 003086E5 		str	r3, [r6, #0]
+  76:lcd_2148.h    **** 	latch();
+ 387              	.LM61:
+ 388 0298 70681BE9 		ldmea	fp, {r4, r5, r6, fp, sp, lr}
+ 389 029c FEFFFFEA 		b	latch
+ 390              	.L29:
+ 391              		.align	2
+ 392              	.L28:
+ 393 02a0 048002E0 		.word	-536707068
+ 394 02a4 0C8002E0 		.word	-536707060
+ 396              		.align	2
+ 399              		.global	lcd2148_string
+ 401              	lcd2148_string:
+  77:lcd_2148.h    **** }
+  78:lcd_2148.h    **** void lcd2148_string(unsigned char str[32])
+  79:lcd_2148.h    **** {
+ 403              	.LM62:
+ 404              		@ args = 0, pretend = 0, frame = 0
+ 405              		@ frame_needed = 1, uses_anonymous_args = 0
+ 406 02a8 0DC0A0E1 		mov	ip, sp
+ 407 02ac F0D82DE9 		stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+  80:lcd_2148.h    **** 	unsigned char k=0;
+  81:lcd_2148.h    **** 
+  82:lcd_2148.h    **** 	IOCLR0 |= ((1 << 16)|(1 << 17)|(1 << 18));	
+ 409              	.LM63:
+ 410              	.LBB3:
+ 411 02b0 AC309FE5 		ldr	r3, .L38
+ 412 02b4 002093E5 		ldr	r2, [r3, #0]
+ 413 02b8 072882E3 		orr	r2, r2, #458752
+ 414 02bc 002083E5 		str	r2, [r3, #0]
+  83:lcd_2148.h    **** 	while(str[k]!='\0')	//Till null character is encountered
+ 416              	.LM64:
+ 417 02c0 0030D0E5 		ldrb	r3, [r0, #0]	@ zero_extendqisi2
+ 418 02c4 000053E3 		cmp	r3, #0
+ 420              	.LM65:
+ 421 02c8 04B04CE2 		sub	fp, ip, #4
+ 422 02cc 0050A0E1 		mov	r5, r0
+ 424              	.LM66:
+ 425 02d0 0070A0E3 		mov	r7, #0
+ 427              	.LM67:
+ 428 02d4 F0A81B09 		ldmeqea	fp, {r4, r5, r6, r7, fp, sp, pc}
+ 429              	.L35:
+  84:lcd_2148.h    **** 		{
+  85:lcd_2148.h    **** 			if(k==16) // As LCD is 16x2
+ 431              	.LM68:
+ 432 02d8 100057E3 		cmp	r7, #16
+ 433 02dc 84409FE5 		ldr	r4, .L38+4
+ 434 02e0 7C609FE5 		ldr	r6, .L38
+ 435 02e4 C000A0E3 		mov	r0, #192
+  86:lcd_2148.h    **** 				lcd2148_cmd(LINE2);// go to the LINE 2
+ 437              	.LM69:
+ 438 02e8 FEFFFF0B 		bleq	lcd2148_cmd
+ 439              	.L34:
+  87:lcd_2148.h    **** 
+  88:lcd_2148.h    **** 			IOSET0 |= (1 << 16);	// RS = 1, data
+ 441              	.LM70:
+ 442 02ec 003094E5 		ldr	r3, [r4, #0]
+ 443 02f0 013883E3 		orr	r3, r3, #65536
+ 444 02f4 003084E5 		str	r3, [r4, #0]
+  89:lcd_2148.h    **** 			IOCLR0 |= (0x0f << 19);
+ 446              	.LM71:
+ 447 02f8 003096E5 		ldr	r3, [r6, #0]
+ 448 02fc 1E3783E3 		orr	r3, r3, #7864320
+ 449 0300 003086E5 		str	r3, [r6, #0]
+  90:lcd_2148.h    **** 			IOSET0 |= ((str[k]& 0xf0) << 15);	// write higher nibble first
+ 451              	.LM72:
+ 452 0304 0730D5E7 		ldrb	r3, [r5, r7]	@ zero_extendqisi2
+ 453 0308 002094E5 		ldr	r2, [r4, #0]
+ 454 030c F03003E2 		and	r3, r3, #240
+ 455 0310 832782E1 		orr	r2, r2, r3, asl #15
+ 456 0314 002084E5 		str	r2, [r4, #0]
+  91:lcd_2148.h    **** 			latch();
+ 458              	.LM73:
+ 459 0318 FEFFFFEB 		bl	latch
+  92:lcd_2148.h    **** 			IOSET0 |= (1 << 16);// RS = 1, data
+ 461              	.LM74:
+ 462 031c 003094E5 		ldr	r3, [r4, #0]
+ 463 0320 013883E3 		orr	r3, r3, #65536
+ 464 0324 003084E5 		str	r3, [r4, #0]
+  93:lcd_2148.h    **** 			IOCLR0 |= (0x0f << 19);
+ 466              	.LM75:
+ 467 0328 003096E5 		ldr	r3, [r6, #0]
+ 468 032c 1E3783E3 		orr	r3, r3, #7864320
+ 469 0330 003086E5 		str	r3, [r6, #0]
+  94:lcd_2148.h    **** 			IOSET0 |= ((str[k] & 0x0f) << 19);	// write lower nibble
+ 471              	.LM76:
+ 472 0334 0730D5E7 		ldrb	r3, [r5, r7]	@ zero_extendqisi2
+ 473 0338 002094E5 		ldr	r2, [r4, #0]
+ 474 033c 0F3003E2 		and	r3, r3, #15
+ 475 0340 832982E1 		orr	r2, r2, r3, asl #19
+ 476 0344 002084E5 		str	r2, [r4, #0]
+  95:lcd_2148.h    **** 			latch();
+ 478              	.LM77:
+ 479 0348 FEFFFFEB 		bl	latch
+  96:lcd_2148.h    **** 			
+  97:lcd_2148.h    **** 			k++;
+ 481              	.LM78:
+ 482 034c 013087E2 		add	r3, r7, #1
+ 483 0350 FF7003E2 		and	r7, r3, #255
+ 484 0354 0730D5E7 		ldrb	r3, [r5, r7]	@ zero_extendqisi2
+ 485 0358 000053E3 		cmp	r3, #0
+ 486 035c F0A81B09 		ldmeqea	fp, {r4, r5, r6, r7, fp, sp, pc}
+ 487 0360 B40000EA 		b	.L35
+ 488              	.L39:
+ 489              		.align	2
+ 490              	.L38:
+ 491 0364 0C8002E0 		.word	-536707060
+ 492 0368 048002E0 		.word	-536707068
+ 493              	.LBE3:
+ 498              		.align	2
+ 501              		.global	lcd2148_gotoxy1
+ 503              	lcd2148_gotoxy1:
+  98:lcd_2148.h    **** 		}
+  99:lcd_2148.h    **** }
+ 100:lcd_2148.h    **** 
+ 101:lcd_2148.h    **** 
+ 102:lcd_2148.h    **** void lcd2148_gotoxy1(unsigned char pos)
+ 103:lcd_2148.h    **** {
+ 505              	.LM79:
+ 506              		@ args = 0, pretend = 0, frame = 0
+ 507              		@ frame_needed = 0, uses_anonymous_args = 0
+ 508              		@ link register save eliminated.
+ 104:lcd_2148.h    **** 	lcd2148_cmd(LINE1+pos);
+ 510              	.LM80:
+ 511 036c 800040E2 		sub	r0, r0, #128
+ 512 0370 FF0000E2 		and	r0, r0, #255
+ 514              	.LM81:
+ 515              		@ lr needed for prologue
+ 517              	.LM82:
+ 518 0374 FEFFFFEA 		b	lcd2148_cmd
+ 520              		.align	2
+ 523              		.global	lcd2148_gotoxy2
+ 525              	lcd2148_gotoxy2:
+ 105:lcd_2148.h    **** }
+ 106:lcd_2148.h    **** 
+ 107:lcd_2148.h    **** void lcd2148_gotoxy2(unsigned char pos)
+ 108:lcd_2148.h    **** {
+ 527              	.LM83:
+ 528              		@ args = 0, pretend = 0, frame = 0
+ 529              		@ frame_needed = 0, uses_anonymous_args = 0
+ 530              		@ link register save eliminated.
+ 109:lcd_2148.h    **** 	lcd2148_cmd(LINE2+pos);
+ 532              	.LM84:
+ 533 0378 400040E2 		sub	r0, r0, #64
+ 534 037c FF0000E2 		and	r0, r0, #255
+ 536              	.LM85:
+ 537              		@ lr needed for prologue
+ 539              	.LM86:
+ 540 0380 FEFFFFEA 		b	lcd2148_cmd
+ 543              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 544              		.align	2
+ 545              	.LC0:
+ 546 0000 6E696B68 		.ascii	"nikhil\000"
+ 546      696C00
+ 547 0007 00       		.text
+ 548              		.align	2
+ 550              		.global	main
+ 552              	main:
+ 554              	.Ltext2:
+   1:lcd.c         **** #include"startup.h"
+   2:lcd.c         **** #include"LPC214x.h"
+   3:lcd.c         **** #include"lcd_2148.h"
+   4:lcd.c         **** int main()
+   5:lcd.c         **** {
+ 556              	.LM87:
+ 557              		@ args = 0, pretend = 0, frame = 0
+ 558              		@ frame_needed = 1, uses_anonymous_args = 0
+ 559 0384 0DC0A0E1 		mov	ip, sp
+ 560 0388 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+ 561 038c 04B04CE2 		sub	fp, ip, #4
+   6:lcd.c         **** 	/*lcd2148_init();
+   7:lcd.c         **** 	lcd2148_data('A');
+   8:lcd.c         **** 	lcd2148_init();
+   9:lcd.c         **** 	lcd2148_gotoxy2(1);
+  10:lcd.c         **** 	lcd2148_data('A');*/
+  11:lcd.c         **** 	lcd2148_init();
+ 563              	.LM88:
+ 564 0390 FEFFFFEB 		bl	lcd2148_init
+  12:lcd.c         **** 	lcd2148_string("nikhil");
+ 566              	.LM89:
+ 567 0394 08009FE5 		ldr	r0, .L43
+ 568 0398 FEFFFFEB 		bl	lcd2148_string
+  13:lcd.c         **** }
+ 570              	.LM90:
+ 571 039c 0000A0E3 		mov	r0, #0
+ 572 03a0 00A81BE9 		ldmea	fp, {fp, sp, pc}
+ 573              	.L44:
+ 574              		.align	2
+ 575              	.L43:
+ 576 03a4 00000000 		.word	.LC0
+ 578              		.text
+ 580              	.Letext:
+ 581              		.ident	"GCC: (GNU) 3.3"
+DEFINED SYMBOLS
+                            *ABS*:00000000 lcd.c
+     /tmp/ccvzLSW2.s:37     .text:00000000 delay
+     /tmp/ccvzLSW2.s:105    .text:00000074 latch
+     /tmp/ccvzLSW2.s:149    .text:000000bc lcd2148_cmd
+     /tmp/ccvzLSW2.s:210    .text:0000012c lcd2148_init
+     /tmp/ccvzLSW2.s:343    .text:00000238 lcd2148_data
+     /tmp/ccvzLSW2.s:401    .text:000002a8 lcd2148_string
+     /tmp/ccvzLSW2.s:503    .text:0000036c lcd2148_gotoxy1
+     /tmp/ccvzLSW2.s:525    .text:00000378 lcd2148_gotoxy2
+     /tmp/ccvzLSW2.s:552    .text:00000384 main
+
+UNDEFINED SYMBOLS
+sys_init

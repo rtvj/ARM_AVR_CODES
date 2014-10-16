@@ -1,0 +1,464 @@
+   1              		.file	"switch_2.c"
+   3              		.text
+   4              	.Ltext0:
+ 119              		.align	2
+ 121              		.global	uart0_init
+ 123              	uart0_init:
+ 125              	.Ltext1:
+   1:uart.h        **** #include"startup.h"
+   2:uart.h        **** #include"LPC214x.h"
+   3:uart.h        **** 
+   4:uart.h        **** #define val 60000000/(16*baud)
+   5:uart.h        **** #define baud 9600
+   6:uart.h        **** void uart0_init()
+   7:uart.h        **** {
+ 127              	.LM1:
+ 128              		@ args = 0, pretend = 0, frame = 0
+ 129              		@ frame_needed = 0, uses_anonymous_args = 0
+ 130              		@ link register save eliminated.
+   8:uart.h        **** 	PINSEL0&=~(1<<1)|(1<<3);
+ 132              	.LM2:
+ 133 0000 48209FE5 		ldr	r2, .L2
+ 134 0004 003092E5 		ldr	r3, [r2, #0]
+ 135 0008 0230C3E3 		bic	r3, r3, #2
+ 136 000c 003082E5 		str	r3, [r2, #0]
+   9:uart.h        **** 	PINSEL0|=(1<<0)|(1<<2);
+ 138              	.LM3:
+ 139 0010 003092E5 		ldr	r3, [r2, #0]
+ 140 0014 053083E3 		orr	r3, r3, #5
+ 141 0018 003082E5 		str	r3, [r2, #0]
+  10:uart.h        **** 	
+  11:uart.h        **** 	U0LCR|=(1<<7);// enable DLAB bit
+ 143              	.LM4:
+ 144 001c 30109FE5 		ldr	r1, .L2+4
+ 145 0020 003091E5 		ldr	r3, [r1, #0]
+ 146 0024 803083E3 		orr	r3, r3, #128
+ 147 0028 003081E5 		str	r3, [r1, #0]
+  12:uart.h        **** 	U0DLL=val&(0xFF);
+ 149              	.LM5:
+ 150 002c 24309FE5 		ldr	r3, .L2+8
+ 151 0030 8620A0E3 		mov	r2, #134
+ 152 0034 002083E5 		str	r2, [r3, #0]
+  13:uart.h        **** 	U0DLM=val>>8;
+ 154              	.LM6:
+ 155 0038 1C309FE5 		ldr	r3, .L2+12
+ 156 003c 0120A0E3 		mov	r2, #1
+ 157 0040 002083E5 		str	r2, [r3, #0]
+  14:uart.h        **** 	U0LCR=0X03;//parity disable,1 stop bit,8 bit data
+ 159              	.LM7:
+ 160 0044 0330A0E3 		mov	r3, #3
+ 162              	.LM8:
+ 163              		@ lr needed for prologue
+ 165              	.LM9:
+ 166 0048 003081E5 		str	r3, [r1, #0]
+ 167 004c 0EF0A0E1 		mov	pc, lr
+ 168              	.L3:
+ 169              		.align	2
+ 170              	.L2:
+ 171 0050 00C002E0 		.word	-536690688
+ 172 0054 0CC000E0 		.word	-536821748
+ 173 0058 00C000E0 		.word	-536821760
+ 174 005c 04C000E0 		.word	-536821756
+ 176              		.align	2
+ 179              		.global	uart0_tx_char
+ 181              	uart0_tx_char:
+  15:uart.h        **** }
+  16:uart.h        **** 
+  17:uart.h        **** void uart0_tx_char(unsigned char data)
+  18:uart.h        **** {
+ 183              	.LM10:
+ 184              		@ args = 0, pretend = 0, frame = 0
+ 185              		@ frame_needed = 0, uses_anonymous_args = 0
+ 186              		@ link register save eliminated.
+ 187              		@ lr needed for prologue
+ 188 0060 FF0000E2 		and	r0, r0, #255
+  19:uart.h        **** 	while(!(U0LSR&(1<<5)));  
+ 190              	.LM11:
+ 191              	.L5:
+ 192 0064 14309FE5 		ldr	r3, .L9
+ 193 0068 003093E5 		ldr	r3, [r3, #0]
+ 194 006c 200013E3 		tst	r3, #32
+ 195 0070 0C309F15 		ldrne	r3, .L9+4
+ 196 0074 00008315 		strne	r0, [r3, #0]
+ 197 0078 0EF0A011 		movne	pc, lr
+ 198 007c 170000EA 		b	.L5
+ 199              	.L10:
+ 200              		.align	2
+ 201              	.L9:
+ 202 0080 14C000E0 		.word	-536821740
+ 203 0084 00C000E0 		.word	-536821760
+  20:uart.h        **** 	U0THR=data;
+ 205              	.LM12:
+ 207              		.align	2
+ 210              		.global	uart0_tx_str
+ 212              	uart0_tx_str:
+  21:uart.h        **** }	
+  22:uart.h        **** 
+  23:uart.h        **** void uart0_tx_str(unsigned char *ptr) 
+  24:uart.h        **** {
+ 214              	.LM13:
+ 215              		@ args = 0, pretend = 0, frame = 0
+ 216              		@ frame_needed = 1, uses_anonymous_args = 0
+ 217 0088 0DC0A0E1 		mov	ip, sp
+ 218 008c 10D82DE9 		stmfd	sp!, {r4, fp, ip, lr, pc}
+ 219 0090 0040A0E1 		mov	r4, r0
+  25:uart.h        ****     while(*ptr !='\0')
+ 221              	.LM14:
+ 222 0094 0000D0E5 		ldrb	r0, [r0, #0]	@ zero_extendqisi2
+ 223 0098 000050E3 		cmp	r0, #0
+ 225              	.LM15:
+ 226 009c 04B04CE2 		sub	fp, ip, #4
+ 228              	.LM16:
+ 229 00a0 10A81B09 		ldmeqea	fp, {r4, fp, sp, pc}
+ 230              	.L15:
+  26:uart.h        **** 	{
+  27:uart.h        **** 	uart0_tx_char(*ptr);
+ 232              	.LM17:
+ 233 00a4 FF0000E2 		and	r0, r0, #255
+ 234 00a8 FEFFFFEB 		bl	uart0_tx_char
+  28:uart.h        **** 	ptr ++; // uart1_tx_char(*(ptr++));
+ 236              	.LM18:
+ 237 00ac 0100F4E5 		ldrb	r0, [r4, #1]!	@ zero_extendqisi2
+ 238 00b0 000050E3 		cmp	r0, #0
+ 239 00b4 10A81B09 		ldmeqea	fp, {r4, fp, sp, pc}
+ 240 00b8 270000EA 		b	.L15
+ 242              		.align	2
+ 245              		.global	uart0_tx_num
+ 247              	uart0_tx_num:
+  29:uart.h        **** 	}
+  30:uart.h        **** }
+  31:uart.h        **** 
+  32:uart.h        **** void uart0_tx_num(unsigned int num ) 
+  33:uart.h        **** {
+ 249              	.LM19:
+ 250              		@ args = 0, pretend = 0, frame = 8
+ 251              		@ frame_needed = 1, uses_anonymous_args = 0
+ 252 00bc 0DC0A0E1 		mov	ip, sp
+ 253 00c0 10D82DE9 		stmfd	sp!, {r4, fp, ip, lr, pc}
+ 254 00c4 04B04CE2 		sub	fp, ip, #4
+ 255 00c8 08D04DE2 		sub	sp, sp, #8
+  34:uart.h        **** 	unsigned char i,count[5];	
+  35:uart.h        **** 	
+  36:uart.h        **** 	for(i=1;i<=4;i++)
+ 257              	.LM20:
+ 258              	.LBB2:
+ 259 00cc 0140A0E3 		mov	r4, #1
+ 260              	.L23:
+  37:uart.h        **** 	{
+  38:uart.h        **** 	count[i] = num % 10;
+ 262              	.LM21:
+ 263 00d0 60309FE5 		ldr	r3, .L32
+ 264 00d4 931082E0 		umull	r1, r2, r3, r0
+ 265 00d8 10C04BE2 		sub	ip, fp, #16
+ 267              	.LM22:
+ 268 00dc 013084E2 		add	r3, r4, #1
+ 270              	.LM23:
+ 271 00e0 A221A0E1 		mov	r2, r2, lsr #3
+ 272 00e4 04108CE0 		add	r1, ip, r4
+ 274              	.LM24:
+ 275 00e8 FF4003E2 		and	r4, r3, #255
+ 277              	.LM25:
+ 278 00ec 023182E0 		add	r3, r2, r2, asl #2
+ 279 00f0 833040E0 		sub	r3, r0, r3, asl #1
+ 281              	.LM26:
+ 282 00f4 040054E3 		cmp	r4, #4
+ 284              	.LM27:
+ 285 00f8 083041E5 		strb	r3, [r1, #-8]
+  39:uart.h        **** 	num = num / 10 ;
+ 287              	.LM28:
+ 288 00fc 0200A0E1 		mov	r0, r2
+ 290              	.LM29:
+ 291 0100 3200009A 		bls	.L23
+  40:uart.h        **** 	}
+  41:uart.h        **** 	i--;// At the time of exit from the 'for loop',its value is greater than 1 of max value,
+ 293              	.LM30:
+ 294 0104 013044E2 		sub	r3, r4, #1
+  42:uart.h        **** 		// in this case it is 6 which is greater than 5;hence to decrease by 1 i--. 
+  43:uart.h        **** 	while(i!=0)
+ 296              	.LM31:
+ 297 0108 FF4013E2 		ands	r4, r3, #255
+ 298 010c 10A81B09 		ldmeqea	fp, {r4, fp, sp, pc}
+ 299              	.L27:
+  44:uart.h        **** 	{
+  45:uart.h        **** 	uart0_tx_char(count[i] + 0x30);
+ 301              	.LM32:
+ 302 0110 10104BE2 		sub	r1, fp, #16
+ 303 0114 043081E0 		add	r3, r1, r4
+ 304 0118 080053E5 		ldrb	r0, [r3, #-8]	@ zero_extendqisi2
+ 305 011c 300080E2 		add	r0, r0, #48
+ 306 0120 FF0000E2 		and	r0, r0, #255
+ 307 0124 FEFFFFEB 		bl	uart0_tx_char
+  46:uart.h        **** 	i--;
+ 309              	.LM33:
+ 310 0128 013044E2 		sub	r3, r4, #1
+ 311 012c FF4013E2 		ands	r4, r3, #255
+ 312 0130 10A81B09 		ldmeqea	fp, {r4, fp, sp, pc}
+ 313 0134 420000EA 		b	.L27
+ 314              	.L33:
+ 315              		.align	2
+ 316              	.L32:
+ 317 0138 CDCCCCCC 		.word	-858993459
+ 318              	.LBE2:
+ 324              		.align	2
+ 326              		.global	uart0_rx_char
+ 328              	uart0_rx_char:
+  47:uart.h        **** 	}
+  48:uart.h        **** }
+  49:uart.h        **** unsigned char uart0_rx_char(void)
+  50:uart.h        **** {
+ 330              	.LM34:
+ 331              		@ args = 0, pretend = 0, frame = 0
+ 332              		@ frame_needed = 0, uses_anonymous_args = 0
+ 333              		@ link register save eliminated.
+ 334              		@ lr needed for prologue
+  51:uart.h        **** 	while(!(U0LSR&(1<<0)));  
+ 336              	.LM35:
+ 337              	.L35:
+ 338 013c 18309FE5 		ldr	r3, .L39
+ 339 0140 003093E5 		ldr	r3, [r3, #0]
+ 340 0144 010013E3 		tst	r3, #1
+ 341 0148 10309F15 		ldrne	r3, .L39+4
+ 342 014c 00009315 		ldrne	r0, [r3, #0]
+ 343 0150 FF000012 		andne	r0, r0, #255
+  52:uart.h        **** 	return U0RBR;
+  53:uart.h        **** }
+ 345              	.LM36:
+ 346 0154 0EF0A011 		movne	pc, lr
+ 347 0158 4D0000EA 		b	.L35
+ 348              	.L40:
+ 349              		.align	2
+ 350              	.L39:
+ 351 015c 14C000E0 		.word	-536821740
+ 352 0160 00C000E0 		.word	-536821760
+ 354              		.align	2
+ 357              		.global	uart0_rx_str
+ 359              	uart0_rx_str:
+  54:uart.h        **** 	
+  55:uart.h        **** void uart0_rx_str(unsigned char *ptr)
+  56:uart.h        **** {     unsigned int i;
+ 361              	.LM37:
+ 362              		@ args = 0, pretend = 0, frame = 0
+ 363              		@ frame_needed = 1, uses_anonymous_args = 0
+ 364 0164 0DC0A0E1 		mov	ip, sp
+ 365 0168 30D82DE9 		stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+ 366 016c 04B04CE2 		sub	fp, ip, #4
+ 367 0170 0040A0E1 		mov	r4, r0
+  57:uart.h        ****       for(i=0;i<100;i++)
+ 369              	.LM38:
+ 370              	.LBB3:
+ 371 0174 0050A0E3 		mov	r5, #0
+ 372              	.L47:
+  58:uart.h        ****       {
+  59:uart.h        ****        *(ptr+i)=uart0_rx_char();
+ 374              	.LM39:
+ 375 0178 FEFFFFEB 		bl	uart0_rx_char
+ 376 017c 0500C4E7 		strb	r0, [r4, r5]
+  60:uart.h        ****         if(*(ptr+i)=='\r')
+ 378              	.LM40:
+ 379 0180 0530D4E7 		ldrb	r3, [r4, r5]	@ zero_extendqisi2
+ 380 0184 0D0053E3 		cmp	r3, #13
+ 381 0188 0030A003 		moveq	r3, #0
+ 382 018c 0530C407 		streqb	r3, [r4, r5]
+  61:uart.h        ****         {
+  62:uart.h        ****         *(ptr+i)='\0';
+  63:uart.h        **** 		
+  64:uart.h        ****         break;
+ 384              	.LM41:
+ 385 0190 30A81B09 		ldmeqea	fp, {r4, r5, fp, sp, pc}
+ 387              	.LM42:
+ 388 0194 015085E2 		add	r5, r5, #1
+ 389 0198 630055E3 		cmp	r5, #99
+ 390 019c 30A81B89 		ldmhiea	fp, {r4, r5, fp, sp, pc}
+ 391 01a0 5C0000EA 		b	.L47
+ 392              	.LBE3:
+ 397              		.align	2
+ 399              		.global	uart0_rx_num
+ 401              	uart0_rx_num:
+  65:uart.h        **** 		}
+  66:uart.h        ****        }      
+  67:uart.h        **** }	
+  68:uart.h        **** 
+  69:uart.h        **** // Receiving number
+  70:uart.h        **** //For 1 digit no.
+  71:uart.h        **** unsigned char uart0_rx_num(void)
+  72:uart.h        **** {
+ 403              	.LM43:
+ 404              		@ args = 0, pretend = 0, frame = 0
+ 405              		@ frame_needed = 1, uses_anonymous_args = 0
+ 406 01a4 0DC0A0E1 		mov	ip, sp
+ 407 01a8 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+ 408 01ac 04B04CE2 		sub	fp, ip, #4
+  73:uart.h        **** 	unsigned char num;
+  74:uart.h        **** 	while(1)
+  75:uart.h        **** 	{
+  76:uart.h        **** 	num = uart0_rx_char();
+ 410              	.LM44:
+ 411              	.LBB4:
+ 412 01b0 FEFFFFEB 		bl	uart0_rx_char
+  77:uart.h        **** 	num = num - 0x30;
+ 414              	.LM45:
+ 415 01b4 300040E2 		sub	r0, r0, #48
+ 416 01b8 FF0000E2 		and	r0, r0, #255
+  78:uart.h        **** 	return num;
+  79:uart.h        **** 	}
+  80:uart.h        **** }
+ 418              	.LM46:
+ 419 01bc 00A81BE9 		ldmea	fp, {fp, sp, pc}
+ 420              	.LBE4:
+ 423              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 424              		.align	2
+ 425              	.LC0:
+ 426 0000 6E696B68 		.ascii	"nikhil\000"
+ 426      696C00
+ 427 0007 00       		.align	2
+ 428              	.LC1:
+ 429 0008 456E7465 		.ascii	"Enter Passward\n\000"
+ 429      72205061 
+ 429      73737761 
+ 429      72640A00 
+ 430              		.align	2
+ 431              	.LC2:
+ 432 0018 56616C69 		.ascii	"Valid Password\n\000"
+ 432      64205061 
+ 432      7373776F 
+ 432      72640A00 
+ 433              		.align	2
+ 434              	.LC3:
+ 435 0028 4E6F6E2D 		.ascii	"Non-Valid Password\n\000"
+ 435      56616C69 
+ 435      64205061 
+ 435      7373776F 
+ 435      72640A00 
+ 436              		.text
+ 437              		.align	2
+ 439              		.global	main
+ 441              	main:
+ 443              	.Ltext2:
+   1:switch_2.c    **** #include<stdio.h>
+   2:switch_2.c    **** #include"startup.h"
+   3:switch_2.c    **** #include"LPC214x.h"
+   4:switch_2.c    **** #include"uart.h"
+   5:switch_2.c    **** 
+   6:switch_2.c    **** int main()
+   7:switch_2.c    **** {	unsigned int i,j,count;
+ 445              	.LM47:
+ 446              		@ args = 0, pretend = 0, frame = 16
+ 447              		@ frame_needed = 1, uses_anonymous_args = 0
+ 448 01c0 0DC0A0E1 		mov	ip, sp
+ 449 01c4 10D82DE9 		stmfd	sp!, {r4, fp, ip, lr, pc}
+   8:switch_2.c    **** 	unsigned char str1[]="nikhil"; 
+ 451              	.LM48:
+ 452              	.LBB5:
+ 453 01c8 8C309FE5 		ldr	r3, .L64
+ 455              	.LM49:
+ 456 01cc 04B04CE2 		sub	fp, ip, #4
+ 457 01d0 10D04DE2 		sub	sp, sp, #16
+ 459              	.LM50:
+ 460 01d4 030093E8 		ldmia	r3, {r0, r1}
+ 461 01d8 2138A0E1 		mov	r3, r1, lsr #16
+ 462 01dc 12304BE5 		strb	r3, [fp, #-18]
+ 463 01e0 18000BE5 		str	r0, [fp, #-24]
+ 464 01e4 B4114BE1 		strh	r1, [fp, #-20]	@ movhi 
+   9:switch_2.c    ****  	unsigned char str2[6];
+  10:switch_2.c    **** 	sys_init();//for pll
+ 466              	.LM51:
+ 467 01e8 FEFFFFEB 		bl	sys_init
+  11:switch_2.c    **** 	uart0_init();
+ 469              	.LM52:
+ 470 01ec FEFFFFEB 		bl	uart0_init
+  12:switch_2.c    **** 	PINSEL0&=~((1<<30)|(1<<31)|(1<<22)|(1<<23));//
+ 472              	.LM53:
+ 473 01f0 68209FE5 		ldr	r2, .L64+4
+ 474 01f4 003092E5 		ldr	r3, [r2, #0]
+ 475 01f8 0331C3E3 		bic	r3, r3, #-1073741824
+ 476 01fc 0335C3E3 		bic	r3, r3, #12582912
+ 477 0200 003082E5 		str	r3, [r2, #0]
+  13:switch_2.c    **** 	//IODIR0|=(1<<11);//AS O/P
+  14:switch_2.c    **** 	IODIR0&=~(1<<15);//AS i/P
+ 479              	.LM54:
+ 480 0204 58209FE5 		ldr	r2, .L64+8
+ 481 0208 003092E5 		ldr	r3, [r2, #0]
+ 482 020c 0239C3E3 		bic	r3, r3, #32768
+ 483 0210 003082E5 		str	r3, [r2, #0]
+ 484              	.L62:
+  15:switch_2.c    **** 	//IOPIN0=0xff;
+  16:switch_2.c    **** 	
+  17:switch_2.c    **** 	/*
+  18:switch_2.c    **** 	for(i=0;i<6;i++)
+  19:switch_2.c    ****  	{
+  20:switch_2.c    ****  	ch = getch();
+  21:switch_2.c    ****  	str[i] = ch;
+  22:switch_2.c    ****  	}*/
+  23:switch_2.c    **** 	
+  24:switch_2.c    **** 	while(1)
+  25:switch_2.c    **** 	{
+  26:switch_2.c    **** 		if(!(IOPIN0&(1<<15)))	//if s/w1 is pressed pin value is 1
+ 486              	.LM55:
+ 487 0214 4C309FE5 		ldr	r3, .L64+12
+ 488 0218 003093E5 		ldr	r3, [r3, #0]
+ 489 021c 020913E3 		tst	r3, #32768
+ 490 0220 20404BE2 		sub	r4, fp, #32
+ 491 0224 40009FE5 		ldr	r0, .L64+16
+ 492 0228 8300001A 		bne	.L62
+  27:switch_2.c    **** 		{
+  28:switch_2.c    **** 			uart0_tx_str("Enter Passward\n"); 
+ 494              	.LM56:
+ 495 022c FEFFFFEB 		bl	uart0_tx_str
+  29:switch_2.c    **** 			uart0_rx_str(str2);
+ 497              	.LM57:
+ 498 0230 0400A0E1 		mov	r0, r4
+ 499 0234 FEFFFFEB 		bl	uart0_rx_str
+  30:switch_2.c    **** 			count=strcmp(str1,str2);
+ 501              	.LM58:
+ 502 0238 0410A0E1 		mov	r1, r4
+ 503 023c 18004BE2 		sub	r0, fp, #24
+ 504 0240 FEFFFFEB 		bl	strcmp
+ 505 0244 0030A0E1 		mov	r3, r0
+  31:switch_2.c    ****  			if (count==0)
+ 507              	.LM59:
+ 508 0248 000053E3 		cmp	r3, #0
+ 510              	.LM60:
+ 511 024c 1C009FE5 		ldr	r0, .L64+20
+  32:switch_2.c    ****  				uart0_tx_str("Valid Password\n"); 
+  33:switch_2.c    ****    				//IOCLR0|=(1<<11);}
+  34:switch_2.c    ****  			else
+  35:switch_2.c    ****  				uart0_tx_str("Non-Valid Password\n"); 
+ 513              	.LM61:
+ 514 0250 1C009F15 		ldrne	r0, .L64+24
+ 515 0254 FEFFFFEB 		bl	uart0_tx_str
+ 516 0258 830000EA 		b	.L62
+ 517              	.L65:
+ 518              		.align	2
+ 519              	.L64:
+ 520 025c 00000000 		.word	.LC0
+ 521 0260 00C002E0 		.word	-536690688
+ 522 0264 088002E0 		.word	-536707064
+ 523 0268 008002E0 		.word	-536707072
+ 524 026c 08000000 		.word	.LC1
+ 525 0270 18000000 		.word	.LC2
+ 526 0274 28000000 		.word	.LC3
+  36:switch_2.c    ****     				//IOSET0|=(1<<11);
+  37:switch_2.c    **** 		}
+  38:switch_2.c    **** 		
+  39:switch_2.c    **** 		
+  40:switch_2.c    **** 	}
+  41:switch_2.c    **** }	
+ 528              	.LM62:
+ 529              	.LBE5:
+ 535              		.text
+ 537              	.Letext:
+ 538              		.ident	"GCC: (GNU) 3.3"
+DEFINED SYMBOLS
+                            *ABS*:00000000 switch_2.c
+     /tmp/ccuZKLTo.s:123    .text:00000000 uart0_init
+     /tmp/ccuZKLTo.s:181    .text:00000060 uart0_tx_char
+     /tmp/ccuZKLTo.s:212    .text:00000088 uart0_tx_str
+     /tmp/ccuZKLTo.s:247    .text:000000bc uart0_tx_num
+     /tmp/ccuZKLTo.s:328    .text:0000013c uart0_rx_char
+     /tmp/ccuZKLTo.s:359    .text:00000164 uart0_rx_str
+     /tmp/ccuZKLTo.s:401    .text:000001a4 uart0_rx_num
+     /tmp/ccuZKLTo.s:441    .text:000001c0 main
+
+UNDEFINED SYMBOLS
+sys_init
+strcmp

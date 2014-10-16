@@ -1,0 +1,1020 @@
+
+main.elf:     file format elf32-littlearm
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000006ec  00000000  00000000  00008000  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .ctors        00000000  000006ec  000006ec  00010000  2**0
+                  CONTENTS
+  2 .dtors        00000000  000006ec  000006ec  00010000  2**0
+                  CONTENTS
+  3 .data         00000000  40000000  000006ec  00010000  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  4 .bss          00000000  40000000  000006ec  00010000  2**0
+                  ALLOC
+  5 .stack        00000400  40000000  40000000  00010000  2**0
+                  CONTENTS
+  6 .stab         0000114c  00000000  00000000  00010400  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  7 .stabstr      000005e0  00000000  00000000  0001154c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .comment      00000030  00000000  00000000  00011b2c  2**0
+                  CONTENTS, READONLY
+  9 .debug_aranges 00000040  00000000  00000000  00011b60  2**3
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_info   00000116  00000000  00000000  00011ba0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_abbrev 00000028  00000000  00000000  00011cb6  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_line   000000e1  00000000  00000000  00011cde  2**0
+                  CONTENTS, READONLY, DEBUGGING
+Disassembly of section .text:
+
+00000000 <_boot>:
+
+// Runtime Interrupt Vectors
+// -------------------------
+Vectors:
+        b     _start                    // reset - _start
+   0:	ea000012 	b	50 <_mainCRTStartup>
+        ldr   pc,_undf                  // undefined - _undf
+   4:	e59ff014 	ldr	pc, [pc, #20]	; 20 <_undf>
+        ldr   pc,_swi                   // SWI - _swi
+   8:	e59ff014 	ldr	pc, [pc, #20]	; 24 <_swi>
+        ldr   pc,_pabt                  // program abort - _pabt
+   c:	e59ff014 	ldr	pc, [pc, #20]	; 28 <_pabt>
+        ldr   pc,_dabt                  // data abort - _dabt
+  10:	e59ff014 	ldr	pc, [pc, #20]	; 2c <_dabt>
+        nop                             // reserved
+  14:	e1a00000 	nop			(mov r0,r0)
+        ldr   pc,[pc,#-0xFF0]           // IRQ - read the VIC
+  18:	e51ffff0 	ldr	pc, [pc, #-4080]	; fffff030 <_end+0xbfffec30>
+        ldr   pc,_fiq                   // FIQ - _fiq
+  1c:	e59ff010 	ldr	pc, [pc, #16]	; 34 <_fiq>
+
+00000020 <_undf>:
+  20:	00000038 	andeq	r0, r0, r8, lsr r0
+
+00000024 <_swi>:
+  24:	0000003c 	andeq	r0, r0, ip, lsr r0
+
+00000028 <_pabt>:
+  28:	00000040 	andeq	r0, r0, r0, asr #32
+
+0000002c <_dabt>:
+  2c:	00000044 	andeq	r0, r0, r4, asr #32
+
+00000030 <_irq>:
+  30:	00000048 	andeq	r0, r0, r8, asr #32
+
+00000034 <_fiq>:
+  34:	0000004c 	andeq	r0, r0, ip, asr #32
+
+00000038 <__undf>:
+
+#if 0
+// Use this group for production
+_undf:  .word _reset                    // undefined - _reset
+_swi:   .word _reset                    // SWI - _reset
+_pabt:  .word _reset                    // program abort - _reset
+_dabt:  .word _reset                    // data abort - _reset
+_irq:   .word _reset                    // IRQ - _reset
+_fiq:   .word _reset                    // FIQ - _reset
+
+#else
+// Use this group for development
+_undf:  .word __undf                    // undefined
+_swi:   .word __swi                     // SWI
+_pabt:  .word __pabt                    // program abort
+_dabt:  .word __dabt                    // data abort
+_irq:   .word __irq                     // IRQ
+_fiq:   .word __fiq                     // FIQ
+
+__undf: b     .                         // undefined
+  38:	eafffffe 	b	38 <__undf>
+
+0000003c <__swi>:
+__swi:  b     .                         // SWI
+  3c:	eafffffe 	b	3c <__swi>
+
+00000040 <__pabt>:
+__pabt: b     .                         // program abort
+  40:	eafffffe 	b	40 <F_BIT>
+
+00000044 <__dabt>:
+__dabt: b     .                         // data abort
+  44:	eafffffe 	b	44 <__dabt>
+
+00000048 <__irq>:
+__irq:  b     .                         // IRQ
+  48:	eafffffe 	b	48 <__irq>
+
+0000004c <__fiq>:
+__fiq:  b     .                         // FIQ
+  4c:	eafffffe 	b	4c <__fiq>
+
+00000050 <_mainCRTStartup>:
+#endif
+        .size _boot, . - _boot
+        .endfunc
+
+
+// Setup the operating mode & stack.
+// ---------------------------------
+        .global _start, start, _mainCRTStartup
+        .func   _start
+
+_start:
+start:
+_mainCRTStartup:
+
+// Initialize Interrupt System
+// - Set stack location for each mode
+// - Leave in System Mode with Interrupts Disabled
+// -----------------------------------------------
+        ldr   r0,=_stack
+  50:	e59f00c0 	ldr	r0, [pc, #192]	; 118 <_reset+0x4>
+        msr   CPSR_c,#MODE_UND|I_BIT|F_BIT // Undefined Instruction Mode
+  54:	e321f0db 	msr	CPSR_c, #219	; 0xdb
+        mov   sp,r0
+  58:	e1a0d000 	mov	sp, r0
+        sub   r0,r0,#UND_STACK_SIZE
+  5c:	e2400004 	sub	r0, r0, #4	; 0x4
+        msr   CPSR_c,#MODE_ABT|I_BIT|F_BIT // Abort Mode
+  60:	e321f0d7 	msr	CPSR_c, #215	; 0xd7
+        mov   sp,r0
+  64:	e1a0d000 	mov	sp, r0
+        sub   r0,r0,#ABT_STACK_SIZE
+  68:	e2400004 	sub	r0, r0, #4	; 0x4
+        msr   CPSR_c,#MODE_FIQ|I_BIT|F_BIT // FIQ Mode
+  6c:	e321f0d1 	msr	CPSR_c, #209	; 0xd1
+        mov   sp,r0
+  70:	e1a0d000 	mov	sp, r0
+        sub   r0,r0,#FIQ_STACK_SIZE
+  74:	e2400004 	sub	r0, r0, #4	; 0x4
+        msr   CPSR_c,#MODE_IRQ|I_BIT|F_BIT // IRQ Mode
+  78:	e321f0d2 	msr	CPSR_c, #210	; 0xd2
+        mov   sp,r0
+  7c:	e1a0d000 	mov	sp, r0
+        sub   r0,r0,#IRQ_STACK_SIZE
+  80:	e2400080 	sub	r0, r0, #128	; 0x80
+        msr   CPSR_c,#MODE_SVC|I_BIT|F_BIT // Supervisor Mode
+  84:	e321f0d3 	msr	CPSR_c, #211	; 0xd3
+        mov   sp,r0
+  88:	e1a0d000 	mov	sp, r0
+        sub   r0,r0,#SVC_STACK_SIZE
+  8c:	e2400004 	sub	r0, r0, #4	; 0x4
+        msr   CPSR_c,#MODE_SYS|I_BIT|F_BIT // System Mode
+  90:	e321f0df 	msr	CPSR_c, #223	; 0xdf
+        mov   sp,r0
+  94:	e1a0d000 	mov	sp, r0
+
+// Copy initialized data to its execution address in RAM
+// -----------------------------------------------------
+#ifdef ROM_RUN
+        ldr   r1,=_etext                // -> ROM data start
+  98:	e59f107c 	ldr	r1, [pc, #124]	; 11c <_reset+0x8>
+        ldr   r2,=_data                 // -> data start
+  9c:	e59f207c 	ldr	r2, [pc, #124]	; 120 <_reset+0xc>
+        ldr   r3,=_edata                // -> end of data
+  a0:	e59f307c 	ldr	r3, [pc, #124]	; 124 <_reset+0x10>
+1:      cmp   r2,r3                     // check if data to move
+  a4:	e1520003 	cmp	r2, r3
+        ldrlo r0,[r1],#4                // copy it
+  a8:	34910004 	ldrcc	r0, [r1], #4
+        strlo r0,[r2],#4
+  ac:	34820004 	strcc	r0, [r2], #4
+        blo   1b                        // loop until done
+  b0:	3afffffb 	bcc	a4 <IRQ_STACK_SIZE+0x24>
+#endif
+// Clear .bss
+// ----------
+        mov   r0,#0                     // get a zero
+  b4:	e3a00000 	mov	r0, #0	; 0x0
+        ldr   r1,=__bss_start           // -> bss start
+  b8:	e59f1068 	ldr	r1, [pc, #104]	; 128 <_reset+0x14>
+        ldr   r2,=__bss_end__           // -> bss end
+  bc:	e59f2068 	ldr	r2, [pc, #104]	; 12c <_reset+0x18>
+2:      cmp   r1,r2                     // check if data to clear
+  c0:	e1510002 	cmp	r1, r2
+        strlo r0,[r1],#4                // clear 4 bytes
+  c4:	34810004 	strcc	r0, [r1], #4
+        blo   2b                        // loop until done
+  c8:	3afffffc 	bcc	c0 <IRQ_STACK_SIZE+0x40>
+		
+/*
+   Call C++ constructors (for objects in "global scope")
+   ctor loop added by Martin Thomas 4/2005 
+   based on a Anglia Design example-application for ST ARM
+*/
+
+		LDR 	r0, =__ctors_start__
+  cc:	e59f005c 	ldr	r0, [pc, #92]	; 130 <_reset+0x1c>
+		LDR 	r1, =__ctors_end__
+  d0:	e59f105c 	ldr	r1, [pc, #92]	; 134 <_reset+0x20>
+
+000000d4 <ctor_loop>:
+ctor_loop:
+		CMP 	r0, r1
+  d4:	e1500001 	cmp	r0, r1
+		BEQ 	ctor_end
+  d8:	0a000005 	beq	f4 <ctor_end>
+		LDR 	r2, [r0], #4
+  dc:	e4902004 	ldr	r2, [r0], #4
+		STMFD 	sp!, {r0-r1}
+  e0:	e92d0003 	stmdb	sp!, {r0, r1}
+		MOV 	lr, pc
+  e4:	e1a0e00f 	mov	lr, pc
+		MOV 	pc, r2
+  e8:	e1a0f002 	mov	pc, r2
+		LDMFD 	sp!, {r0-r1}
+  ec:	e8bd0003 	ldmia	sp!, {r0, r1}
+		B 		ctor_loop
+  f0:	eafffff7 	b	d4 <ctor_loop>
+
+000000f4 <ctor_end>:
+ctor_end:
+
+// Call main program: main(0)
+// --------------------------
+        mov   r0,#0                     // no arguments (argc = 0)
+  f4:	e3a00000 	mov	r0, #0	; 0x0
+        mov   r1,r0
+  f8:	e1a01000 	mov	r1, r0
+        mov   r2,r0
+  fc:	e1a02000 	mov	r2, r0
+        mov   fp,r0                     // null frame pointer
+ 100:	e1a0b000 	mov	fp, r0
+        mov   r7,r0                     // null frame pointer for thumb
+ 104:	e1a07000 	mov	r7, r0
+        ldr   r10,=main
+ 108:	e59fa028 	ldr	sl, [pc, #40]	; 138 <_reset+0x24>
+        mov   lr,pc
+ 10c:	e1a0e00f 	mov	lr, pc
+
+/* Enter the C code, use BX instruction so as to never return */
+/* use BLX (?) main if you want to use c++ destructors below */
+
+        bx    r10                       // enter main()
+ 110:	e12fff1a 	bx	sl
+
+00000114 <_reset>:
+
+/* "global object"-dtors are never called and it should not be 
+   needed since there is no OS to exit to. */
+/* Call destructors */
+#		LDR		r0, =__dtors_start__
+#		LDR		r1, =__dtors_end__
+dtor_loop:
+#		CMP		r0, r1
+#		BEQ		dtor_end
+#		LDR		r2, [r0], #4
+#		STMFD	sp!, {r0-r1}
+#		MOV		lr, pc
+#		MOV		pc, r2
+#		LDMFD	sp!, {r0-r1}
+#		B		dtor_loop
+dtor_end:
+   
+        .size   _start, . - _start
+        .endfunc
+
+        .global _reset, reset, exit, abort
+        .func   _reset
+_reset:
+reset:
+exit:
+abort:
+#if 0
+// Disable interrupts, then force a hardware reset by driving P23 low
+// -------------------------------------------------------------------
+        mrs   r0,cpsr                   // get PSR
+        orr   r0,r0,#I_BIT|F_BIT        // disable IRQ and FIQ
+        msr   cpsr,r0                   // set up status register
+
+        ldr   r1,=(PS_BASE)             // PS Base Address
+        ldr   r0,=(PS_PIO)              // PIO Module
+        str   r0,[r1,#PS_PCER_OFF]      // enable its clock
+        ldr   r1,=(PIO_BASE)            // PIO Base Address
+        ldr   r0,=(1<<23)               // P23
+        str   r0,[r1,#PIO_PER_OFF]      // make sure pin is contolled by PIO
+        str   r0,[r1,#PIO_CODR_OFF]     // set the pin low
+        str   r0,[r1,#PIO_OER_OFF]      // make it an output
+#endif
+        b     .                         // loop until reset
+ 114:	eafffffe 	b	114 <_reset>
+ 118:	40000400 	andmi	r0, r0, r0, lsl #8
+ 11c:	000006ec 	andeq	r0, r0, ip, ror #13
+ 120:	40000000 	andmi	r0, r0, r0
+ 124:	40000000 	andmi	r0, r0, r0
+ 128:	40000000 	andmi	r0, r0, r0
+ 12c:	40000000 	andmi	r0, r0, r0
+ 130:	000006ec 	andeq	r0, r0, ip, ror #13
+ 134:	000006ec 	andeq	r0, r0, ip, ror #13
+ 138:	00000468 	andeq	r0, r0, r8, ror #8
+
+0000013c <IRQ_Routine>:
+/*  ----------------------------------------------------  */
+void IRQ_Routine(void)
+{
+
+    while (1);
+ 13c:	eafffffe 	b	13c <IRQ_Routine>
+
+00000140 <FIQ_Routine>:
+}
+void FIQ_Routine(void)
+{
+    while (1);
+ 140:	eafffffe 	b	140 <FIQ_Routine>
+
+00000144 <SWI_Routine>:
+}
+void SWI_Routine(void)
+{
+    while (1);
+ 144:	eafffffe 	b	144 <SWI_Routine>
+
+00000148 <UNDEF_Routine>:
+}
+void UNDEF_Routine(void)
+{
+    while (1);
+ 148:	eafffffe 	b	148 <UNDEF_Routine>
+
+0000014c <feed>:
+}
+
+
+/**********************************************************
+                      Initialize
+**********************************************************/
+
+#define PLOCK 0x400
+static void feed(void)
+{
+    PLLFEED = 0xAA;
+ 14c:	e59f3010 	ldr	r3, [pc, #16]	; 164 <feed+0x18>
+ 150:	e3a020aa 	mov	r2, #170	; 0xaa
+ 154:	e5832000 	str	r2, [r3]
+    PLLFEED = 0x55;
+ 158:	e3a02055 	mov	r2, #85	; 0x55
+ 15c:	e5832000 	str	r2, [r3]
+ 160:	e1a0f00e 	mov	pc, lr
+ 164:	e01fc08c 	ands	ip, pc, ip, lsl #1
+
+00000168 <sys_init>:
+} void sys_init(void)
+{
+
+    //                              Setting the Phased Lock Loop (PLL)
+    //               ----------------------------------
+    //
+    // LPC-P2148 has a 12.0000 mhz crystal
+    //
+    // We'd like the LPC2148 to run at 60 mhz (has to be an even multiple of crystal)
+    // 
+    // According to the Philips LPC2148 manual:   M = cclk / Fosc   where:  M    = PLL multiplier (bits 0-4 of PLLCFG)
+    //                                                                                                                                              cclk = 60000000 hz
+    //                                                                                                                                              Fosc = 12000000 hz
+    //
+    // Solving:     M = 60000000 / 12000000 = 5           
+    //
+    //                      Note: M - 1 must be entered into bits 0-4 of PLLCFG (assign 4 to these bits)
+    //
+    //
+    // The Current Controlled Oscilator (CCO) must operate in the range 156 mhz to 320 mhz
+    //
+    // According to the Philips LPC2148 manual:     Fcco = cclk * 2 * P    where:   Fcco = CCO frequency 
+    //                                                                                                                                                      cclk = 60000000 hz
+    //                                                                                                                                                      P = PLL divisor (bits 5-6 of PLLCFG)
+    //
+    // Solving:     Fcco = 60000000 * 2 * P
+    //                      P = 2  (trial value)
+    //                      Fcco = 60000000 * 2 * 2
+    //                      Fcc0 = 240000000 hz    (good choice for P since it's within the 156 mhz to 320 mhz range)
+    //
+    // From Table 22 (page 34) of Philips LPC2148 manual    P = 2, PLLCFG bits 5-6 = 1  (assign 1 to these bits)
+    //
+    // Finally:      PLLCFG = 0  01  00100  =  0x24
+    //
+    // Final note: to load PLLCFG register, we must use the 0xAA followed 0x55 write sequence to the PLLFEED register
+    //             this is done in the short function feed() below
+    //
+
+    // Setting Multiplier and Divider values
+    PLLCFG = 0x24;
+ 168:	e59f3068 	ldr	r3, [pc, #104]	; 1d8 <sys_init+0x70>
+ 16c:	e1a0c00d 	mov	ip, sp
+ 170:	e3a02024 	mov	r2, #36	; 0x24
+ 174:	e92dd810 	stmdb	sp!, {r4, fp, ip, lr, pc}
+ 178:	e5832000 	str	r2, [r3]
+ 17c:	e24cb004 	sub	fp, ip, #4	; 0x4
+    feed();
+ 180:	ebfffff1 	bl	14c <feed>
+
+    // Enabling the PLL */  
+    PLLCON = 0x1;
+ 184:	e59f3050 	ldr	r3, [pc, #80]	; 1dc <sys_init+0x74>
+ 188:	e3a02001 	mov	r2, #1	; 0x1
+ 18c:	e5832000 	str	r2, [r3]
+    feed();
+ 190:	ebffffed 	bl	14c <feed>
+
+    // Wait for the PLL to lock to set frequency
+    while (!(PLLSTAT & PLOCK));
+ 194:	e59f3044 	ldr	r3, [pc, #68]	; 1e0 <sys_init+0x78>
+ 198:	e5933000 	ldr	r3, [r3]
+ 19c:	e3130b01 	tst	r3, #1024	; 0x400
+ 1a0:	0afffffb 	beq	194 <sys_init+0x2c>
+
+    // Connect the PLL as the clock source
+    PLLCON = 0x3;
+ 1a4:	e59f3030 	ldr	r3, [pc, #48]	; 1dc <sys_init+0x74>
+ 1a8:	e3a04003 	mov	r4, #3	; 0x3
+ 1ac:	e5834000 	str	r4, [r3]
+    feed();
+ 1b0:	ebffffe5 	bl	14c <feed>
+
+    // Enabling MAM and setting number of clocks used for Flash memory fetch
+    MAMTIM = 0x3;
+ 1b4:	e59f3028 	ldr	r3, [pc, #40]	; 1e4 <sys_init+0x7c>
+ 1b8:	e5834000 	str	r4, [r3]
+    MAMCR = 0x2;
+ 1bc:	e59f3024 	ldr	r3, [pc, #36]	; 1e8 <sys_init+0x80>
+ 1c0:	e3a02002 	mov	r2, #2	; 0x2
+ 1c4:	e5832000 	str	r2, [r3]
+
+    // Setting peripheral Clock (pclk) to System Clock (cclk)
+    VPBDIV = 0x1;
+ 1c8:	e59f301c 	ldr	r3, [pc, #28]	; 1ec <sys_init+0x84>
+ 1cc:	e3a02001 	mov	r2, #1	; 0x1
+ 1d0:	e5832000 	str	r2, [r3]
+ 1d4:	e91ba810 	ldmdb	fp, {r4, fp, sp, pc}
+ 1d8:	e01fc084 	ands	ip, pc, r4, lsl #1
+ 1dc:	e01fc080 	ands	ip, pc, r0, lsl #1
+ 1e0:	e01fc088 	ands	ip, pc, r8, lsl #1
+ 1e4:	e01fc004 	ands	ip, pc, r4
+ 1e8:	e01fc000 	ands	ip, pc, r0
+ 1ec:	e01fc100 	ands	ip, pc, r0, lsl #2
+
+000001f0 <enableIRQ>:
+
+static inline unsigned asm_get_cpsr(void)
+{
+  unsigned long retval;
+  asm volatile (" mrs  %0, cpsr" : "=r" (retval) : /* no inputs */  );
+ 1f0:	e10f0000 	mrs	r0, CPSR
+  return retval;
+}
+
+static inline void asm_set_cpsr(unsigned val)
+{
+ 1f4:	e3c03080 	bic	r3, r0, #128	; 0x80
+  asm volatile (" msr  cpsr, %0" : /* no outputs */ : "r" (val)  );
+ 1f8:	e129f003 	msr	CPSR_fc, r3
+}
+
+unsigned enableIRQ(void)
+{
+  unsigned _cpsr;
+
+  _cpsr = asm_get_cpsr();
+  asm_set_cpsr(_cpsr & ~IRQ_MASK);
+  return _cpsr;
+}
+ 1fc:	e1a0f00e 	mov	pc, lr
+
+00000200 <disableIRQ>:
+ 200:	e10f0000 	mrs	r0, CPSR
+ 204:	e3803080 	orr	r3, r0, #128	; 0x80
+ 208:	e129f003 	msr	CPSR_fc, r3
+
+unsigned disableIRQ(void)
+{
+  unsigned _cpsr;
+
+  _cpsr = asm_get_cpsr();
+  asm_set_cpsr(_cpsr | IRQ_MASK);
+  return _cpsr;
+}
+ 20c:	e1a0f00e 	mov	pc, lr
+
+00000210 <restoreIRQ>:
+
+unsigned restoreIRQ(unsigned oldCPSR)
+{
+ 210:	e1a02000 	mov	r2, r0
+ 214:	e10f0000 	mrs	r0, CPSR
+ 218:	e2022080 	and	r2, r2, #128	; 0x80
+ 21c:	e3c03080 	bic	r3, r0, #128	; 0x80
+ 220:	e1833002 	orr	r3, r3, r2
+ 224:	e129f003 	msr	CPSR_fc, r3
+  unsigned _cpsr;
+
+  _cpsr = asm_get_cpsr();
+  asm_set_cpsr((_cpsr & ~IRQ_MASK) | (oldCPSR & IRQ_MASK));
+  return _cpsr;
+}
+ 228:	e1a0f00e 	mov	pc, lr
+
+0000022c <uart0_init>:
+int uart0_rx_num(void);
+
+
+void uart0_init(unsigned int baudrate)
+{
+ 22c:	e1a0c00d 	mov	ip, sp
+ 230:	e92dd800 	stmdb	sp!, {fp, ip, lr, pc}
+	unsigned int baudvalue;
+
+	baudvalue = (60000000 / (16 * baudrate));
+ 234:	e1a01200 	mov	r1, r0, lsl #4
+ 238:	e24cb004 	sub	fp, ip, #4	; 0x4
+ 23c:	e59f0058 	ldr	r0, [pc, #88]	; 29c <uart0_init+0x70>
+ 240:	eb0000f7 	bl	624 <__udivsi3>
+
+	PINSEL0 |= (1<<0);				//select TX0  bit 1:0  as 01
+ 244:	e59f2054 	ldr	r2, [pc, #84]	; 2a0 <uart0_init+0x74>
+ 248:	e5923000 	ldr	r3, [r2]
+ 24c:	e3833001 	orr	r3, r3, #1	; 0x1
+ 250:	e5823000 	str	r3, [r2]
+
+	PINSEL0 |= (1<<2);				//select RX0  bit 3:2  as 01
+ 254:	e5923000 	ldr	r3, [r2]
+   //PINSEL0 = (PINSEL0 & ~0x0000000F) | 0x00000005;     /* Enable RxD0 and TxD0              */
+
+	U0LCR= 0x83;					//8 bit, 1 stop bit, no parity bit, DLAB
+ 258:	e59f1044 	ldr	r1, [pc, #68]	; 2a4 <uart0_init+0x78>
+ 25c:	e3833004 	orr	r3, r3, #4	; 0x4
+ 260:	e5823000 	str	r3, [r2]
+ 264:	e3a03083 	mov	r3, #131	; 0x83
+ 268:	e5813000 	str	r3, [r1]
+	//U0LCR |= (1<<7);
+	//**********baud rate***************************	
+	
+	U0DLL = baudvalue & 0xFF;			//lower bits
+ 26c:	e59f3034 	ldr	r3, [pc, #52]	; 2a8 <uart0_init+0x7c>
+	U0DLM = baudvalue >> 8;			//higher bits
+ 270:	e1a0c420 	mov	ip, r0, lsr #8
+ 274:	e20000ff 	and	r0, r0, #255	; 0xff
+ 278:	e5830000 	str	r0, [r3]
+ 27c:	e59f3028 	ldr	r3, [pc, #40]	; 2ac <uart0_init+0x80>
+ 280:	e583c000 	str	ip, [r3]
+
+	U0LCR= 0x03;					//DLAB=0, 8bit data, 1 stop bit, no parity
+ 284:	e3a03003 	mov	r3, #3	; 0x3
+ 288:	e5813000 	str	r3, [r1]
+
+	U0FCR = 1;					//enable FIFO
+ 28c:	e59f301c 	ldr	r3, [pc, #28]	; 2b0 <uart0_init+0x84>
+ 290:	e3a02001 	mov	r2, #1	; 0x1
+ 294:	e5832000 	str	r2, [r3]
+ 298:	e91ba800 	ldmdb	fp, {fp, sp, pc}
+ 29c:	03938700 	orreqs	r8, r3, #0	; 0x0
+ 2a0:	e002c000 	and	ip, r2, r0
+ 2a4:	e000c00c 	and	ip, r0, ip
+ 2a8:	e000c000 	and	ip, r0, r0
+ 2ac:	e000c004 	and	ip, r0, r4
+ 2b0:	e000c008 	and	ip, r0, r8
+
+000002b4 <uart0_tx_char>:
+
+}
+
+
+void uart0_tx_char(unsigned char data)
+{	//Refer DS p105
+ 2b4:	e20000ff 	and	r0, r0, #255	; 0xff
+	//while(!(U0LSR &(1<<THRE)));			//waiting for the U0TRH to be empty or THRE=1 (polling)
+	while(!(U0LSR & 0x30));			//waiting for the U0TRH to be empty or THRE=1 (polling)   (0010 0000)
+ 2b8:	e59f3014 	ldr	r3, [pc, #20]	; 2d4 <uart0_tx_char+0x20>
+ 2bc:	e5933000 	ldr	r3, [r3]
+ 2c0:	e3130030 	tst	r3, #48	; 0x30
+ 2c4:	159f300c 	ldrne	r3, [pc, #12]	; 2d8 <uart0_tx_char+0x24>
+ 2c8:	15830000 	strne	r0, [r3]
+ 2cc:	11a0f00e 	movne	pc, lr
+ 2d0:	eafffff8 	b	2b8 <uart0_tx_char+0x4>
+ 2d4:	e000c014 	and	ip, r0, r4, lsl r0
+ 2d8:	e000c000 	and	ip, r0, r0
+
+000002dc <uart0_tx_string>:
+	//while(!(U0LSR & 0x40));				//polling TEMT
+	U0THR=data;					//????check with TEMT also
+		
+}
+
+void uart0_tx_string(unsigned char *ptr)
+{	
+ 2dc:	e1a0c00d 	mov	ip, sp
+ 2e0:	e92dd810 	stmdb	sp!, {r4, fp, ip, lr, pc}
+ 2e4:	e1a04000 	mov	r4, r0
+	while(*ptr!='\0')
+ 2e8:	e5d00000 	ldrb	r0, [r0]
+ 2ec:	e3500000 	cmp	r0, #0	; 0x0
+ 2f0:	e24cb004 	sub	fp, ip, #4	; 0x4
+ 2f4:	091ba810 	ldmeqdb	fp, {r4, fp, sp, pc}
+	{
+		uart0_tx_char(*ptr);
+ 2f8:	e20000ff 	and	r0, r0, #255	; 0xff
+ 2fc:	ebffffec 	bl	2b4 <uart0_tx_char>
+		ptr++;
+ 300:	e5f40001 	ldrb	r0, [r4, #1]!
+ 304:	e3500000 	cmp	r0, #0	; 0x0
+ 308:	091ba810 	ldmeqdb	fp, {r4, fp, sp, pc}
+ 30c:	eafffff9 	b	2f8 <uart0_tx_string+0x1c>
+
+00000310 <uart0_rx_char>:
+		//_delay_ms(55);
+	}
+}
+
+unsigned char uart0_rx_char(void)
+{
+	//while(!(U0LSR & (1<<RDR)))
+	while(!(U0LSR & 0x01));			//pollig RDR
+ 310:	e59f3018 	ldr	r3, [pc, #24]	; 330 <uart0_rx_char+0x20>
+ 314:	e5933000 	ldr	r3, [r3]
+ 318:	e3130001 	tst	r3, #1	; 0x1
+ 31c:	159f3010 	ldrne	r3, [pc, #16]	; 334 <uart0_rx_char+0x24>
+ 320:	15930000 	ldrne	r0, [r3]
+ 324:	120000ff 	andne	r0, r0, #255	; 0xff
+	return U0RBR;
+}
+ 328:	11a0f00e 	movne	pc, lr
+ 32c:	eafffff7 	b	310 <uart0_rx_char>
+ 330:	e000c014 	and	ip, r0, r4, lsl r0
+ 334:	e000c000 	and	ip, r0, r0
+
+00000338 <uart0_rx_string>:
+
+void uart0_rx_string(unsigned char *cptr)
+{
+ 338:	e1a0c00d 	mov	ip, sp
+ 33c:	e92dd830 	stmdb	sp!, {r4, r5, fp, ip, lr, pc}
+ 340:	e24cb004 	sub	fp, ip, #4	; 0x4
+ 344:	e1a04000 	mov	r4, r0
+	int i;
+	for(i=0;i<100;i++)				//fro 100 char
+ 348:	e3a05000 	mov	r5, #0	; 0x0
+	{
+		*(cptr+i)=uart0_rx_char();		//rec a char
+ 34c:	ebffffef 	bl	310 <uart0_rx_char>
+ 350:	e7c40005 	strb	r0, [r4, r5]
+		
+		if(*(cptr+i)=='\r')			//first enter u check \r i.e till user enter \r receive
+ 354:	e7d43005 	ldrb	r3, [r4, r5]
+ 358:	e353000d 	cmp	r3, #13	; 0xd
+ 35c:	03a03000 	moveq	r3, #0	; 0x0
+ 360:	07c43005 	streqb	r3, [r4, r5]
+		{
+			*(cptr+i)='\0';			//once enter store '\0'
+			break;				//come out of loop if enter
+ 364:	091ba830 	ldmeqdb	fp, {r4, r5, fp, sp, pc}
+ 368:	e2855001 	add	r5, r5, #1	; 0x1
+ 36c:	e3550063 	cmp	r5, #99	; 0x63
+ 370:	c91ba830 	ldmgtdb	fp, {r4, r5, fp, sp, pc}
+ 374:	eafffff4 	b	34c <uart0_rx_string+0x14>
+
+00000378 <uart0_tx_num>:
+		}
+	}
+}
+
+void uart0_tx_num(unsigned int data)			//???????checkou on the range
+{
+ 378:	e1a0c00d 	mov	ip, sp
+ 37c:	e92dd810 	stmdb	sp!, {r4, fp, ip, lr, pc}
+ 380:	e24cb004 	sub	fp, ip, #4	; 0x4
+ 384:	e24dd00c 	sub	sp, sp, #12	; 0xc
+	unsigned char count[11],i;
+	for(i=1;i<11;i++)
+ 388:	e3a04001 	mov	r4, #1	; 0x1
+	{
+		count[i]=data%10;
+ 38c:	e59f3064 	ldr	r3, [pc, #100]	; 3f8 <uart0_tx_num+0x80>
+ 390:	e0832390 	umull	r2, r3, r0, r3
+ 394:	e1a031a3 	mov	r3, r3, lsr #3
+ 398:	e0832103 	add	r2, r3, r3, lsl #2
+ 39c:	e24bc010 	sub	ip, fp, #16	; 0x10
+ 3a0:	e0402082 	sub	r2, r0, r2, lsl #1
+		data=data/10;
+		if(data==0)
+ 3a4:	e3530000 	cmp	r3, #0	; 0x0
+ 3a8:	e1a00003 	mov	r0, r3
+ 3ac:	e08c3004 	add	r3, ip, r4
+ 3b0:	e2841001 	add	r1, r4, #1	; 0x1
+ 3b4:	e543200c 	strb	r2, [r3, -#12]
+ 3b8:	0a000002 	beq	3c8 <uart0_tx_num+0x50>
+ 3bc:	e20140ff 	and	r4, r1, #255	; 0xff
+ 3c0:	e354000a 	cmp	r4, #10	; 0xa
+ 3c4:	9afffff0 	bls	38c <uart0_tx_num+0x14>
+		{
+		 break;
+		}
+	}	
+	while(i!=0)
+ 3c8:	e3540000 	cmp	r4, #0	; 0x0
+ 3cc:	091ba810 	ldmeqdb	fp, {r4, fp, sp, pc}
+	{
+	 uart0_tx_char(48+count[i]);
+ 3d0:	e24b2010 	sub	r2, fp, #16	; 0x10
+ 3d4:	e0823004 	add	r3, r2, r4
+ 3d8:	e553000c 	ldrb	r0, [r3, -#12]
+ 3dc:	e2800030 	add	r0, r0, #48	; 0x30
+ 3e0:	e20000ff 	and	r0, r0, #255	; 0xff
+ 3e4:	ebffffb2 	bl	2b4 <uart0_tx_char>
+		i--;
+ 3e8:	e2443001 	sub	r3, r4, #1	; 0x1
+ 3ec:	e21340ff 	ands	r4, r3, #255	; 0xff
+ 3f0:	091ba810 	ldmeqdb	fp, {r4, fp, sp, pc}
+ 3f4:	eafffff5 	b	3d0 <uart0_tx_num+0x58>
+ 3f8:	cccccccd 	stcgtl	12, cr12, [ip], #820
+
+000003fc <uart0_rx_num>:
+	}	
+}
+
+int uart0_rx_num(void)
+{
+ 3fc:	e1a0c00d 	mov	ip, sp
+ 400:	e92dd870 	stmdb	sp!, {r4, r5, r6, fp, ip, lr, pc}
+ 404:	e24cb004 	sub	fp, ip, #4	; 0x4
+ 408:	e24dd028 	sub	sp, sp, #40	; 0x28
+	int i,no,mul=1;
+ 40c:	e3a05001 	mov	r5, #1	; 0x1
+	int arr[10],*iptr;
+
+	iptr=arr;
+ 410:	e24b6040 	sub	r6, fp, #64	; 0x40
+	
+	for(i=0;i<10;i++)				//fro 100 char
+ 414:	e3a04000 	mov	r4, #0	; 0x0
+	{
+		*(iptr+i)=(uart0_rx_char()-48);		//rec a char
+ 418:	ebffffbc 	bl	310 <uart0_rx_char>
+ 41c:	e20000ff 	and	r0, r0, #255	; 0xff
+ 420:	e2400030 	sub	r0, r0, #48	; 0x30
+		
+		if(*(iptr+i)==('\r'-48))				//first enter u check \r i.e till user enter \r receive
+ 424:	e3700023 	cmn	r0, #35	; 0x23
+ 428:	e7860104 	str	r0, [r6, r4, lsl #2]
+ 42c:	0a000002 	beq	43c <STACK_SIZE+0x3c>
+ 430:	e2844001 	add	r4, r4, #1	; 0x1
+ 434:	e3540009 	cmp	r4, #9	; 0x9
+ 438:	dafffff6 	ble	418 <STACK_SIZE+0x18>
+		{
+			break;				//come out of loop if enter
+		}
+	}
+	
+	i--;
+ 43c:	e2444001 	sub	r4, r4, #1	; 0x1
+	no=*(iptr+i);
+ 440:	e7960104 	ldr	r0, [r6, r4, lsl #2]
+
+	i--;
+	
+	for(;i>=0;i--)
+ 444:	e2544001 	subs	r4, r4, #1	; 0x1
+ 448:	491ba870 	ldmmidb	fp, {r4, r5, r6, fp, sp, pc}
+	{
+		mul=mul*10;	
+		no=no+mul*(*(iptr+i));
+ 44c:	e7962104 	ldr	r2, [r6, r4, lsl #2]
+ 450:	e0853105 	add	r3, r5, r5, lsl #2
+ 454:	e1a05083 	mov	r5, r3, lsl #1
+ 458:	e2544001 	subs	r4, r4, #1	; 0x1
+ 45c:	e0200592 	mla	r0, r2, r5, r0
+	}
+
+	return no;
+}
+ 460:	491ba870 	ldmmidb	fp, {r4, r5, r6, fp, sp, pc}
+ 464:	eafffff8 	b	44c <STACK_SIZE+0x4c>
+
+00000468 <main>:
+
+void EXT2_ISR(void) __attribute__ ((interrupt("IRQ")));
+
+int main(void)
+{
+ 468:	e1a0c00d 	mov	ip, sp
+ 46c:	e92dd800 	stmdb	sp!, {fp, ip, lr, pc}
+ 470:	e24cb004 	sub	fp, ip, #4	; 0x4
+	sys_init();
+ 474:	ebffff3b 	bl	168 <sys_init>
+	
+	PINSEL0|=(1<<31)&(~(1<<30));
+ 478:	e59f2088 	ldr	r2, [pc, #136]	; 508 <main+0xa0>
+ 47c:	e5923000 	ldr	r3, [r2]
+ 480:	e3833102 	orr	r3, r3, #-2147483648	; 0x80000000
+ 484:	e5823000 	str	r3, [r2]
+	EXTMODE|=(1<<2);
+ 488:	e59f207c 	ldr	r2, [pc, #124]	; 50c <main+0xa4>
+ 48c:	e5923000 	ldr	r3, [r2]
+ 490:	e3833004 	orr	r3, r3, #4	; 0x4
+ 494:	e5823000 	str	r3, [r2]
+	EXTPOLAR&=~(1<<2);
+ 498:	e59f2070 	ldr	r2, [pc, #112]	; 510 <main+0xa8>
+ 49c:	e5923000 	ldr	r3, [r2]
+ 4a0:	e3c33004 	bic	r3, r3, #4	; 0x4
+ 4a4:	e5823000 	str	r3, [r2]
+	EXTINT=(1<<2);
+ 4a8:	e59f3064 	ldr	r3, [pc, #100]	; 514 <main+0xac>
+ 4ac:	e3a02004 	mov	r2, #4	; 0x4
+ 4b0:	e5832000 	str	r2, [r3]
+	VICIntSelect&=~(1<<16);
+ 4b4:	e59f205c 	ldr	r2, [pc, #92]	; 518 <main+0xb0>
+ 4b8:	e5923000 	ldr	r3, [r2]
+ 4bc:	e3c33801 	bic	r3, r3, #65536	; 0x10000
+ 4c0:	e5823000 	str	r3, [r2]
+	VICIntEnable|=(1<<16);                     //enable IRQ
+ 4c4:	e59f2050 	ldr	r2, [pc, #80]	; 51c <main+0xb4>
+ 4c8:	e5923000 	ldr	r3, [r2]
+ 4cc:	e3833801 	orr	r3, r3, #65536	; 0x10000
+ 4d0:	e5823000 	str	r3, [r2]
+	VICVectCntl0|=(1<<5)|(1<<4);               //assigning slot and enabling IRQ slot
+ 4d4:	e59f2044 	ldr	r2, [pc, #68]	; 520 <main+0xb8>
+ 4d8:	e5923000 	ldr	r3, [r2]
+ 4dc:	e3833030 	orr	r3, r3, #48	; 0x30
+ 4e0:	e5823000 	str	r3, [r2]
+    VICVectAddr0=(unsigned int)EXT2_ISR;      //load vector address
+ 4e4:	e59f2038 	ldr	r2, [pc, #56]	; 524 <main+0xbc>
+ 4e8:	e59f3038 	ldr	r3, [pc, #56]	; 528 <main+0xc0>
+    
+    
+	
+    uart0_init(9600);
+ 4ec:	e3a00d96 	mov	r0, #9600	; 0x2580
+ 4f0:	e5832000 	str	r2, [r3]
+ 4f4:	ebffff4c 	bl	22c <uart0_init>
+    uart0_tx_string("in main program....\n");
+ 4f8:	e59f002c 	ldr	r0, [pc, #44]	; 52c <main+0xc4>
+ 4fc:	ebffff76 	bl	2dc <uart0_tx_string>
+    enableIRQ();
+ 500:	ebffff3a 	bl	1f0 <enableIRQ>
+    while(1);
+ 504:	eafffffe 	b	504 <main+0x9c>
+ 508:	e002c000 	and	ip, r2, r0
+ 50c:	e01fc148 	ands	ip, pc, r8, asr #2
+ 510:	e01fc14c 	ands	ip, pc, ip, asr #2
+ 514:	e01fc140 	ands	ip, pc, r0, asr #2
+ 518:	fffff00c 	swinv	0x00fff00c
+ 51c:	fffff010 	swinv	0x00fff010
+ 520:	fffff200 	swinv	0x00fff200
+ 524:	00000530 	andeq	r0, r0, r0, lsr r5
+ 528:	fffff100 	swinv	0x00fff100
+ 52c:	000006c0 	andeq	r0, r0, r0, asr #13
+
+00000530 <EXT2_ISR>:
+}
+
+
+void EXT2_ISR(void)
+{
+ 530:	e52dc004 	str	ip, [sp, -#4]!
+ 534:	e24ee004 	sub	lr, lr, #4	; 0x4
+ 538:	e1a0c00d 	mov	ip, sp
+ 53c:	e92dd80f 	stmdb	sp!, {r0, r1, r2, r3, fp, ip, lr, pc}
+	unsigned int i,j;
+	PINSEL2&=~(1<<3);
+ 540:	e59f20bc 	ldr	r2, [pc, #188]	; 604 <EXT2_ISR+0xd4>
+ 544:	e5923000 	ldr	r3, [r2]
+ 548:	e3c33008 	bic	r3, r3, #8	; 0x8
+ 54c:	e5823000 	str	r3, [r2]
+	IODIR1|=(1<<25);
+ 550:	e59f20b0 	ldr	r2, [pc, #176]	; 608 <EXT2_ISR+0xd8>
+ 554:	e5923000 	ldr	r3, [r2]
+ 558:	e3833402 	orr	r3, r3, #33554432	; 0x2000000
+ 55c:	e5823000 	str	r3, [r2]
+	uart0_tx_string("switch is press....");
+ 560:	e59f00a4 	ldr	r0, [pc, #164]	; 60c <EXT2_ISR+0xdc>
+ 564:	e24cb004 	sub	fp, ip, #4	; 0x4
+ 568:	ebffff5b 	bl	2dc <uart0_tx_string>
+		
+		IOSET1|=(1<<25);
+ 56c:	e59f209c 	ldr	r2, [pc, #156]	; 610 <EXT2_ISR+0xe0>
+ 570:	e5923000 	ldr	r3, [r2]
+ 574:	e3833402 	orr	r3, r3, #33554432	; 0x2000000
+ 578:	e5823000 	str	r3, [r2]
+
+		for(i=0;i<600;i++)
+ 57c:	e59f0090 	ldr	r0, [pc, #144]	; 614 <EXT2_ISR+0xe4>
+ 580:	e3a01000 	mov	r1, #0	; 0x0
+		{
+		for(j=0;j<600;j++);
+ 584:	e1a02000 	mov	r2, r0
+ 588:	e3a03000 	mov	r3, #0	; 0x0
+ 58c:	e2833001 	add	r3, r3, #1	; 0x1
+ 590:	e1530002 	cmp	r3, r2
+ 594:	9afffffc 	bls	58c <EXT2_ISR+0x5c>
+ 598:	e59f0074 	ldr	r0, [pc, #116]	; 614 <EXT2_ISR+0xe4>
+ 59c:	e2811001 	add	r1, r1, #1	; 0x1
+ 5a0:	e1510000 	cmp	r1, r0
+ 5a4:	9afffff6 	bls	584 <EXT2_ISR+0x54>
+		}	
+		IOCLR1|=(1<<25);
+ 5a8:	e59f2068 	ldr	r2, [pc, #104]	; 618 <EXT2_ISR+0xe8>
+ 5ac:	e5923000 	ldr	r3, [r2]
+ 5b0:	e3833402 	orr	r3, r3, #33554432	; 0x2000000
+ 5b4:	e5823000 	str	r3, [r2]
+ 5b8:	e3a01000 	mov	r1, #0	; 0x0
+		for(i=0;i<600;i++)
+ 5bc:	e1a03000 	mov	r3, r0
+		{
+		for(j=0;j<600;j++);	
+ 5c0:	e1a02003 	mov	r2, r3
+ 5c4:	e3a03000 	mov	r3, #0	; 0x0
+ 5c8:	e2833001 	add	r3, r3, #1	; 0x1
+ 5cc:	e1530002 	cmp	r3, r2
+ 5d0:	9afffffc 	bls	5c8 <EXT2_ISR+0x98>
+ 5d4:	e59f3038 	ldr	r3, [pc, #56]	; 614 <EXT2_ISR+0xe4>
+ 5d8:	e2811001 	add	r1, r1, #1	; 0x1
+ 5dc:	e1510003 	cmp	r1, r3
+ 5e0:	9afffff6 	bls	5c0 <EXT2_ISR+0x90>
+		}
+		
+		EXTINT|=(1<<2);                            //flag clear
+ 5e4:	e59f3030 	ldr	r3, [pc, #48]	; 61c <EXT2_ISR+0xec>
+ 5e8:	e5932000 	ldr	r2, [r3]
+ 5ec:	e3822004 	orr	r2, r2, #4	; 0x4
+ 5f0:	e5832000 	str	r2, [r3]
+		VICVectAddr=0x00;
+ 5f4:	e59f3024 	ldr	r3, [pc, #36]	; 620 <EXT2_ISR+0xf0>
+ 5f8:	e3a01000 	mov	r1, #0	; 0x0
+ 5fc:	e5831000 	str	r1, [r3]
+ 600:	e95b980f 	ldmdb	fp, {r0, r1, r2, r3, fp, ip, pc}^
+ 604:	e002c014 	and	ip, r2, r4, lsl r0
+ 608:	e0028018 	and	r8, r2, r8, lsl r0
+ 60c:	000006d8 	ldreqd	r0, [r0], -r8
+ 610:	e0028014 	and	r8, r2, r4, lsl r0
+ 614:	00000257 	andeq	r0, r0, r7, asr r2
+ 618:	e002801c 	and	r8, r2, ip, lsl r0
+ 61c:	e01fc140 	ands	ip, pc, r0, asr #2
+ 620:	fffff030 	swinv	0x00fff030
+
+00000624 <__udivsi3>:
+ 624:	e3510000 	cmp	r1, #0	; 0x0
+ 628:	0a00001f 	beq	6ac <Ldiv0>
+ 62c:	e3a03001 	mov	r3, #1	; 0x1
+ 630:	e3a02000 	mov	r2, #0	; 0x0
+ 634:	e1500001 	cmp	r0, r1
+ 638:	3a000019 	bcc	6a4 <Lgot_result>
+
+0000063c <Loop1>:
+ 63c:	e3510201 	cmp	r1, #268435456	; 0x10000000
+ 640:	31510000 	cmpcc	r1, r0
+ 644:	31a01201 	movcc	r1, r1, lsl #4
+ 648:	31a03203 	movcc	r3, r3, lsl #4
+ 64c:	3afffffa 	bcc	63c <Loop1>
+
+00000650 <Lbignum>:
+ 650:	e3510102 	cmp	r1, #-2147483648	; 0x80000000
+ 654:	31510000 	cmpcc	r1, r0
+ 658:	31a01081 	movcc	r1, r1, lsl #1
+ 65c:	31a03083 	movcc	r3, r3, lsl #1
+ 660:	3afffffa 	bcc	650 <Lbignum>
+
+00000664 <Loop3>:
+ 664:	e1500001 	cmp	r0, r1
+ 668:	20400001 	subcs	r0, r0, r1
+ 66c:	21822003 	orrcs	r2, r2, r3
+ 670:	e15000a1 	cmp	r0, r1, lsr #1
+ 674:	204000a1 	subcs	r0, r0, r1, lsr #1
+ 678:	218220a3 	orrcs	r2, r2, r3, lsr #1
+ 67c:	e1500121 	cmp	r0, r1, lsr #2
+ 680:	20400121 	subcs	r0, r0, r1, lsr #2
+ 684:	21822123 	orrcs	r2, r2, r3, lsr #2
+ 688:	e15001a1 	cmp	r0, r1, lsr #3
+ 68c:	204001a1 	subcs	r0, r0, r1, lsr #3
+ 690:	218221a3 	orrcs	r2, r2, r3, lsr #3
+ 694:	e3500000 	cmp	r0, #0	; 0x0
+ 698:	11b03223 	movnes	r3, r3, lsr #4
+ 69c:	11a01221 	movne	r1, r1, lsr #4
+ 6a0:	1affffef 	bne	664 <Loop3>
+
+000006a4 <Lgot_result>:
+ 6a4:	e1a00002 	mov	r0, r2
+ 6a8:	e1a0f00e 	mov	pc, lr
+
+000006ac <Ldiv0>:
+ 6ac:	e52de004 	str	lr, [sp, -#4]!
+ 6b0:	eb000001 	bl	6bc <__div0>
+ 6b4:	e3a00000 	mov	r0, #0	; 0x0
+ 6b8:	e8bd8000 	ldmia	sp!, {pc}
+
+000006bc <__div0>:
+ 6bc:	e1a0f00e 	mov	pc, lr
+ 6c0:	6d206e69 	stcvs	14, cr6, [r0, -#420]!
+ 6c4:	206e6961 	rsbcs	r6, lr, r1, ror #18
+ 6c8:	676f7270 	undefined
+ 6cc:	2e6d6172 	mcrcs	1, 3, r6, cr13, cr2, {3}
+ 6d0:	0a2e2e2e 	beq	b8bf90 <_etext+0xb8b8a4>
+ 6d4:	00000000 	andeq	r0, r0, r0
+ 6d8:	74697773 	strvcbt	r7, [r9], -#1907
+ 6dc:	69206863 	stmvsdb	r0!, {r0, r1, r5, r6, fp, sp, lr}
+ 6e0:	72702073 	rsbvcs	r2, r0, #115	; 0x73
+ 6e4:	2e737365 	cdpcs	3, 7, cr7, cr3, cr5, {3}
+ 6e8:	002e2e2e 	eoreq	r2, lr, lr, lsr #28

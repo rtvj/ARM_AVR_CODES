@@ -1,0 +1,261 @@
+Archive member included because of file (symbol)
+
+/usr/local/lib/gcc-lib/arm-elf/3.3/libgcc.a(_udivsi3.o)
+                              main1.o (__udivsi3)
+/usr/local/lib/gcc-lib/arm-elf/3.3/libgcc.a(_dvmd_tls.o)
+                              /usr/local/lib/gcc-lib/arm-elf/3.3/libgcc.a(_udivsi3.o) (__div0)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+ROM              0x00000000         0x00080000         xr
+RAM              0x40000000         0x00008000         rw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD crt0.o
+LOAD startup.o
+LOAD VIClowlevel.o
+LOAD main1.o
+LOAD /usr/local/lib/gcc-lib/arm-elf/3.3/../../../../arm-elf/lib/libc.a
+LOAD /usr/local/lib/gcc-lib/arm-elf/3.3/../../../../arm-elf/lib/libm.a
+LOAD /usr/local/lib/gcc-lib/arm-elf/3.3/../../../../arm-elf/lib/libc.a
+LOAD /usr/local/lib/gcc-lib/arm-elf/3.3/libgcc.a
+LOAD /usr/local/lib/gcc-lib/arm-elf/3.3/libgcc.a
+LOAD /usr/local/lib/gcc-lib/arm-elf/3.3/../../../../arm-elf/lib/libg.a
+LOAD /usr/local/lib/gcc-lib/arm-elf/3.3/../../../../arm-elf/lib/libc.a
+LOAD /usr/local/lib/gcc-lib/arm-elf/3.3/libgcc.a
+                0x00000400                STACK_SIZE = 0x400
+
+.text           0x00000000      0x6f8
+ *(.init)
+ .init          0x00000000      0x13c crt0.o
+                0x00000114                reset
+                0x00000000                _boot
+                0x00000050                _mainCRTStartup
+                0x00000114                abort
+                0x00000050                _start
+                0x00000114                _reset
+                0x00000114                exit
+                0x00000050                start
+ *(.text .text.*)
+ .text          0x0000013c       0xb4 startup.o
+                0x00000148                UNDEF_Routine
+                0x00000168                sys_init
+                0x00000144                SWI_Routine
+                0x00000140                FIQ_Routine
+                0x0000013c                IRQ_Routine
+ .text          0x000001f0       0x3c VIClowlevel.o
+                0x00000210                restoreIRQ
+                0x000001f0                enableIRQ
+                0x00000200                disableIRQ
+ .text          0x0000022c      0x404 main1.o
+                0x00000378                uart0_tx_num
+                0x00000468                ext_init
+                0x000002b4                uart0_tx_char
+                0x000003fc                uart0_rx_num
+                0x0000022c                uart0_init
+                0x0000053c                EXT2_ISR
+                0x000002dc                uart0_tx_string
+                0x0000050c                main
+                0x00000338                uart0_rx_string
+                0x00000310                uart0_rx_char
+ .text          0x00000630       0x98 /usr/local/lib/gcc-lib/arm-elf/3.3/libgcc.a(_udivsi3.o)
+                0x00000630                __udivsi3
+ .text          0x000006c8        0x4 /usr/local/lib/gcc-lib/arm-elf/3.3/libgcc.a(_dvmd_tls.o)
+                0x000006c8                __div0
+ *(.gnu.linkonce.t.*)
+ *(.glue_7)
+ *(.glue_7t)
+ *(.gcc_except_table)
+ *(.rodata)
+ *(.rodata*)
+ .rodata.str1.4
+                0x000006cc       0x2c main1.o
+ *(.gnu.linkonce.r.*)
+                0x000006f8                . = ALIGN (0x4)
+
+.ctors          0x000006f8        0x0
+                0x000006f8                PROVIDE (__ctors_start__, .)
+ *(SORT(.ctors.*))
+ *(.ctors)
+                0x000006f8                PROVIDE (__ctors_end__, .)
+
+.dtors          0x000006f8        0x0
+                0x000006f8                PROVIDE (__dtors_start__, .)
+ *(SORT(.dtors.*))
+ *(.dtors)
+                0x000006f8                PROVIDE (__dtors_end__, .)
+                0x000006f8                . = ALIGN (0x4)
+                0x000006f8                _etext = .
+                0x000006f8                PROVIDE (etext, .)
+
+.data           0x40000000        0x0 load address 0x000006f8
+                0x40000000                _data = .
+ *(.data)
+ *(.data.*)
+ *(.gnu.linkonce.d*)
+                0x40000000                . = ALIGN (0x4)
+ *(.fastrun)
+                0x40000000                . = ALIGN (0x4)
+                0x40000000                _edata = .
+                0x40000000                PROVIDE (edata, .)
+
+.bss            0x40000000        0x0
+                0x40000000                __bss_start = .
+                0x40000000                __bss_start__ = .
+ *(.bss)
+ *(.gnu.linkonce.b*)
+ *(COMMON)
+                0x40000000                . = ALIGN (0x4)
+                0x40000000                . = ALIGN (0x4)
+                0x40000000                __bss_end__ = .
+                0x40000000                PROVIDE (__bss_end, .)
+
+.stack          0x40000000      0x400
+                0x40000400                . = (. + STACK_SIZE)
+ *fill*         0x40000000      0x400 00
+                0x40000400                PROVIDE (_stack, .)
+                0x40000400                _end = .
+                0x40000400                PROVIDE (end, .)
+
+.stab           0x00000000     0x1194
+ *(.stab)
+ .stab          0x00000000      0x378 crt0.o
+ .stab          0x00000378      0x2f4 startup.o
+                                0x300 (size before relaxing)
+ .stab          0x0000066c      0x360 VIClowlevel.o
+                                0x36c (size before relaxing)
+ .stab          0x000009cc      0x7c8 main1.o
+                                0x7f8 (size before relaxing)
+
+.stabstr        0x00000000      0x5fc
+ *(.stabstr)
+ .stabstr       0x00000000      0x5fc crt0.o
+                                  0x0 (size before relaxing)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment        0x00000000       0x30
+ *(.comment)
+ .comment       0x00000000       0x10 startup.o
+ .comment       0x00000010       0x10 VIClowlevel.o
+ .comment       0x00000020       0x10 main1.o
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges  0x00000000       0x40
+ *(.debug_aranges)
+ .debug_aranges
+                0x00000000       0x20 /usr/local/lib/gcc-lib/arm-elf/3.3/libgcc.a(_udivsi3.o)
+ .debug_aranges
+                0x00000020       0x20 /usr/local/lib/gcc-lib/arm-elf/3.3/libgcc.a(_dvmd_tls.o)
+
+.debug_pubnames
+ *(.debug_pubnames)
+
+.debug_info     0x00000000      0x116
+ *(.debug_info .gnu.linkonce.wi.*)
+ .debug_info    0x00000000       0x8b /usr/local/lib/gcc-lib/arm-elf/3.3/libgcc.a(_udivsi3.o)
+ .debug_info    0x0000008b       0x8b /usr/local/lib/gcc-lib/arm-elf/3.3/libgcc.a(_dvmd_tls.o)
+
+.debug_abbrev   0x00000000       0x28
+ *(.debug_abbrev)
+ .debug_abbrev  0x00000000       0x14 /usr/local/lib/gcc-lib/arm-elf/3.3/libgcc.a(_udivsi3.o)
+ .debug_abbrev  0x00000014       0x14 /usr/local/lib/gcc-lib/arm-elf/3.3/libgcc.a(_dvmd_tls.o)
+
+.debug_line     0x00000000       0xe1
+ *(.debug_line)
+ .debug_line    0x00000000       0x76 /usr/local/lib/gcc-lib/arm-elf/3.3/libgcc.a(_udivsi3.o)
+ .debug_line    0x00000076       0x6b /usr/local/lib/gcc-lib/arm-elf/3.3/libgcc.a(_dvmd_tls.o)
+
+.debug_frame
+ *(.debug_frame)
+
+.debug_str
+ *(.debug_str)
+
+.debug_loc
+ *(.debug_loc)
+
+.debug_macinfo
+ *(.debug_macinfo)
+
+.debug_weaknames
+ *(.debug_weaknames)
+
+.debug_funcnames
+ *(.debug_funcnames)
+
+.debug_typenames
+ *(.debug_typenames)
+
+.debug_varnames
+ *(.debug_varnames)
+OUTPUT(main1.elf elf32-littlearm)
+
+Cross Reference Table
+
+Symbol                                            File
+EXT2_ISR                                          main1.o
+FIQ_Routine                                       startup.o
+IRQ_Routine                                       startup.o
+SWI_Routine                                       startup.o
+UNDEF_Routine                                     startup.o
+__bss_end__                                       crt0.o
+__bss_start                                       crt0.o
+__ctors_end__                                     crt0.o
+__ctors_start__                                   crt0.o
+__div0                                            /usr/local/lib/gcc-lib/arm-elf/3.3/libgcc.a(_dvmd_tls.o)
+                                                  /usr/local/lib/gcc-lib/arm-elf/3.3/libgcc.a(_udivsi3.o)
+__udivsi3                                         /usr/local/lib/gcc-lib/arm-elf/3.3/libgcc.a(_udivsi3.o)
+                                                  main1.o
+_boot                                             crt0.o
+_data                                             crt0.o
+_edata                                            crt0.o
+_etext                                            crt0.o
+_mainCRTStartup                                   crt0.o
+_reset                                            crt0.o
+_stack                                            crt0.o
+_start                                            crt0.o
+abort                                             crt0.o
+disableIRQ                                        VIClowlevel.o
+enableIRQ                                         VIClowlevel.o
+                                                  main1.o
+exit                                              crt0.o
+ext_init                                          main1.o
+main                                              main1.o
+                                                  crt0.o
+reset                                             crt0.o
+restoreIRQ                                        VIClowlevel.o
+start                                             crt0.o
+sys_init                                          startup.o
+                                                  main1.o
+uart0_init                                        main1.o
+uart0_rx_char                                     main1.o
+uart0_rx_num                                      main1.o
+uart0_rx_string                                   main1.o
+uart0_tx_char                                     main1.o
+uart0_tx_num                                      main1.o
+uart0_tx_string                                   main1.o

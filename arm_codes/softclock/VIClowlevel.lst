@@ -1,0 +1,136 @@
+   1              		.file	"VIClowlevel.c"
+   3              		.text
+   4              	.Ltext0:
+  29              		.align	2
+  31              		.global	enableIRQ
+  33              	enableIRQ:
+   1:VIClowlevel.c **** /* Enable and disable functions "ripped" from a sample by R O Software.
+   2:VIClowlevel.c ****  * Copyright 2004, R O SoftWare
+   3:VIClowlevel.c ****  * No guarantees, warrantees, or promises, implied or otherwise.
+   4:VIClowlevel.c ****  * May be used for hobby or commercial purposes provided copyright
+   5:VIClowlevel.c ****  * notice remains intact. */
+   6:VIClowlevel.c **** 
+   7:VIClowlevel.c **** #include "VIClowlevel.h"
+   8:VIClowlevel.c ****  
+   9:VIClowlevel.c **** #define IRQ_MASK 0x00000080
+  10:VIClowlevel.c **** 
+  11:VIClowlevel.c **** static inline unsigned asm_get_cpsr(void)
+  12:VIClowlevel.c **** {
+  13:VIClowlevel.c ****   unsigned long retval;
+  14:VIClowlevel.c ****   asm volatile (" mrs  %0, cpsr" : "=r" (retval) : /* no inputs */  );
+  15:VIClowlevel.c ****   return retval;
+  16:VIClowlevel.c **** }
+  17:VIClowlevel.c **** 
+  18:VIClowlevel.c **** static inline void asm_set_cpsr(unsigned val)
+  19:VIClowlevel.c **** {
+  20:VIClowlevel.c ****   asm volatile (" msr  cpsr, %0" : /* no outputs */ : "r" (val)  );
+  21:VIClowlevel.c **** }
+  22:VIClowlevel.c **** 
+  23:VIClowlevel.c **** unsigned enableIRQ(void)
+  24:VIClowlevel.c **** {
+  35              	.LM1:
+  36              		@ args = 0, pretend = 0, frame = 0
+  37              		@ frame_needed = 0, uses_anonymous_args = 0
+  38              		@ link register save eliminated.
+  39              		@ lr needed for prologue
+  41              	.LM2:
+  42              	.LBB2:
+  43              	.LBB3:
+  44              	.LBB4:
+  45 0000 00000FE1 		 mrs  r0, cpsr
+  47              	.LM3:
+  48              	.LBE4:
+  49              	.LBE3:
+  50              	.LBB5:
+  51 0004 8030C0E3 		bic	r3, r0, #128
+  53              	.LM4:
+  54 0008 03F029E1 		 msr  cpsr, r3
+  25:VIClowlevel.c ****   unsigned _cpsr;
+  26:VIClowlevel.c **** 
+  27:VIClowlevel.c ****   _cpsr = asm_get_cpsr();
+  28:VIClowlevel.c ****   asm_set_cpsr(_cpsr & ~IRQ_MASK);
+  29:VIClowlevel.c ****   return _cpsr;
+  30:VIClowlevel.c **** }
+  56              	.LM5:
+  57 000c 0EF0A0E1 		mov	pc, lr
+  58              	.LBE5:
+  59              	.LBE2:
+  70              		.align	2
+  72              		.global	disableIRQ
+  74              	disableIRQ:
+  31:VIClowlevel.c **** 
+  32:VIClowlevel.c **** unsigned disableIRQ(void)
+  33:VIClowlevel.c **** {
+  76              	.LM6:
+  77              		@ args = 0, pretend = 0, frame = 0
+  78              		@ frame_needed = 0, uses_anonymous_args = 0
+  79              		@ link register save eliminated.
+  80              		@ lr needed for prologue
+  82              	.LM7:
+  83              	.LBB6:
+  84              	.LBB7:
+  85              	.LBB8:
+  86 0010 00000FE1 		 mrs  r0, cpsr
+  88              	.LM8:
+  89              	.LBE8:
+  90              	.LBE7:
+  91              	.LBB9:
+  92 0014 803080E3 		orr	r3, r0, #128
+  94              	.LM9:
+  95 0018 03F029E1 		 msr  cpsr, r3
+  34:VIClowlevel.c ****   unsigned _cpsr;
+  35:VIClowlevel.c **** 
+  36:VIClowlevel.c ****   _cpsr = asm_get_cpsr();
+  37:VIClowlevel.c ****   asm_set_cpsr(_cpsr | IRQ_MASK);
+  38:VIClowlevel.c ****   return _cpsr;
+  39:VIClowlevel.c **** }
+  97              	.LM10:
+  98 001c 0EF0A0E1 		mov	pc, lr
+  99              	.LBE9:
+ 100              	.LBE6:
+ 111              		.align	2
+ 114              		.global	restoreIRQ
+ 116              	restoreIRQ:
+  40:VIClowlevel.c **** 
+  41:VIClowlevel.c **** unsigned restoreIRQ(unsigned oldCPSR)
+  42:VIClowlevel.c **** {
+ 118              	.LM11:
+ 119              		@ args = 0, pretend = 0, frame = 0
+ 120              		@ frame_needed = 0, uses_anonymous_args = 0
+ 121              		@ link register save eliminated.
+ 122              		@ lr needed for prologue
+ 123 0020 0020A0E1 		mov	r2, r0
+ 125              	.LM12:
+ 126              	.LBB10:
+ 127              	.LBB11:
+ 128              	.LBB12:
+ 129 0024 00000FE1 		 mrs  r0, cpsr
+ 131              	.LM13:
+ 132              	.LBE12:
+ 133              	.LBE11:
+ 134              	.LBB13:
+ 135 0028 802002E2 		and	r2, r2, #128
+ 136 002c 8030C0E3 		bic	r3, r0, #128
+ 137 0030 023083E1 		orr	r3, r3, r2
+ 139              	.LM14:
+ 140 0034 03F029E1 		 msr  cpsr, r3
+  43:VIClowlevel.c ****   unsigned _cpsr;
+  44:VIClowlevel.c **** 
+  45:VIClowlevel.c ****   _cpsr = asm_get_cpsr();
+  46:VIClowlevel.c ****   asm_set_cpsr((_cpsr & ~IRQ_MASK) | (oldCPSR & IRQ_MASK));
+  47:VIClowlevel.c ****   return _cpsr;
+  48:VIClowlevel.c **** }
+ 142              	.LM15:
+ 143 0038 0EF0A0E1 		mov	pc, lr
+ 144              	.LBE13:
+ 145              	.LBE10:
+ 156              		.text
+ 158              	.Letext:
+ 159              		.ident	"GCC: (GNU) 3.3"
+DEFINED SYMBOLS
+                            *ABS*:00000000 VIClowlevel.c
+     /tmp/ccOL3Zg5.s:33     .text:00000000 enableIRQ
+     /tmp/ccOL3Zg5.s:74     .text:00000010 disableIRQ
+     /tmp/ccOL3Zg5.s:116    .text:00000020 restoreIRQ
+
+NO UNDEFINED SYMBOLS

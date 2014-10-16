@@ -1,0 +1,24 @@
+void adc_init()
+{
+	PINSEL1|=(1<<24);
+	PINSEL1&=~(1<<25);//AD0.2 at P0.29
+	
+	AD0CR|=(1<<1)|(12<<8)|(1<<16)|(1<<21);//AD0.2 ;VPB clock (PCLK) value=12;burst mode;PDN=1
+}
+
+unsigned int adc_read()
+{
+	//AD0CR|=(1<<24);//001=Start conversion now.
+	
+	while(!(AD0DR1&(1<<31)));//This bit is set to 1 when an A/D conversion completes,hence poll till it becomes 1.
+                               
+	return((AD0DR1 & 0x0000FFC0)>>6);//masking(refer notbk)
+}
+
+void delay(unsigned int i)
+{
+	volatile unsigned int j=0,k = 0;
+	for (j=0;j<i;j++)
+		for (k=0;k<6000;k++);	// 
+}
+

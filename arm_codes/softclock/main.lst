@@ -1,0 +1,1331 @@
+   1              		.file	"main.c"
+   3              		.text
+   4              	.Ltext0:
+  34              		.global	__udivsi3
+  35              		.align	2
+  38              		.global	uart0_init
+  40              	uart0_init:
+  42              	.Ltext1:
+   1:uart0.h       **** 
+   2:uart0.h       **** //#include "LPC214x.h"
+   3:uart0.h       **** 
+   4:uart0.h       **** void uart0_init(unsigned int baudrate);
+   5:uart0.h       **** void uart0_tx_char(unsigned char data);
+   6:uart0.h       **** void uart0_tx_string(unsigned char *ptr);
+   7:uart0.h       **** unsigned char uart0_rx_char(void);
+   8:uart0.h       **** void uart0_rx_string(unsigned char *cptr);
+   9:uart0.h       **** void uart0_tx_num(unsigned int data);
+  10:uart0.h       **** int uart0_rx_num(void);
+  11:uart0.h       **** 
+  12:uart0.h       **** 
+  13:uart0.h       **** void uart0_init(unsigned int baudrate)
+  14:uart0.h       **** {
+  44              	.LM1:
+  45              		@ args = 0, pretend = 0, frame = 0
+  46              		@ frame_needed = 1, uses_anonymous_args = 0
+  47 0000 0DC0A0E1 		mov	ip, sp
+  48 0004 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+  15:uart0.h       **** 	unsigned int baudvalue;
+  16:uart0.h       **** 
+  17:uart0.h       **** 	baudvalue = (60000000 / (16 * baudrate));
+  50              	.LM2:
+  51              	.LBB2:
+  52 0008 0012A0E1 		mov	r1, r0, asl #4
+  54              	.LM3:
+  55 000c 04B04CE2 		sub	fp, ip, #4
+  57              	.LM4:
+  58 0010 58009FE5 		ldr	r0, .L2
+  59 0014 FEFFFFEB 		bl	__udivsi3
+  18:uart0.h       **** 
+  19:uart0.h       **** 	PINSEL0 |= (1<<0);				//select TX0  bit 1:0  as 01
+  61              	.LM5:
+  62 0018 54209FE5 		ldr	r2, .L2+4
+  63 001c 003092E5 		ldr	r3, [r2, #0]
+  64 0020 013083E3 		orr	r3, r3, #1
+  65 0024 003082E5 		str	r3, [r2, #0]
+  20:uart0.h       **** 
+  21:uart0.h       **** 	PINSEL0 |= (1<<2);				//select RX0  bit 3:2  as 01
+  67              	.LM6:
+  68 0028 003092E5 		ldr	r3, [r2, #0]
+  22:uart0.h       ****    //PINSEL0 = (PINSEL0 & ~0x0000000F) | 0x00000005;     /* Enable RxD0 and TxD0              */
+  23:uart0.h       **** 
+  24:uart0.h       **** 	U0LCR= 0x83;					//8 bit, 1 stop bit, no parity bit, DLAB
+  70              	.LM7:
+  71 002c 44109FE5 		ldr	r1, .L2+8
+  73              	.LM8:
+  74 0030 043083E3 		orr	r3, r3, #4
+  75 0034 003082E5 		str	r3, [r2, #0]
+  77              	.LM9:
+  78 0038 8330A0E3 		mov	r3, #131
+  79 003c 003081E5 		str	r3, [r1, #0]
+  25:uart0.h       **** 	//U0LCR |= (1<<7);
+  26:uart0.h       **** 	//**********baud rate***************************	
+  27:uart0.h       **** 	
+  28:uart0.h       **** 	U0DLL = baudvalue & 0xFF;			//lower bits
+  81              	.LM10:
+  82 0040 34309FE5 		ldr	r3, .L2+12
+  29:uart0.h       **** 	U0DLM = baudvalue >> 8;			//higher bits
+  84              	.LM11:
+  85 0044 20C4A0E1 		mov	ip, r0, lsr #8
+  87              	.LM12:
+  88 0048 FF0000E2 		and	r0, r0, #255
+  89 004c 000083E5 		str	r0, [r3, #0]
+  91              	.LM13:
+  92 0050 28309FE5 		ldr	r3, .L2+16
+  93 0054 00C083E5 		str	ip, [r3, #0]
+  30:uart0.h       **** 
+  31:uart0.h       **** 	U0LCR= 0x03;					//DLAB=0, 8bit data, 1 stop bit, no parity
+  95              	.LM14:
+  96 0058 0330A0E3 		mov	r3, #3
+  97 005c 003081E5 		str	r3, [r1, #0]
+  32:uart0.h       **** 
+  33:uart0.h       **** 	U0FCR = 1;					//enable FIFO
+  99              	.LM15:
+ 100 0060 1C309FE5 		ldr	r3, .L2+20
+ 101 0064 0120A0E3 		mov	r2, #1
+ 102 0068 002083E5 		str	r2, [r3, #0]
+ 103 006c 00A81BE9 		ldmea	fp, {fp, sp, pc}
+ 104              	.L3:
+ 105              		.align	2
+ 106              	.L2:
+ 107 0070 00879303 		.word	60000000
+ 108 0074 00C002E0 		.word	-536690688
+ 109 0078 0CC000E0 		.word	-536821748
+ 110 007c 00C000E0 		.word	-536821760
+ 111 0080 04C000E0 		.word	-536821756
+ 112 0084 08C000E0 		.word	-536821752
+ 113              	.LBE2:
+ 115              		.align	2
+ 118              		.global	uart0_tx_char
+ 120              	uart0_tx_char:
+  34:uart0.h       **** 
+  35:uart0.h       **** }
+  36:uart0.h       **** 
+  37:uart0.h       **** 
+  38:uart0.h       **** void uart0_tx_char(unsigned char data)
+  39:uart0.h       **** {	//Refer DS p105
+ 122              	.LM16:
+ 123              		@ args = 0, pretend = 0, frame = 0
+ 124              		@ frame_needed = 0, uses_anonymous_args = 0
+ 125              		@ link register save eliminated.
+ 126              		@ lr needed for prologue
+ 127 0088 FF0000E2 		and	r0, r0, #255
+  40:uart0.h       **** 	//while(!(U0LSR &(1<<THRE)));			//waiting for the U0TRH to be empty or THRE=1 (polling)
+  41:uart0.h       **** 	while(!(U0LSR & 0x30));			//waiting for the U0TRH to be empty or THRE=1 (polling)   (0010 0000)
+ 129              	.LM17:
+ 130              	.L5:
+ 131 008c 14309FE5 		ldr	r3, .L9
+ 132 0090 003093E5 		ldr	r3, [r3, #0]
+ 133 0094 300013E3 		tst	r3, #48
+ 134 0098 0C309F15 		ldrne	r3, .L9+4
+ 135 009c 00008315 		strne	r0, [r3, #0]
+ 136 00a0 0EF0A011 		movne	pc, lr
+ 137 00a4 210000EA 		b	.L5
+ 138              	.L10:
+ 139              		.align	2
+ 140              	.L9:
+ 141 00a8 14C000E0 		.word	-536821740
+ 142 00ac 00C000E0 		.word	-536821760
+  42:uart0.h       **** 	//while(!(U0LSR & 0x40));				//polling TEMT
+  43:uart0.h       **** 	U0THR=data;					//????check with TEMT also
+ 144              	.LM18:
+ 146              		.align	2
+ 149              		.global	uart0_tx_string
+ 151              	uart0_tx_string:
+  44:uart0.h       **** 		
+  45:uart0.h       **** }
+  46:uart0.h       **** 
+  47:uart0.h       **** void uart0_tx_string(unsigned char *ptr)
+  48:uart0.h       **** {	
+ 153              	.LM19:
+ 154              		@ args = 0, pretend = 0, frame = 0
+ 155              		@ frame_needed = 1, uses_anonymous_args = 0
+ 156 00b0 0DC0A0E1 		mov	ip, sp
+ 157 00b4 10D82DE9 		stmfd	sp!, {r4, fp, ip, lr, pc}
+ 158 00b8 0040A0E1 		mov	r4, r0
+  49:uart0.h       **** 	while(*ptr!='\0')
+ 160              	.LM20:
+ 161 00bc 0000D0E5 		ldrb	r0, [r0, #0]	@ zero_extendqisi2
+ 162 00c0 000050E3 		cmp	r0, #0
+ 164              	.LM21:
+ 165 00c4 04B04CE2 		sub	fp, ip, #4
+ 167              	.LM22:
+ 168 00c8 10A81B09 		ldmeqea	fp, {r4, fp, sp, pc}
+ 169              	.L15:
+  50:uart0.h       **** 	{
+  51:uart0.h       **** 		uart0_tx_char(*ptr);
+ 171              	.LM23:
+ 172 00cc FF0000E2 		and	r0, r0, #255
+ 173 00d0 FEFFFFEB 		bl	uart0_tx_char
+  52:uart0.h       **** 		ptr++;
+ 175              	.LM24:
+ 176 00d4 0100F4E5 		ldrb	r0, [r4, #1]!	@ zero_extendqisi2
+ 177 00d8 000050E3 		cmp	r0, #0
+ 178 00dc 10A81B09 		ldmeqea	fp, {r4, fp, sp, pc}
+ 179 00e0 310000EA 		b	.L15
+ 181              		.align	2
+ 183              		.global	uart0_rx_char
+ 185              	uart0_rx_char:
+  53:uart0.h       **** 		//_delay_ms(55);
+  54:uart0.h       **** 	}
+  55:uart0.h       **** }
+  56:uart0.h       **** 
+  57:uart0.h       **** unsigned char uart0_rx_char(void)
+  58:uart0.h       **** {
+ 187              	.LM25:
+ 188              		@ args = 0, pretend = 0, frame = 0
+ 189              		@ frame_needed = 0, uses_anonymous_args = 0
+ 190              		@ link register save eliminated.
+ 191              		@ lr needed for prologue
+  59:uart0.h       **** 	//while(!(U0LSR & (1<<RDR)))
+  60:uart0.h       **** 	while(!(U0LSR & 0x01));			//pollig RDR
+ 193              	.LM26:
+ 194              	.L19:
+ 195 00e4 18309FE5 		ldr	r3, .L23
+ 196 00e8 003093E5 		ldr	r3, [r3, #0]
+ 197 00ec 010013E3 		tst	r3, #1
+ 198 00f0 10309F15 		ldrne	r3, .L23+4
+ 199 00f4 00009315 		ldrne	r0, [r3, #0]
+ 200 00f8 FF000012 		andne	r0, r0, #255
+  61:uart0.h       **** 	return U0RBR;
+  62:uart0.h       **** }
+ 202              	.LM27:
+ 203 00fc 0EF0A011 		movne	pc, lr
+ 204 0100 370000EA 		b	.L19
+ 205              	.L24:
+ 206              		.align	2
+ 207              	.L23:
+ 208 0104 14C000E0 		.word	-536821740
+ 209 0108 00C000E0 		.word	-536821760
+ 211              		.align	2
+ 214              		.global	uart0_rx_string
+ 216              	uart0_rx_string:
+  63:uart0.h       **** 
+  64:uart0.h       **** void uart0_rx_string(unsigned char *cptr)
+  65:uart0.h       **** {
+ 218              	.LM28:
+ 219              		@ args = 0, pretend = 0, frame = 0
+ 220              		@ frame_needed = 1, uses_anonymous_args = 0
+ 221 010c 0DC0A0E1 		mov	ip, sp
+ 222 0110 30D82DE9 		stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+ 223 0114 04B04CE2 		sub	fp, ip, #4
+ 224 0118 0040A0E1 		mov	r4, r0
+  66:uart0.h       **** 	int i;
+  67:uart0.h       **** 	for(i=0;i<100;i++)				//fro 100 char
+ 226              	.LM29:
+ 227              	.LBB3:
+ 228 011c 0050A0E3 		mov	r5, #0
+ 229              	.L31:
+  68:uart0.h       **** 	{
+  69:uart0.h       **** 		*(cptr+i)=uart0_rx_char();		//rec a char
+ 231              	.LM30:
+ 232 0120 FEFFFFEB 		bl	uart0_rx_char
+ 233 0124 0500C4E7 		strb	r0, [r4, r5]
+  70:uart0.h       **** 		
+  71:uart0.h       **** 		if(*(cptr+i)=='\r')			//first enter u check \r i.e till user enter \r receive
+ 235              	.LM31:
+ 236 0128 0530D4E7 		ldrb	r3, [r4, r5]	@ zero_extendqisi2
+ 237 012c 0D0053E3 		cmp	r3, #13
+ 238 0130 0030A003 		moveq	r3, #0
+ 239 0134 0530C407 		streqb	r3, [r4, r5]
+  72:uart0.h       **** 		{
+  73:uart0.h       **** 			*(cptr+i)='\0';			//once enter store '\0'
+  74:uart0.h       **** 			break;				//come out of loop if enter
+ 241              	.LM32:
+ 242 0138 30A81B09 		ldmeqea	fp, {r4, r5, fp, sp, pc}
+ 244              	.LM33:
+ 245 013c 015085E2 		add	r5, r5, #1
+ 246 0140 630055E3 		cmp	r5, #99
+ 247 0144 30A81BC9 		ldmgtea	fp, {r4, r5, fp, sp, pc}
+ 248 0148 460000EA 		b	.L31
+ 249              	.LBE3:
+ 254              		.align	2
+ 257              		.global	uart0_tx_num
+ 259              	uart0_tx_num:
+  75:uart0.h       **** 		}
+  76:uart0.h       **** 	}
+  77:uart0.h       **** }
+  78:uart0.h       **** 
+  79:uart0.h       **** void uart0_tx_num(unsigned int data)			//???????checkou on the range
+  80:uart0.h       **** {
+ 261              	.LM34:
+ 262              		@ args = 0, pretend = 0, frame = 12
+ 263              		@ frame_needed = 1, uses_anonymous_args = 0
+ 264 014c 0DC0A0E1 		mov	ip, sp
+ 265 0150 10D82DE9 		stmfd	sp!, {r4, fp, ip, lr, pc}
+ 266 0154 04B04CE2 		sub	fp, ip, #4
+ 267 0158 0CD04DE2 		sub	sp, sp, #12
+  81:uart0.h       **** 	unsigned char count[11],i;
+  82:uart0.h       **** 	for(i=1;i<11;i++)
+ 269              	.LM35:
+ 270              	.LBB4:
+ 271 015c 0140A0E3 		mov	r4, #1
+ 272              	.L39:
+  83:uart0.h       **** 	{
+  84:uart0.h       **** 		count[i]=data%10;
+ 274              	.LM36:
+ 275 0160 64309FE5 		ldr	r3, .L47
+ 276 0164 902383E0 		umull	r2, r3, r0, r3
+ 277 0168 A331A0E1 		mov	r3, r3, lsr #3
+ 278 016c 032183E0 		add	r2, r3, r3, asl #2
+ 279 0170 10C04BE2 		sub	ip, fp, #16
+ 280 0174 822040E0 		sub	r2, r0, r2, asl #1
+  85:uart0.h       **** 		data=data/10;
+  86:uart0.h       **** 		if(data==0)
+ 282              	.LM37:
+ 283 0178 000053E3 		cmp	r3, #0
+ 285              	.LM38:
+ 286 017c 0300A0E1 		mov	r0, r3
+ 288              	.LM39:
+ 289 0180 04308CE0 		add	r3, ip, r4
+ 290 0184 011084E2 		add	r1, r4, #1
+ 291 0188 0C2043E5 		strb	r2, [r3, #-12]
+ 293              	.LM40:
+ 294 018c 6500000A 		beq	.L35
+ 296              	.LM41:
+ 297 0190 FF4001E2 		and	r4, r1, #255
+ 298 0194 0A0054E3 		cmp	r4, #10
+ 299 0198 5600009A 		bls	.L39
+ 300              	.L35:
+  87:uart0.h       **** 		{
+  88:uart0.h       **** 		 break;
+  89:uart0.h       **** 		}
+  90:uart0.h       **** 	}	
+  91:uart0.h       **** 	while(i!=0)
+ 302              	.LM42:
+ 303 019c 000054E3 		cmp	r4, #0
+ 304 01a0 10A81B09 		ldmeqea	fp, {r4, fp, sp, pc}
+ 305              	.L43:
+  92:uart0.h       **** 	{
+  93:uart0.h       **** 	 uart0_tx_char(48+count[i]);
+ 307              	.LM43:
+ 308 01a4 10204BE2 		sub	r2, fp, #16
+ 309 01a8 043082E0 		add	r3, r2, r4
+ 310 01ac 0C0053E5 		ldrb	r0, [r3, #-12]	@ zero_extendqisi2
+ 311 01b0 300080E2 		add	r0, r0, #48
+ 312 01b4 FF0000E2 		and	r0, r0, #255
+ 313 01b8 FEFFFFEB 		bl	uart0_tx_char
+  94:uart0.h       **** 		i--;
+ 315              	.LM44:
+ 316 01bc 013044E2 		sub	r3, r4, #1
+ 317 01c0 FF4013E2 		ands	r4, r3, #255
+ 318 01c4 10A81B09 		ldmeqea	fp, {r4, fp, sp, pc}
+ 319 01c8 670000EA 		b	.L43
+ 320              	.L48:
+ 321              		.align	2
+ 322              	.L47:
+ 323 01cc CDCCCCCC 		.word	-858993459
+ 324              	.LBE4:
+ 330              		.align	2
+ 332              		.global	uart0_rx_num
+ 334              	uart0_rx_num:
+  95:uart0.h       **** 	}	
+  96:uart0.h       **** }
+  97:uart0.h       **** 
+  98:uart0.h       **** int uart0_rx_num(void)
+  99:uart0.h       **** {
+ 336              	.LM45:
+ 337              		@ args = 0, pretend = 0, frame = 40
+ 338              		@ frame_needed = 1, uses_anonymous_args = 0
+ 339 01d0 0DC0A0E1 		mov	ip, sp
+ 340 01d4 70D82DE9 		stmfd	sp!, {r4, r5, r6, fp, ip, lr, pc}
+ 341 01d8 04B04CE2 		sub	fp, ip, #4
+ 342 01dc 28D04DE2 		sub	sp, sp, #40
+ 100:uart0.h       **** 	int i,no,mul=1;
+ 344              	.LM46:
+ 345              	.LBB5:
+ 346 01e0 0150A0E3 		mov	r5, #1
+ 101:uart0.h       **** 	int arr[10],*iptr;
+ 102:uart0.h       **** 
+ 103:uart0.h       **** 	iptr=arr;
+ 348              	.LM47:
+ 349 01e4 40604BE2 		sub	r6, fp, #64
+ 104:uart0.h       **** 	
+ 105:uart0.h       **** 	for(i=0;i<10;i++)				//fro 100 char
+ 351              	.LM48:
+ 352 01e8 0040A0E3 		mov	r4, #0
+ 353              	.L55:
+ 106:uart0.h       **** 	{
+ 107:uart0.h       **** 		*(iptr+i)=(uart0_rx_char()-48);		//rec a char
+ 355              	.LM49:
+ 356 01ec FEFFFFEB 		bl	uart0_rx_char
+ 357 01f0 FF0000E2 		and	r0, r0, #255
+ 358 01f4 300040E2 		sub	r0, r0, #48
+ 108:uart0.h       **** 		
+ 109:uart0.h       **** 		if(*(iptr+i)==('\r'-48))				//first enter u check \r i.e till user enter \r receive
+ 360              	.LM50:
+ 361 01f8 230070E3 		cmn	r0, #35
+ 363              	.LM51:
+ 364 01fc 040186E7 		str	r0, [r6, r4, asl #2]
+ 366              	.LM52:
+ 367 0200 8200000A 		beq	.L51
+ 369              	.LM53:
+ 370 0204 014084E2 		add	r4, r4, #1
+ 371 0208 090054E3 		cmp	r4, #9
+ 372 020c 790000DA 		ble	.L55
+ 373              	.L51:
+ 110:uart0.h       **** 		{
+ 111:uart0.h       **** 			break;				//come out of loop if enter
+ 112:uart0.h       **** 		}
+ 113:uart0.h       **** 	}
+ 114:uart0.h       **** 	
+ 115:uart0.h       **** 	i--;
+ 375              	.LM54:
+ 376 0210 014044E2 		sub	r4, r4, #1
+ 116:uart0.h       **** 	no=*(iptr+i);
+ 378              	.LM55:
+ 379 0214 040196E7 		ldr	r0, [r6, r4, asl #2]
+ 117:uart0.h       **** 
+ 118:uart0.h       **** 	i--;
+ 119:uart0.h       **** 	
+ 120:uart0.h       **** 	for(;i>=0;i--)
+ 381              	.LM56:
+ 382 0218 014054E2 		subs	r4, r4, #1
+ 383 021c 70A81B49 		ldmmiea	fp, {r4, r5, r6, fp, sp, pc}
+ 384              	.L60:
+ 121:uart0.h       **** 	{
+ 122:uart0.h       **** 		mul=mul*10;	
+ 123:uart0.h       **** 		no=no+mul*(*(iptr+i));
+ 386              	.LM57:
+ 387 0220 042196E7 		ldr	r2, [r6, r4, asl #2]
+ 389              	.LM58:
+ 390 0224 053185E0 		add	r3, r5, r5, asl #2
+ 391 0228 8350A0E1 		mov	r5, r3, asl #1
+ 393              	.LM59:
+ 394 022c 014054E2 		subs	r4, r4, #1
+ 396              	.LM60:
+ 397 0230 920520E0 		mla	r0, r2, r5, r0
+ 124:uart0.h       **** 	}
+ 125:uart0.h       **** 
+ 126:uart0.h       **** 	return no;
+ 127:uart0.h       **** }
+ 399              	.LM61:
+ 400 0234 70A81B49 		ldmmiea	fp, {r4, r5, r6, fp, sp, pc}
+ 401 0238 860000EA 		b	.L60
+ 402              	.LBE5:
+ 413              		.align	2
+ 416              		.global	delay
+ 418              	delay:
+ 420              	.Ltext2:
+   1:lcd_2148old.h **** /****************************************************************
+   2:lcd_2148old.h **** Name		: lcd_2148.c
+   3:lcd_2148old.h **** Description	: Library for JHD162A (HD44780) on lpc2148
+   4:lcd_2148old.h **** date modified :	7th Apr 2010
+   5:lcd_2148old.h **** Author		: Aditya
+   6:lcd_2148old.h **** *****************************************************************/
+   7:lcd_2148old.h **** 
+   8:lcd_2148old.h **** #include"LPC214x.h"
+   9:lcd_2148old.h ****  
+  10:lcd_2148old.h **** 
+  11:lcd_2148old.h **** #define LINE1	0x80
+  12:lcd_2148old.h **** #define LINE2	0xC0
+  13:lcd_2148old.h **** 
+  14:lcd_2148old.h **** #define LCD_EN   22
+  15:lcd_2148old.h **** #define LCD_RS   24
+  16:lcd_2148old.h **** #define LCD_RW   23
+  17:lcd_2148old.h **** 
+  18:lcd_2148old.h **** void delay(unsigned int i)
+  19:lcd_2148old.h **** {
+ 422              	.LM62:
+ 423              		@ args = 0, pretend = 0, frame = 8
+ 424              		@ frame_needed = 0, uses_anonymous_args = 0
+ 425              		@ link register save eliminated.
+ 426 023c 08D04DE2 		sub	sp, sp, #8
+  20:lcd_2148old.h **** 	volatile unsigned int j=0,k = 0;
+ 428              	.LM63:
+ 429              	.LBB6:
+ 430 0240 0030A0E3 		mov	r3, #0
+ 431 0244 04308DE5 		str	r3, [sp, #4]
+ 432 0248 00308DE5 		str	r3, [sp, #0]
+  21:lcd_2148old.h **** 	for (j=0;j<i;j++)
+ 434              	.LM64:
+ 435 024c 04308DE5 		str	r3, [sp, #4]
+ 436 0250 04309DE5 		ldr	r3, [sp, #4]
+ 437 0254 000053E1 		cmp	r3, r0
+ 439              	.LM65:
+ 440              		@ lr needed for prologue
+ 442              	.LM66:
+ 443 0258 A700002A 		bcs	.L76
+ 444              	.L74:
+  22:lcd_2148old.h **** 		for (k=0;k<6000;k++);	// 
+ 446              	.LM67:
+ 447 025c 0030A0E3 		mov	r3, #0
+ 448 0260 00308DE5 		str	r3, [sp, #0]
+ 449 0264 00309DE5 		ldr	r3, [sp, #0]
+ 450 0268 3C209FE5 		ldr	r2, .L79
+ 451 026c 020053E1 		cmp	r3, r2
+ 452 0270 A100008A 		bhi	.L78
+ 453              	.L73:
+ 454 0274 00309DE5 		ldr	r3, [sp, #0]
+ 455 0278 013083E2 		add	r3, r3, #1
+ 456 027c 00308DE5 		str	r3, [sp, #0]
+ 457 0280 00309DE5 		ldr	r3, [sp, #0]
+ 458 0284 020053E1 		cmp	r3, r2
+ 459 0288 9B00009A 		bls	.L73
+ 460              	.L78:
+ 462              	.LM68:
+ 463 028c 04309DE5 		ldr	r3, [sp, #4]
+ 464 0290 013083E2 		add	r3, r3, #1
+ 465 0294 04308DE5 		str	r3, [sp, #4]
+ 466 0298 04309DE5 		ldr	r3, [sp, #4]
+ 467 029c 000053E1 		cmp	r3, r0
+ 468 02a0 9500003A 		bcc	.L74
+ 469              	.L76:
+ 470 02a4 08D08DE2 		add	sp, sp, #8
+ 471 02a8 0EF0A0E1 		mov	pc, lr
+ 472              	.L80:
+ 473              		.align	2
+ 474              	.L79:
+ 475 02ac 6F170000 		.word	5999
+ 476              	.LBE6:
+ 482              		.align	2
+ 484              		.global	latch
+ 486              	latch:
+  23:lcd_2148old.h **** }
+  24:lcd_2148old.h **** 
+  25:lcd_2148old.h **** void latch(void)
+  26:lcd_2148old.h **** {
+ 488              	.LM69:
+ 489              		@ args = 0, pretend = 0, frame = 0
+ 490              		@ frame_needed = 1, uses_anonymous_args = 0
+ 491 02b0 0DC0A0E1 		mov	ip, sp
+ 492 02b4 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+  27:lcd_2148old.h **** 
+  28:lcd_2148old.h **** 	delay(10);
+ 494              	.LM70:
+ 495 02b8 0A00A0E3 		mov	r0, #10
+ 497              	.LM71:
+ 498 02bc 04B04CE2 		sub	fp, ip, #4
+ 500              	.LM72:
+ 501 02c0 FEFFFFEB 		bl	delay
+  29:lcd_2148old.h **** 	IOSET1 |= (1 << LCD_EN);	// LCD_EN = 1
+ 503              	.LM73:
+ 504 02c4 24209FE5 		ldr	r2, .L82
+ 505 02c8 003092E5 		ldr	r3, [r2, #0]
+ 506 02cc 013583E3 		orr	r3, r3, #4194304
+ 507 02d0 003082E5 		str	r3, [r2, #0]
+  30:lcd_2148old.h **** 	delay(10);
+ 509              	.LM74:
+ 510 02d4 0A00A0E3 		mov	r0, #10
+ 511 02d8 FEFFFFEB 		bl	delay
+  31:lcd_2148old.h **** 	IOCLR1 |= (1 << LCD_EN);
+ 513              	.LM75:
+ 514 02dc 10209FE5 		ldr	r2, .L82+4
+ 515 02e0 003092E5 		ldr	r3, [r2, #0]
+ 516 02e4 013583E3 		orr	r3, r3, #4194304
+ 517 02e8 003082E5 		str	r3, [r2, #0]
+ 518 02ec 00A81BE9 		ldmea	fp, {fp, sp, pc}
+ 519              	.L83:
+ 520              		.align	2
+ 521              	.L82:
+ 522 02f0 148002E0 		.word	-536707052
+ 523 02f4 1C8002E0 		.word	-536707044
+ 525              		.align	2
+ 528              		.global	lcd2148_cmd
+ 530              	lcd2148_cmd:
+  32:lcd_2148old.h **** }
+  33:lcd_2148old.h **** 
+  34:lcd_2148old.h **** void lcd2148_cmd(unsigned char cmd)
+  35:lcd_2148old.h **** {
+ 532              	.LM76:
+ 533              		@ args = 0, pretend = 0, frame = 0
+ 534              		@ frame_needed = 1, uses_anonymous_args = 0
+ 535 02f8 0DC0A0E1 		mov	ip, sp
+ 536 02fc 70D82DE9 		stmfd	sp!, {r4, r5, r6, fp, ip, lr, pc}
+  36:lcd_2148old.h **** 	IOCLR1 |= (1 << LCD_RS);		// RS = 0, command
+ 538              	.LM77:
+ 539 0300 5C209FE5 		ldr	r2, .L85
+ 540 0304 003092E5 		ldr	r3, [r2, #0]
+ 541 0308 013483E3 		orr	r3, r3, #16777216
+ 542 030c 003082E5 		str	r3, [r2, #0]
+  37:lcd_2148old.h **** 
+  38:lcd_2148old.h **** 	IOCLR0 |= (0x0f << 10);
+ 544              	.LM78:
+ 545 0310 50509FE5 		ldr	r5, .L85+4
+ 546 0314 003095E5 		ldr	r3, [r5, #0]
+ 547 0318 0F3B83E3 		orr	r3, r3, #15360
+  39:lcd_2148old.h **** 	IOSET0 |= ((cmd & 0xf0) << 6);	// write higher nibble first
+ 549              	.LM79:
+ 550 031c 48609FE5 		ldr	r6, .L85+8
+ 552              	.LM80:
+ 553 0320 003085E5 		str	r3, [r5, #0]
+ 555              	.LM81:
+ 556 0324 003096E5 		ldr	r3, [r6, #0]
+ 557 0328 F02000E2 		and	r2, r0, #240
+ 558 032c 023383E1 		orr	r3, r3, r2, asl #6
+ 559 0330 003086E5 		str	r3, [r6, #0]
+ 561              	.LM82:
+ 562 0334 04B04CE2 		sub	fp, ip, #4
+ 563 0338 0040A0E1 		mov	r4, r0
+  40:lcd_2148old.h **** 	latch();
+ 565              	.LM83:
+ 566 033c FEFFFFEB 		bl	latch
+  41:lcd_2148old.h **** 
+  42:lcd_2148old.h **** 	IOCLR0 |= (0x0f << 10);
+ 568              	.LM84:
+ 569 0340 003095E5 		ldr	r3, [r5, #0]
+ 570 0344 0F3B83E3 		orr	r3, r3, #15360
+ 571 0348 003085E5 		str	r3, [r5, #0]
+  43:lcd_2148old.h **** 	IOSET0 |= ((cmd & 0x0f) << 10);	// write lower nibble
+ 573              	.LM85:
+ 574 034c 003096E5 		ldr	r3, [r6, #0]
+ 575 0350 0F4004E2 		and	r4, r4, #15
+ 576 0354 043583E1 		orr	r3, r3, r4, asl #10
+ 577 0358 003086E5 		str	r3, [r6, #0]
+  44:lcd_2148old.h **** 	latch();
+ 579              	.LM86:
+ 580 035c 70681BE9 		ldmea	fp, {r4, r5, r6, fp, sp, lr}
+ 581 0360 FEFFFFEA 		b	latch
+ 582              	.L86:
+ 583              		.align	2
+ 584              	.L85:
+ 585 0364 1C8002E0 		.word	-536707044
+ 586 0368 0C8002E0 		.word	-536707060
+ 587 036c 048002E0 		.word	-536707068
+ 589              		.align	2
+ 592              		.global	lcd_gotoxy1
+ 594              	lcd_gotoxy1:
+  45:lcd_2148old.h **** }
+  46:lcd_2148old.h **** 
+  47:lcd_2148old.h **** void lcd_gotoxy1(unsigned char pos)
+  48:lcd_2148old.h **** {
+ 596              	.LM87:
+ 597              		@ args = 0, pretend = 0, frame = 0
+ 598              		@ frame_needed = 0, uses_anonymous_args = 0
+ 599              		@ link register save eliminated.
+  49:lcd_2148old.h **** 	lcd2148_cmd(LINE1+pos);
+ 601              	.LM88:
+ 602 0370 800040E2 		sub	r0, r0, #128
+ 603 0374 FF0000E2 		and	r0, r0, #255
+ 605              	.LM89:
+ 606              		@ lr needed for prologue
+ 608              	.LM90:
+ 609 0378 FEFFFFEA 		b	lcd2148_cmd
+ 611              		.align	2
+ 614              		.global	lcd_gotoxy2
+ 616              	lcd_gotoxy2:
+  50:lcd_2148old.h **** }
+  51:lcd_2148old.h **** 
+  52:lcd_2148old.h **** void lcd_gotoxy2(unsigned char pos)
+  53:lcd_2148old.h **** {
+ 618              	.LM91:
+ 619              		@ args = 0, pretend = 0, frame = 0
+ 620              		@ frame_needed = 0, uses_anonymous_args = 0
+ 621              		@ link register save eliminated.
+  54:lcd_2148old.h **** 	lcd2148_cmd(LINE2+pos);
+ 623              	.LM92:
+ 624 037c 400040E2 		sub	r0, r0, #64
+ 625 0380 FF0000E2 		and	r0, r0, #255
+ 627              	.LM93:
+ 628              		@ lr needed for prologue
+ 630              	.LM94:
+ 631 0384 FEFFFFEA 		b	lcd2148_cmd
+ 633              		.align	2
+ 636              		.global	lcd2148_data
+ 638              	lcd2148_data:
+  55:lcd_2148old.h **** }
+  56:lcd_2148old.h **** 
+  57:lcd_2148old.h **** 
+  58:lcd_2148old.h **** 
+  59:lcd_2148old.h **** void lcd2148_data(unsigned char data)
+  60:lcd_2148old.h **** {
+ 640              	.LM95:
+ 641              		@ args = 0, pretend = 0, frame = 0
+ 642              		@ frame_needed = 1, uses_anonymous_args = 0
+ 643 0388 0DC0A0E1 		mov	ip, sp
+ 644 038c 70D82DE9 		stmfd	sp!, {r4, r5, r6, fp, ip, lr, pc}
+  61:lcd_2148old.h **** 	IOSET1 |= (1 << LCD_RS);		// RS = 1, data
+ 646              	.LM96:
+ 647 0390 5C209FE5 		ldr	r2, .L90
+ 648 0394 003092E5 		ldr	r3, [r2, #0]
+ 649 0398 013483E3 		orr	r3, r3, #16777216
+ 650 039c 003082E5 		str	r3, [r2, #0]
+  62:lcd_2148old.h **** 
+  63:lcd_2148old.h **** 	IOCLR0 |= (0x0f << 10);
+ 652              	.LM97:
+ 653 03a0 50509FE5 		ldr	r5, .L90+4
+ 654 03a4 003095E5 		ldr	r3, [r5, #0]
+ 655 03a8 0F3B83E3 		orr	r3, r3, #15360
+  64:lcd_2148old.h **** 	IOSET0 |= ((data & 0xf0) << 6);	// write higher nibble first
+ 657              	.LM98:
+ 658 03ac 48609FE5 		ldr	r6, .L90+8
+ 660              	.LM99:
+ 661 03b0 003085E5 		str	r3, [r5, #0]
+ 663              	.LM100:
+ 664 03b4 003096E5 		ldr	r3, [r6, #0]
+ 665 03b8 F02000E2 		and	r2, r0, #240
+ 666 03bc 023383E1 		orr	r3, r3, r2, asl #6
+ 667 03c0 003086E5 		str	r3, [r6, #0]
+ 669              	.LM101:
+ 670 03c4 04B04CE2 		sub	fp, ip, #4
+ 671 03c8 0040A0E1 		mov	r4, r0
+  65:lcd_2148old.h **** 	latch();
+ 673              	.LM102:
+ 674 03cc FEFFFFEB 		bl	latch
+  66:lcd_2148old.h **** 
+  67:lcd_2148old.h **** 	IOCLR0 |= (0x0f << 10);
+ 676              	.LM103:
+ 677 03d0 003095E5 		ldr	r3, [r5, #0]
+ 678 03d4 0F3B83E3 		orr	r3, r3, #15360
+ 679 03d8 003085E5 		str	r3, [r5, #0]
+  68:lcd_2148old.h **** 	IOSET0 |= ((data & 0x0f) << 10);	// write lower nibble
+ 681              	.LM104:
+ 682 03dc 003096E5 		ldr	r3, [r6, #0]
+ 683 03e0 0F4004E2 		and	r4, r4, #15
+ 684 03e4 043583E1 		orr	r3, r3, r4, asl #10
+ 685 03e8 003086E5 		str	r3, [r6, #0]
+  69:lcd_2148old.h **** 	latch();
+ 687              	.LM105:
+ 688 03ec 70681BE9 		ldmea	fp, {r4, r5, r6, fp, sp, lr}
+ 689 03f0 FEFFFFEA 		b	latch
+ 690              	.L91:
+ 691              		.align	2
+ 692              	.L90:
+ 693 03f4 148002E0 		.word	-536707052
+ 694 03f8 0C8002E0 		.word	-536707060
+ 695 03fc 048002E0 		.word	-536707068
+ 697              		.align	2
+ 699              		.global	lcd2148_init
+ 701              	lcd2148_init:
+  70:lcd_2148old.h **** }
+  71:lcd_2148old.h **** 
+  72:lcd_2148old.h **** void lcd2148_init(void)
+  73:lcd_2148old.h **** {	 /* D7-D4 : P0.13-P0.10 
+ 703              	.LM106:
+ 704              		@ args = 0, pretend = 0, frame = 0
+ 705              		@ frame_needed = 1, uses_anonymous_args = 0
+ 706 0400 0DC0A0E1 		mov	ip, sp
+ 707 0404 30D82DE9 		stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+  74:lcd_2148old.h **** 		EN_LCD P1.22
+  75:lcd_2148old.h **** 		R/W_LCD P1.23
+  76:lcd_2148old.h **** 		RS_LCD P1.24  */
+  77:lcd_2148old.h **** 	PINSEL0 &= ~(0xff << 20);
+ 709              	.LM107:
+ 710 0408 14219FE5 		ldr	r2, .L93
+ 711 040c 003092E5 		ldr	r3, [r2, #0]
+ 712 0410 FF36C3E3 		bic	r3, r3, #267386880
+ 713 0414 003082E5 		str	r3, [r2, #0]
+  78:lcd_2148old.h **** 	PINSEL2 &= ~(1 << 3);
+ 715              	.LM108:
+ 716 0418 08219FE5 		ldr	r2, .L93+4
+ 717 041c 003092E5 		ldr	r3, [r2, #0]
+ 718 0420 0830C3E3 		bic	r3, r3, #8
+ 719 0424 003082E5 		str	r3, [r2, #0]
+  79:lcd_2148old.h **** 	IODIR0 |= (0xf << 10);		// data outputs
+ 721              	.LM109:
+ 722 0428 FC209FE5 		ldr	r2, .L93+8
+ 723 042c 003092E5 		ldr	r3, [r2, #0]
+ 724 0430 0F3B83E3 		orr	r3, r3, #15360
+ 725 0434 003082E5 		str	r3, [r2, #0]
+  80:lcd_2148old.h **** 	IODIR1 |= (7 << 22);		// control outputs
+ 727              	.LM110:
+ 728 0438 F0209FE5 		ldr	r2, .L93+12
+ 729 043c 003092E5 		ldr	r3, [r2, #0]
+ 730 0440 073583E3 		orr	r3, r3, #29360128
+  81:lcd_2148old.h **** 	IOCLR0 |= 0x00003c00;		// clearing port pins
+ 732              	.LM111:
+ 733 0444 E8509FE5 		ldr	r5, .L93+16
+ 735              	.LM112:
+ 736 0448 003082E5 		str	r3, [r2, #0]
+ 738              	.LM113:
+ 739 044c 003095E5 		ldr	r3, [r5, #0]
+ 740 0450 0F3B83E3 		orr	r3, r3, #15360
+  82:lcd_2148old.h **** 
+  83:lcd_2148old.h **** 	IOCLR1 |= (1 << LCD_EN)|(1 << LCD_RW)|(1 << LCD_RS);	// select RS=0 i.e. command mode, R/W = 0, EN
+ 742              	.LM114:
+ 743 0454 DC209FE5 		ldr	r2, .L93+20
+ 745              	.LM115:
+ 746 0458 003085E5 		str	r3, [r5, #0]
+ 748              	.LM116:
+ 749 045c 003092E5 		ldr	r3, [r2, #0]
+ 750 0460 073583E3 		orr	r3, r3, #29360128
+ 751 0464 003082E5 		str	r3, [r2, #0]
+ 753              	.LM117:
+ 754 0468 04B04CE2 		sub	fp, ip, #4
+  84:lcd_2148old.h **** 	delay(100);
+ 756              	.LM118:
+ 757 046c 6400A0E3 		mov	r0, #100
+ 758 0470 FEFFFFEB 		bl	delay
+  85:lcd_2148old.h **** 	IOCLR0 |= (0xf << 10);
+ 760              	.LM119:
+ 761 0474 003095E5 		ldr	r3, [r5, #0]
+ 762 0478 0F3B83E3 		orr	r3, r3, #15360
+  86:lcd_2148old.h **** 	IOSET0 |= (3 << 10);		// cmd(0x30)
+ 764              	.LM120:
+ 765 047c B8409FE5 		ldr	r4, .L93+24
+ 767              	.LM121:
+ 768 0480 003085E5 		str	r3, [r5, #0]
+ 770              	.LM122:
+ 771 0484 003094E5 		ldr	r3, [r4, #0]
+ 772 0488 033B83E3 		orr	r3, r3, #3072
+ 773 048c 003084E5 		str	r3, [r4, #0]
+  87:lcd_2148old.h **** 	latch();					// LCD_EN pulse
+ 775              	.LM123:
+ 776 0490 FEFFFFEB 		bl	latch
+  88:lcd_2148old.h **** 
+  89:lcd_2148old.h **** 	delay(5);
+ 778              	.LM124:
+ 779 0494 0500A0E3 		mov	r0, #5
+ 780 0498 FEFFFFEB 		bl	delay
+  90:lcd_2148old.h **** 	IOCLR0 |= (0xf << 10);
+ 782              	.LM125:
+ 783 049c 003095E5 		ldr	r3, [r5, #0]
+ 784 04a0 0F3B83E3 		orr	r3, r3, #15360
+ 785 04a4 003085E5 		str	r3, [r5, #0]
+  91:lcd_2148old.h **** 	IOSET0 |= (3 << 10);		// cmd(0x30)
+ 787              	.LM126:
+ 788 04a8 003094E5 		ldr	r3, [r4, #0]
+ 789 04ac 033B83E3 		orr	r3, r3, #3072
+ 790 04b0 003084E5 		str	r3, [r4, #0]
+  92:lcd_2148old.h **** 	latch();					// LCD_EN pulse
+ 792              	.LM127:
+ 793 04b4 FEFFFFEB 		bl	latch
+  93:lcd_2148old.h **** 
+  94:lcd_2148old.h **** 	delay(1);
+ 795              	.LM128:
+ 796 04b8 0100A0E3 		mov	r0, #1
+ 797 04bc FEFFFFEB 		bl	delay
+  95:lcd_2148old.h **** 	IOCLR0 |= (0xf << 10);
+ 799              	.LM129:
+ 800 04c0 003095E5 		ldr	r3, [r5, #0]
+ 801 04c4 0F3B83E3 		orr	r3, r3, #15360
+ 802 04c8 003085E5 		str	r3, [r5, #0]
+  96:lcd_2148old.h **** 	IOSET0 |= (3 << 10);		// cmd(0x30)
+ 804              	.LM130:
+ 805 04cc 003094E5 		ldr	r3, [r4, #0]
+ 806 04d0 033B83E3 		orr	r3, r3, #3072
+ 807 04d4 003084E5 		str	r3, [r4, #0]
+  97:lcd_2148old.h **** 	latch();					// LCD_EN pulse
+ 809              	.LM131:
+ 810 04d8 FEFFFFEB 		bl	latch
+  98:lcd_2148old.h **** 
+  99:lcd_2148old.h **** 	IOCLR0 |= (0xf << 10);
+ 812              	.LM132:
+ 813 04dc 003095E5 		ldr	r3, [r5, #0]
+ 814 04e0 0F3B83E3 		orr	r3, r3, #15360
+ 815 04e4 003085E5 		str	r3, [r5, #0]
+ 100:lcd_2148old.h **** 	IOSET0 |= (2 << 10);		// cmd(0x20), 4-bit mode
+ 817              	.LM133:
+ 818 04e8 003094E5 		ldr	r3, [r4, #0]
+ 819 04ec 023B83E3 		orr	r3, r3, #2048
+ 820 04f0 003084E5 		str	r3, [r4, #0]
+ 101:lcd_2148old.h **** 	latch();					// LCD_EN pulse
+ 822              	.LM134:
+ 823 04f4 FEFFFFEB 		bl	latch
+ 102:lcd_2148old.h ****   
+ 103:lcd_2148old.h **** 	lcd2148_cmd(0x28);			// 2 line display, 5x8 display
+ 825              	.LM135:
+ 826 04f8 2800A0E3 		mov	r0, #40
+ 827 04fc FEFFFFEB 		bl	lcd2148_cmd
+ 104:lcd_2148old.h **** 	lcd2148_cmd(0x0f);			// display ON, cursor ON, blink ON
+ 829              	.LM136:
+ 830 0500 0F00A0E3 		mov	r0, #15
+ 831 0504 FEFFFFEB 		bl	lcd2148_cmd
+ 105:lcd_2148old.h **** 	lcd2148_cmd(0x01);			// clear display
+ 833              	.LM137:
+ 834 0508 0100A0E3 		mov	r0, #1
+ 835 050c FEFFFFEB 		bl	lcd2148_cmd
+ 106:lcd_2148old.h **** 	lcd2148_cmd(0x02);			// cursor home
+ 837              	.LM138:
+ 838 0510 0200A0E3 		mov	r0, #2
+ 839 0514 FEFFFFEB 		bl	lcd2148_cmd
+ 107:lcd_2148old.h **** 	lcd2148_cmd(0x06);			// increment cursor by 1, no shift
+ 841              	.LM139:
+ 842 0518 0600A0E3 		mov	r0, #6
+ 843 051c 30681BE9 		ldmea	fp, {r4, r5, fp, sp, lr}
+ 844 0520 FEFFFFEA 		b	lcd2148_cmd
+ 845              	.L94:
+ 846              		.align	2
+ 847              	.L93:
+ 848 0524 00C002E0 		.word	-536690688
+ 849 0528 14C002E0 		.word	-536690668
+ 850 052c 088002E0 		.word	-536707064
+ 851 0530 188002E0 		.word	-536707048
+ 852 0534 0C8002E0 		.word	-536707060
+ 853 0538 1C8002E0 		.word	-536707044
+ 854 053c 048002E0 		.word	-536707068
+ 856              		.align	2
+ 859              		.global	lcd_showvalue
+ 861              	lcd_showvalue:
+ 108:lcd_2148old.h **** 
+ 109:lcd_2148old.h **** }
+ 110:lcd_2148old.h **** /*
+ 111:lcd_2148old.h **** void lcd_string(unsigned char str[32])
+ 112:lcd_2148old.h **** {
+ 113:lcd_2148old.h **** 	unsigned char k=0;
+ 114:lcd_2148old.h **** 	PORTUSED=0x01;
+ 115:lcd_2148old.h **** 	CLEARBIT(PORTUSED,BIT(0)+BIT(2));
+ 116:lcd_2148old.h **** 	while(str[k]!='\0')	//Till null character is encountered
+ 117:lcd_2148old.h **** 		{
+ 118:lcd_2148old.h **** 			if(k==16)
+ 119:lcd_2148old.h **** 				lcd_cmd(LINE2);
+ 120:lcd_2148old.h **** 			PORTUSED=((str[k])&0xF0)|0x01;
+ 121:lcd_2148old.h **** 			toggleE();
+ 122:lcd_2148old.h **** 			PORTUSED=((str[k]&(0x0F))*16)|0x01;
+ 123:lcd_2148old.h **** 			toggleE();
+ 124:lcd_2148old.h **** 			k++;
+ 125:lcd_2148old.h **** 		}
+ 126:lcd_2148old.h **** }
+ 127:lcd_2148old.h **** */
+ 128:lcd_2148old.h **** 
+ 129:lcd_2148old.h **** void lcd_showvalue(unsigned char num)	
+ 130:lcd_2148old.h **** {
+ 863              	.LM140:
+ 864              		@ args = 0, pretend = 0, frame = 0
+ 865              		@ frame_needed = 1, uses_anonymous_args = 0
+ 866 0540 0DC0A0E1 		mov	ip, sp
+ 131:lcd_2148old.h **** 	unsigned char H=0,T=0,O=0;
+ 132:lcd_2148old.h **** 	H=num/100;
+ 868              	.LM141:
+ 869 0544 60309FE5 		ldr	r3, .L96
+ 871              	.LM142:
+ 872 0548 10D82DE9 		stmfd	sp!, {r4, fp, ip, lr, pc}
+ 873 054c FF4000E2 		and	r4, r0, #255
+ 875              	.LM143:
+ 876              	.LBB7:
+ 877 0550 941383E0 		umull	r1, r3, r4, r3
+ 878 0554 A332A0E1 		mov	r3, r3, lsr #5
+ 879 0558 FF3003E2 		and	r3, r3, #255
+ 133:lcd_2148old.h **** 	T=(num - (H*100))/10;
+ 881              	.LM144:
+ 882 055c 033183E0 		add	r3, r3, r3, asl #2
+ 883 0560 033183E0 		add	r3, r3, r3, asl #2
+ 884 0564 034144E0 		sub	r4, r4, r3, asl #2
+ 885 0568 40309FE5 		ldr	r3, .L96+4
+ 886 056c 9314C2E0 		smull	r1, r2, r3, r4
+ 887 0570 C43FA0E1 		mov	r3, r4, asr #31
+ 888 0574 423163E0 		rsb	r3, r3, r2, asr #2
+ 889 0578 FF3003E2 		and	r3, r3, #255
+ 134:lcd_2148old.h **** 	O=(num - (H*100) - (T*10));
+ 135:lcd_2148old.h **** 	
+ 136:lcd_2148old.h **** //	lcd2148_data(H+48);
+ 137:lcd_2148old.h **** 	lcd2148_data(T+48);
+ 891              	.LM145:
+ 892 057c 300083E2 		add	r0, r3, #48
+ 894              	.LM146:
+ 895 0580 04B04CE2 		sub	fp, ip, #4
+ 897              	.LM147:
+ 898 0584 033183E0 		add	r3, r3, r3, asl #2
+ 900              	.LM148:
+ 901 0588 FF0000E2 		and	r0, r0, #255
+ 903              	.LM149:
+ 904 058c 834044E0 		sub	r4, r4, r3, asl #1
+ 906              	.LM150:
+ 907 0590 FEFFFFEB 		bl	lcd2148_data
+ 909              	.LM151:
+ 910 0594 FF4004E2 		and	r4, r4, #255
+ 138:lcd_2148old.h **** 	lcd2148_data(O+48);
+ 912              	.LM152:
+ 913 0598 304084E2 		add	r4, r4, #48
+ 914 059c FF4004E2 		and	r4, r4, #255
+ 915 05a0 0400A0E1 		mov	r0, r4
+ 916 05a4 10681BE9 		ldmea	fp, {r4, fp, sp, lr}
+ 917 05a8 FEFFFFEA 		b	lcd2148_data
+ 918              	.L97:
+ 919              		.align	2
+ 920              	.L96:
+ 921 05ac 1F85EB51 		.word	1374389535
+ 922 05b0 67666666 		.word	1717986919
+ 923              	.LBE7:
+ 932              		.align	2
+ 934              		.global	timer_init
+ 936              	timer_init:
+ 938              	.Ltext3:
+   1:timer.h       **** /****************************************************************
+   2:timer.h       **** Name		: lcd_2148.c
+   3:timer.h       **** Description	: Library for JHD162A (HD44780) on lpc2148
+   4:timer.h       **** date modified :	7th Apr 2010
+   5:timer.h       **** Author		: Aditya
+   6:timer.h       **** *****************************************************************/
+   7:timer.h       **** 
+   8:timer.h       **** //#include"LPC214x.h"
+   9:timer.h       **** 
+  10:timer.h       **** void timer_init(void)
+  11:timer.h       **** {
+ 940              	.LM153:
+ 941              		@ args = 0, pretend = 0, frame = 0
+ 942              		@ frame_needed = 0, uses_anonymous_args = 0
+ 943              		@ link register save eliminated.
+  12:timer.h       **** 
+  13:timer.h       **** T0TCR|=(1<<1);  //reset TC,PC
+ 945              	.LM154:
+ 946 05b4 44109FE5 		ldr	r1, .L99
+ 947 05b8 003091E5 		ldr	r3, [r1, #0]
+ 948 05bc 023083E3 		orr	r3, r3, #2
+ 949 05c0 003081E5 		str	r3, [r1, #0]
+  14:timer.h       **** T0CTCR = 0x00; //slect timer mode
+ 951              	.LM155:
+ 952 05c4 38309FE5 		ldr	r3, .L99+4
+ 953 05c8 0020A0E3 		mov	r2, #0
+ 954 05cc 002083E5 		str	r2, [r3, #0]
+  15:timer.h       **** T0PR =60;  //for 1 sec delay
+ 956              	.LM156:
+ 957 05d0 30309FE5 		ldr	r3, .L99+8
+ 958 05d4 3C20A0E3 		mov	r2, #60
+ 959 05d8 002083E5 		str	r2, [r3, #0]
+  16:timer.h       **** T0MR0 =1000000;
+ 961              	.LM157:
+ 962 05dc 28209FE5 		ldr	r2, .L99+12
+ 963 05e0 28309FE5 		ldr	r3, .L99+16
+ 964 05e4 002083E5 		str	r2, [r3, #0]
+  17:timer.h       **** T0MCR=0x3;//generate interrupt on match 7 reset TC to 00
+ 966              	.LM158:
+ 967 05e8 24309FE5 		ldr	r3, .L99+20
+ 968 05ec 0320A0E3 		mov	r2, #3
+ 969 05f0 002083E5 		str	r2, [r3, #0]
+  18:timer.h       **** T0TCR=0x1;  //start the timer
+ 971              	.LM159:
+ 972 05f4 0130A0E3 		mov	r3, #1
+ 974              	.LM160:
+ 975              		@ lr needed for prologue
+ 977              	.LM161:
+ 978 05f8 003081E5 		str	r3, [r1, #0]
+ 979 05fc 0EF0A0E1 		mov	pc, lr
+ 980              	.L100:
+ 981              		.align	2
+ 982              	.L99:
+ 983 0600 044000E0 		.word	-536854524
+ 984 0604 704000E0 		.word	-536854416
+ 985 0608 0C4000E0 		.word	-536854516
+ 986 060c 40420F00 		.word	1000000
+ 987 0610 184000E0 		.word	-536854504
+ 988 0614 144000E0 		.word	-536854508
+ 991              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 992              		.align	2
+ 993              	.LC0:
+ 994 0000 696E206D 		.ascii	"in main program....\n\000"
+ 994      61696E20 
+ 994      70726F67 
+ 994      72616D2E 
+ 994      2E2E2E0A 
+ 995              		.text
+ 996              		.align	2
+ 998              		.global	main
+ 1000              	main:
+ 1002              	.Ltext4:
+   1:main.c        **** #include"startup.h"
+   2:main.c        **** #include"VIClowlevel.h"
+   3:main.c        **** #include"uart0.h"
+   4:main.c        **** #include"lcd_2148old.h"
+   5:main.c        **** #include"timer.h"
+   6:main.c        **** 
+   7:main.c        **** volatile unsigned char sec ,min,hr,mystr[30];
+   8:main.c        **** 
+   9:main.c        **** void EXT2_ISR(void) __attribute__ ((interrupt("IRQ")));
+  10:main.c        **** 
+  11:main.c        **** int main(void)
+  12:main.c        **** {
+ 1004              	.LM162:
+ 1005              		@ args = 0, pretend = 0, frame = 0
+ 1006              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1007 0618 0DC0A0E1 		mov	ip, sp
+ 1008 061c 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+ 1009 0620 04B04CE2 		sub	fp, ip, #4
+  13:main.c        **** 	sys_init();
+ 1011              	.LM163:
+ 1012 0624 FEFFFFEB 		bl	sys_init
+  14:main.c        **** 	timer_init();
+ 1014              	.LM164:
+ 1015 0628 FEFFFFEB 		bl	timer_init
+  15:main.c        **** 	lcd2148_init();
+ 1017              	.LM165:
+ 1018 062c FEFFFFEB 		bl	lcd2148_init
+  16:main.c        **** 	PINSEL0|=(1<<31)&(~(1<<30));
+ 1020              	.LM166:
+ 1021 0630 88209FE5 		ldr	r2, .L107
+ 1022 0634 003092E5 		ldr	r3, [r2, #0]
+ 1023 0638 023183E3 		orr	r3, r3, #-2147483648
+ 1024 063c 003082E5 		str	r3, [r2, #0]
+  17:main.c        **** 	EXTMODE|=(1<<2);
+ 1026              	.LM167:
+ 1027 0640 7C209FE5 		ldr	r2, .L107+4
+ 1028 0644 003092E5 		ldr	r3, [r2, #0]
+ 1029 0648 043083E3 		orr	r3, r3, #4
+ 1030 064c 003082E5 		str	r3, [r2, #0]
+  18:main.c        **** 	EXTPOLAR&=~(1<<2);
+ 1032              	.LM168:
+ 1033 0650 70209FE5 		ldr	r2, .L107+8
+ 1034 0654 003092E5 		ldr	r3, [r2, #0]
+ 1035 0658 0430C3E3 		bic	r3, r3, #4
+ 1036 065c 003082E5 		str	r3, [r2, #0]
+  19:main.c        **** 	EXTINT=(1<<2);
+ 1038              	.LM169:
+ 1039 0660 64309FE5 		ldr	r3, .L107+12
+ 1040 0664 0420A0E3 		mov	r2, #4
+ 1041 0668 002083E5 		str	r2, [r3, #0]
+  20:main.c        **** 	VICIntSelect&=~(1<<16);
+ 1043              	.LM170:
+ 1044 066c 5C209FE5 		ldr	r2, .L107+16
+ 1045 0670 003092E5 		ldr	r3, [r2, #0]
+ 1046 0674 0138C3E3 		bic	r3, r3, #65536
+ 1047 0678 003082E5 		str	r3, [r2, #0]
+  21:main.c        **** 	VICIntEnable|=(1<<16);                     //enable IRQ
+ 1049              	.LM171:
+ 1050 067c 50209FE5 		ldr	r2, .L107+20
+ 1051 0680 003092E5 		ldr	r3, [r2, #0]
+ 1052 0684 013883E3 		orr	r3, r3, #65536
+ 1053 0688 003082E5 		str	r3, [r2, #0]
+  22:main.c        **** 	VICVectCntl0|=(1<<5)|(1<<4);               //assigning slot and enabling IRQ slot
+ 1055              	.LM172:
+ 1056 068c 44209FE5 		ldr	r2, .L107+24
+ 1057 0690 003092E5 		ldr	r3, [r2, #0]
+ 1058 0694 303083E3 		orr	r3, r3, #48
+ 1059 0698 003082E5 		str	r3, [r2, #0]
+  23:main.c        ****     VICVectAddr0=(unsigned int)EXT2_ISR;      //load vector address
+ 1061              	.LM173:
+ 1062 069c 38209FE5 		ldr	r2, .L107+28
+ 1063 06a0 38309FE5 		ldr	r3, .L107+32
+  24:main.c        ****     
+  25:main.c        ****     uart0_init(9600);
+ 1065              	.LM174:
+ 1066 06a4 960DA0E3 		mov	r0, #9600
+ 1068              	.LM175:
+ 1069 06a8 002083E5 		str	r2, [r3, #0]
+ 1071              	.LM176:
+ 1072 06ac FEFFFFEB 		bl	uart0_init
+  26:main.c        ****     uart0_tx_string("in main program....\n");
+ 1074              	.LM177:
+ 1075 06b0 2C009FE5 		ldr	r0, .L107+36
+ 1076 06b4 FEFFFFEB 		bl	uart0_tx_string
+  27:main.c        ****     enableIRQ();
+ 1078              	.LM178:
+ 1079 06b8 FEFFFFEB 		bl	enableIRQ
+  28:main.c        ****     while(1);
+ 1081              	.LM179:
+ 1082              	.L105:
+ 1083 06bc AD0100EA 		b	.L105
+ 1084              	.L108:
+ 1085              		.align	2
+ 1086              	.L107:
+ 1087 06c0 00C002E0 		.word	-536690688
+ 1088 06c4 48C11FE0 		.word	-534789816
+ 1089 06c8 4CC11FE0 		.word	-534789812
+ 1090 06cc 40C11FE0 		.word	-534789824
+ 1091 06d0 0CF0FFFF 		.word	-4084
+ 1092 06d4 10F0FFFF 		.word	-4080
+ 1093 06d8 00F2FFFF 		.word	-3584
+ 1094 06dc 00000000 		.word	EXT2_ISR
+ 1095 06e0 00F1FFFF 		.word	-3840
+ 1096 06e4 00000000 		.word	.LC0
+  29:main.c        **** }
+ 1098              	.LM180:
+ 1100              		.section	.rodata.str1.4
+ 1101 0015 000000   		.align	2
+ 1102              	.LC1:
+ 1103 0018 73776974 		.ascii	"switch is press....\000"
+ 1103      63682069 
+ 1103      73207072 
+ 1103      6573732E 
+ 1103      2E2E2E00 
+ 1104              		.align	2
+ 1105              	.LC2:
+ 1106 002c 73746167 		.ascii	"stage1....\000"
+ 1106      65312E2E 
+ 1106      2E2E00
+ 1107 0037 00       		.align	2
+ 1108              	.LC3:
+ 1109 0038 73746167 		.ascii	"stage2..\000"
+ 1109      65322E2E 
+ 1109      00
+ 1110 0041 000000   		.align	2
+ 1111              	.LC4:
+ 1112 0044 25303264 		.ascii	"%02d:1%02d:%02d\n\000"
+ 1112      3A312530 
+ 1112      32643A25 
+ 1112      3032640A 
+ 1112      00
+ 1113 0055 000000   		.text
+ 1114              		.align	2
+ 1116              		.global	EXT2_ISR
+ 1118              	EXT2_ISR:
+  30:main.c        **** 
+  31:main.c        **** void EXT2_ISR(void)
+  32:main.c        **** {
+ 1120              	.LM181:
+ 1121              		@ Interrupt Service Routine.
+ 1122              		@ args = 0, pretend = 0, frame = 0
+ 1123              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1124 06e8 04C02DE5 		str	ip, [sp, #-4]!
+ 1125 06ec 04E04EE2 		sub	lr, lr, #4
+ 1126 06f0 0DC0A0E1 		mov	ip, sp
+ 1127 06f4 7FD82DE9 		stmfd	sp!, {r0, r1, r2, r3, r4, r5, r6, fp, ip, lr, pc}
+ 1128 06f8 04B04CE2 		sub	fp, ip, #4
+ 1129 06fc 04D04DE2 		sub	sp, sp, #4
+  33:main.c        **** 	unsigned int i,j;
+  34:main.c        **** 	uart0_tx_string("switch is press....");
+ 1131              	.LM182:
+ 1132              	.LBB8:
+ 1133 0700 F8009FE5 		ldr	r0, .L121
+ 1134 0704 FEFFFFEB 		bl	uart0_tx_string
+ 1135              	.L120:
+  35:main.c        **** 		
+  36:main.c        **** 		  while(1)
+  37:main.c        **** {
+  38:main.c        **** uart0_tx_string("stage1....");
+ 1137              	.LM183:
+ 1138 0708 F4009FE5 		ldr	r0, .L121+4
+ 1139 070c FEFFFFEB 		bl	uart0_tx_string
+  39:main.c        ****   while(!(T0IR&(1<<0)));  //wait till MR0 interrupt occurs
+ 1141              	.LM184:
+ 1142              	.L113:
+ 1143 0710 F0409FE5 		ldr	r4, .L121+8
+ 1144 0714 003094E5 		ldr	r3, [r4, #0]
+ 1145 0718 010013E3 		tst	r3, #1
+ 1146 071c C201000A 		beq	.L113
+  40:main.c        ****   uart0_tx_string("stage2..");
+ 1148              	.LM185:
+ 1149 0720 E4009FE5 		ldr	r0, .L121+12
+ 1150 0724 FEFFFFEB 		bl	uart0_tx_string
+  41:main.c        ****   T0IR=(1<<0);
+ 1152              	.LM186:
+ 1153 0728 0100A0E3 		mov	r0, #1
+ 1154 072c 000084E5 		str	r0, [r4, #0]
+  42:main.c        ****     sec++;
+ 1156              	.LM187:
+ 1157 0730 D8609FE5 		ldr	r6, .L121+16
+ 1158 0734 0030D6E5 		ldrb	r3, [r6, #0]	@ zero_extendqisi2
+ 1159 0738 003083E0 		add	r3, r3, r0
+ 1160 073c 0030C6E5 		strb	r3, [r6, #0]
+  43:main.c        ****  if(sec>59)
+ 1162              	.LM188:
+ 1163 0740 0030D6E5 		ldrb	r3, [r6, #0]	@ zero_extendqisi2
+ 1164 0744 3B0053E3 		cmp	r3, #59
+ 1165 0748 D701009A 		bls	.L117
+  44:main.c        ****     {
+  45:main.c        ****      sec=0;    //1 min elapsed
+ 1167              	.LM189:
+ 1168 074c 0030A0E3 		mov	r3, #0
+ 1169 0750 0030C6E5 		strb	r3, [r6, #0]
+  46:main.c        ****      min++;   
+ 1171              	.LM190:
+ 1172 0754 B8209FE5 		ldr	r2, .L121+20
+ 1173 0758 0030D2E5 		ldrb	r3, [r2, #0]	@ zero_extendqisi2
+ 1174 075c 003083E0 		add	r3, r3, r0
+ 1175 0760 0030C2E5 		strb	r3, [r2, #0]
+ 1176              	.L117:
+  47:main.c        ****     }
+  48:main.c        ****     if(min>59)
+ 1178              	.LM191:
+ 1179 0764 A8509FE5 		ldr	r5, .L121+20
+ 1180 0768 0030D5E5 		ldrb	r3, [r5, #0]	@ zero_extendqisi2
+ 1181 076c 3B0053E3 		cmp	r3, #59
+ 1182 0770 E101009A 		bls	.L118
+  49:main.c        ****     {
+  50:main.c        ****      min=0;
+ 1184              	.LM192:
+ 1185 0774 0030A0E3 		mov	r3, #0
+ 1186 0778 0030C5E5 		strb	r3, [r5, #0]
+  51:main.c        ****      hr++;
+ 1188              	.LM193:
+ 1189 077c 94209FE5 		ldr	r2, .L121+24
+ 1190 0780 0030D2E5 		ldrb	r3, [r2, #0]	@ zero_extendqisi2
+ 1191 0784 013083E2 		add	r3, r3, #1
+ 1192 0788 0030C2E5 		strb	r3, [r2, #0]
+ 1193              	.L118:
+  52:main.c        ****     }  
+  53:main.c        ****     if(hr>23)
+ 1195              	.LM194:
+ 1196 078c 84409FE5 		ldr	r4, .L121+24
+ 1197 0790 0030D4E5 		ldrb	r3, [r4, #0]	@ zero_extendqisi2
+ 1198 0794 170053E3 		cmp	r3, #23
+  54:main.c        ****     {
+  55:main.c        ****      hr=0;
+ 1200              	.LM195:
+ 1201 0798 0030A083 		movhi	r3, #0
+ 1202 079c 0030C485 		strhib	r3, [r4, #0]
+  56:main.c        ****     }
+  57:main.c        ****     lcd_gotoxy1(1); 
+ 1204              	.LM196:
+ 1205 07a0 FEFFFFEB 		bl	lcd_gotoxy1
+  58:main.c        ****     lcd_showvalue(hr);
+ 1207              	.LM197:
+ 1208 07a4 0000D4E5 		ldrb	r0, [r4, #0]	@ zero_extendqisi2
+ 1209 07a8 FF0000E2 		and	r0, r0, #255
+ 1210 07ac FEFFFFEB 		bl	lcd_showvalue
+  59:main.c        ****    lcd2148_data(':');
+ 1212              	.LM198:
+ 1213 07b0 3A00A0E3 		mov	r0, #58
+ 1214 07b4 FEFFFFEB 		bl	lcd2148_data
+  60:main.c        ****     lcd_showvalue(min);
+ 1216              	.LM199:
+ 1217 07b8 0000D5E5 		ldrb	r0, [r5, #0]	@ zero_extendqisi2
+ 1218 07bc FF0000E2 		and	r0, r0, #255
+ 1219 07c0 FEFFFFEB 		bl	lcd_showvalue
+  61:main.c        ****     lcd2148_data(':');
+ 1221              	.LM200:
+ 1222 07c4 3A00A0E3 		mov	r0, #58
+ 1223 07c8 FEFFFFEB 		bl	lcd2148_data
+  62:main.c        ****     lcd_showvalue(sec);
+ 1225              	.LM201:
+ 1226 07cc 0000D6E5 		ldrb	r0, [r6, #0]	@ zero_extendqisi2
+ 1227 07d0 FF0000E2 		and	r0, r0, #255
+ 1228 07d4 FEFFFFEB 		bl	lcd_showvalue
+  63:main.c        ****     
+  64:main.c        ****     sprintf(mystr,"%02d:1%02d:%02d\n",hr,min,sec);  
+ 1230              	.LM202:
+ 1231 07d8 0020D4E5 		ldrb	r2, [r4, #0]	@ zero_extendqisi2
+ 1232 07dc 0030D5E5 		ldrb	r3, [r5, #0]	@ zero_extendqisi2
+ 1233 07e0 00C0D6E5 		ldrb	ip, [r6, #0]	@ zero_extendqisi2
+ 1234 07e4 FF2002E2 		and	r2, r2, #255
+ 1235 07e8 FF3003E2 		and	r3, r3, #255
+ 1236 07ec 28109FE5 		ldr	r1, .L121+28
+ 1237 07f0 28009FE5 		ldr	r0, .L121+32
+ 1238 07f4 00C08DE5 		str	ip, [sp, #0]
+ 1239 07f8 FEFFFFEB 		bl	sprintf
+ 1240 07fc C00100EA 		b	.L120
+ 1241              	.L122:
+ 1242              		.align	2
+ 1243              	.L121:
+ 1244 0800 18000000 		.word	.LC1
+ 1245 0804 2C000000 		.word	.LC2
+ 1246 0808 004000E0 		.word	-536854528
+ 1247 080c 38000000 		.word	.LC3
+ 1248 0810 00000000 		.word	sec
+ 1249 0814 00000000 		.word	min
+ 1250 0818 00000000 		.word	hr
+ 1251 081c 44000000 		.word	.LC4
+ 1252 0820 00000000 		.word	mystr
+  65:main.c        ****    // lcd2148_data(mystr);
+  66:main.c        ****    // uart0_tx_string(mystr);
+  67:main.c        **** }
+  68:main.c        **** 		EXTINT|=(1<<2);                            //flag clear
+  69:main.c        **** 		VICVectAddr=0x00;
+ 1254              	.LM203:
+ 1255              	.LBE8:
+ 1257              		.comm	sec, 1, 8
+ 1258              		.comm	min, 1, 8
+ 1259              		.comm	hr, 1, 8
+ 1260              		.comm	mystr, 30, 8
+ 1265              		.text
+ 1267              	.Letext:
+ 1268              		.ident	"GCC: (GNU) 3.3"
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+     /tmp/ccIe2EaW.s:40     .text:00000000 uart0_init
+     /tmp/ccIe2EaW.s:120    .text:00000088 uart0_tx_char
+     /tmp/ccIe2EaW.s:151    .text:000000b0 uart0_tx_string
+     /tmp/ccIe2EaW.s:185    .text:000000e4 uart0_rx_char
+     /tmp/ccIe2EaW.s:216    .text:0000010c uart0_rx_string
+     /tmp/ccIe2EaW.s:259    .text:0000014c uart0_tx_num
+     /tmp/ccIe2EaW.s:334    .text:000001d0 uart0_rx_num
+     /tmp/ccIe2EaW.s:418    .text:0000023c delay
+     /tmp/ccIe2EaW.s:486    .text:000002b0 latch
+     /tmp/ccIe2EaW.s:530    .text:000002f8 lcd2148_cmd
+     /tmp/ccIe2EaW.s:594    .text:00000370 lcd_gotoxy1
+     /tmp/ccIe2EaW.s:616    .text:0000037c lcd_gotoxy2
+     /tmp/ccIe2EaW.s:638    .text:00000388 lcd2148_data
+     /tmp/ccIe2EaW.s:701    .text:00000400 lcd2148_init
+     /tmp/ccIe2EaW.s:861    .text:00000540 lcd_showvalue
+     /tmp/ccIe2EaW.s:936    .text:000005b4 timer_init
+     /tmp/ccIe2EaW.s:1000   .text:00000618 main
+     /tmp/ccIe2EaW.s:1118   .text:000006e8 EXT2_ISR
+                            *COM*:00000001 sec
+                            *COM*:00000001 min
+                            *COM*:00000001 hr
+                            *COM*:0000001e mystr
+
+UNDEFINED SYMBOLS
+__udivsi3
+sys_init
+enableIRQ
+sprintf

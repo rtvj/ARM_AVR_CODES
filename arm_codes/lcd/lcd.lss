@@ -1,0 +1,884 @@
+
+lcd.elf:     file format elf32-littlearm
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000005cf  00000000  00000000  00008000  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .ctors        00000000  000005cf  000005cf  00010000  2**0
+                  CONTENTS
+  2 .dtors        00000000  000005cf  000005cf  00010000  2**0
+                  CONTENTS
+  3 .data         00000000  40000000  000005d0  00010000  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  4 .bss          00000004  40000000  40000000  00010000  2**2
+                  ALLOC
+  5 .stack        00000400  40000100  40000100  00010000  2**0
+                  CONTENTS
+  6 .stab         0000126c  00000000  00000000  00010400  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  7 .stabstr      00001a53  00000000  00000000  0001166c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .comment      00000020  00000000  00000000  000130bf  2**0
+                  CONTENTS, READONLY
+Disassembly of section .text:
+
+00000000 <_boot>:
+
+// Runtime Interrupt Vectors
+// -------------------------
+Vectors:
+        b     _start                    // reset - _start
+   0:	ea000012 	b	50 <_mainCRTStartup>
+        ldr   pc,_undf                  // undefined - _undf
+   4:	e59ff014 	ldr	pc, [pc, #20]	; 20 <_undf>
+        ldr   pc,_swi                   // SWI - _swi
+   8:	e59ff014 	ldr	pc, [pc, #20]	; 24 <_swi>
+        ldr   pc,_pabt                  // program abort - _pabt
+   c:	e59ff014 	ldr	pc, [pc, #20]	; 28 <_pabt>
+        ldr   pc,_dabt                  // data abort - _dabt
+  10:	e59ff014 	ldr	pc, [pc, #20]	; 2c <_dabt>
+        nop                             // reserved
+  14:	e1a00000 	nop			(mov r0,r0)
+        ldr   pc,[pc,#-0xFF0]           // IRQ - read the VIC
+  18:	e51ffff0 	ldr	pc, [pc, #-4080]	; fffff030 <_end+0xbfffeb30>
+        ldr   pc,_fiq                   // FIQ - _fiq
+  1c:	e59ff010 	ldr	pc, [pc, #16]	; 34 <_fiq>
+
+00000020 <_undf>:
+  20:	00000038 	andeq	r0, r0, r8, lsr r0
+
+00000024 <_swi>:
+  24:	0000003c 	andeq	r0, r0, ip, lsr r0
+
+00000028 <_pabt>:
+  28:	00000040 	andeq	r0, r0, r0, asr #32
+
+0000002c <_dabt>:
+  2c:	00000044 	andeq	r0, r0, r4, asr #32
+
+00000030 <_irq>:
+  30:	00000048 	andeq	r0, r0, r8, asr #32
+
+00000034 <_fiq>:
+  34:	0000004c 	andeq	r0, r0, ip, asr #32
+
+00000038 <__undf>:
+
+#if 0
+// Use this group for production
+_undf:  .word _reset                    // undefined - _reset
+_swi:   .word _reset                    // SWI - _reset
+_pabt:  .word _reset                    // program abort - _reset
+_dabt:  .word _reset                    // data abort - _reset
+_irq:   .word _reset                    // IRQ - _reset
+_fiq:   .word _reset                    // FIQ - _reset
+
+#else
+// Use this group for development
+_undf:  .word __undf                    // undefined
+_swi:   .word __swi                     // SWI
+_pabt:  .word __pabt                    // program abort
+_dabt:  .word __dabt                    // data abort
+_irq:   .word __irq                     // IRQ
+_fiq:   .word __fiq                     // FIQ
+
+__undf: b     .                         // undefined
+  38:	eafffffe 	b	38 <__undf>
+
+0000003c <__swi>:
+__swi:  b     .                         // SWI
+  3c:	eafffffe 	b	3c <__swi>
+
+00000040 <__pabt>:
+__pabt: b     .                         // program abort
+  40:	eafffffe 	b	40 <F_BIT>
+
+00000044 <__dabt>:
+__dabt: b     .                         // data abort
+  44:	eafffffe 	b	44 <__dabt>
+
+00000048 <__irq>:
+__irq:  b     .                         // IRQ
+  48:	eafffffe 	b	48 <__irq>
+
+0000004c <__fiq>:
+__fiq:  b     .                         // FIQ
+  4c:	eafffffe 	b	4c <__fiq>
+
+00000050 <_mainCRTStartup>:
+#endif
+        .size _boot, . - _boot
+        .endfunc
+
+
+// Setup the operating mode & stack.
+// ---------------------------------
+        .global _start, start, _mainCRTStartup
+        .func   _start
+
+_start:
+start:
+_mainCRTStartup:
+
+// Initialize Interrupt System
+// - Set stack location for each mode
+// - Leave in System Mode with Interrupts Disabled
+// -----------------------------------------------
+        ldr   r0,=_stack
+  50:	e59f00c0 	ldr	r0, [pc, #192]	; 118 <_reset+0x4>
+        msr   CPSR_c,#MODE_UND|I_BIT|F_BIT // Undefined Instruction Mode
+  54:	e321f0db 	msr	CPSR_c, #219	; 0xdb
+        mov   sp,r0
+  58:	e1a0d000 	mov	sp, r0
+        sub   r0,r0,#UND_STACK_SIZE
+  5c:	e2400004 	sub	r0, r0, #4	; 0x4
+        msr   CPSR_c,#MODE_ABT|I_BIT|F_BIT // Abort Mode
+  60:	e321f0d7 	msr	CPSR_c, #215	; 0xd7
+        mov   sp,r0
+  64:	e1a0d000 	mov	sp, r0
+        sub   r0,r0,#ABT_STACK_SIZE
+  68:	e2400004 	sub	r0, r0, #4	; 0x4
+        msr   CPSR_c,#MODE_FIQ|I_BIT|F_BIT // FIQ Mode
+  6c:	e321f0d1 	msr	CPSR_c, #209	; 0xd1
+        mov   sp,r0
+  70:	e1a0d000 	mov	sp, r0
+        sub   r0,r0,#FIQ_STACK_SIZE
+  74:	e2400004 	sub	r0, r0, #4	; 0x4
+        msr   CPSR_c,#MODE_IRQ|I_BIT|F_BIT // IRQ Mode
+  78:	e321f0d2 	msr	CPSR_c, #210	; 0xd2
+        mov   sp,r0
+  7c:	e1a0d000 	mov	sp, r0
+        sub   r0,r0,#IRQ_STACK_SIZE
+  80:	e2400080 	sub	r0, r0, #128	; 0x80
+        msr   CPSR_c,#MODE_SVC|I_BIT|F_BIT // Supervisor Mode
+  84:	e321f0d3 	msr	CPSR_c, #211	; 0xd3
+        mov   sp,r0
+  88:	e1a0d000 	mov	sp, r0
+        sub   r0,r0,#SVC_STACK_SIZE
+  8c:	e2400004 	sub	r0, r0, #4	; 0x4
+        msr   CPSR_c,#MODE_SYS|I_BIT|F_BIT // System Mode
+  90:	e321f0df 	msr	CPSR_c, #223	; 0xdf
+        mov   sp,r0
+  94:	e1a0d000 	mov	sp, r0
+
+// Copy initialized data to its execution address in RAM
+// -----------------------------------------------------
+#ifdef ROM_RUN
+        ldr   r1,=_etext                // -> ROM data start
+  98:	e59f107c 	ldr	r1, [pc, #124]	; 11c <_reset+0x8>
+        ldr   r2,=_data                 // -> data start
+  9c:	e59f207c 	ldr	r2, [pc, #124]	; 120 <_reset+0xc>
+        ldr   r3,=_edata                // -> end of data
+  a0:	e59f307c 	ldr	r3, [pc, #124]	; 124 <_reset+0x10>
+1:      cmp   r2,r3                     // check if data to move
+  a4:	e1520003 	cmp	r2, r3
+        ldrlo r0,[r1],#4                // copy it
+  a8:	34910004 	ldrcc	r0, [r1], #4
+        strlo r0,[r2],#4
+  ac:	34820004 	strcc	r0, [r2], #4
+        blo   1b                        // loop until done
+  b0:	3afffffb 	bcc	a4 <IRQ_STACK_SIZE+0x24>
+#endif
+// Clear .bss
+// ----------
+        mov   r0,#0                     // get a zero
+  b4:	e3a00000 	mov	r0, #0	; 0x0
+        ldr   r1,=__bss_start           // -> bss start
+  b8:	e59f1068 	ldr	r1, [pc, #104]	; 128 <_reset+0x14>
+        ldr   r2,=__bss_end__           // -> bss end
+  bc:	e59f2068 	ldr	r2, [pc, #104]	; 12c <_reset+0x18>
+2:      cmp   r1,r2                     // check if data to clear
+  c0:	e1510002 	cmp	r1, r2
+        strlo r0,[r1],#4                // clear 4 bytes
+  c4:	34810004 	strcc	r0, [r1], #4
+        blo   2b                        // loop until done
+  c8:	3afffffc 	bcc	c0 <IRQ_STACK_SIZE+0x40>
+		
+/*
+   Call C++ constructors (for objects in "global scope")
+   ctor loop added by Martin Thomas 4/2005 
+   based on a Anglia Design example-application for ST ARM
+*/
+
+		LDR 	r0, =__ctors_start__
+  cc:	e59f005c 	ldr	r0, [pc, #92]	; 130 <_reset+0x1c>
+		LDR 	r1, =__ctors_end__
+  d0:	e59f105c 	ldr	r1, [pc, #92]	; 134 <_reset+0x20>
+
+000000d4 <ctor_loop>:
+ctor_loop:
+		CMP 	r0, r1
+  d4:	e1500001 	cmp	r0, r1
+		BEQ 	ctor_end
+  d8:	0a000005 	beq	f4 <ctor_end>
+		LDR 	r2, [r0], #4
+  dc:	e4902004 	ldr	r2, [r0], #4
+		STMFD 	sp!, {r0-r1}
+  e0:	e92d0003 	stmdb	sp!, {r0, r1}
+		MOV 	lr, pc
+  e4:	e1a0e00f 	mov	lr, pc
+		MOV 	pc, r2
+  e8:	e1a0f002 	mov	pc, r2
+		LDMFD 	sp!, {r0-r1}
+  ec:	e8bd0003 	ldmia	sp!, {r0, r1}
+		B 		ctor_loop
+  f0:	eafffff7 	b	d4 <ctor_loop>
+
+000000f4 <ctor_end>:
+ctor_end:
+
+// Call main program: main(0)
+// --------------------------
+        mov   r0,#0                     // no arguments (argc = 0)
+  f4:	e3a00000 	mov	r0, #0	; 0x0
+        mov   r1,r0
+  f8:	e1a01000 	mov	r1, r0
+        mov   r2,r0
+  fc:	e1a02000 	mov	r2, r0
+        mov   fp,r0                     // null frame pointer
+ 100:	e1a0b000 	mov	fp, r0
+        mov   r7,r0                     // null frame pointer for thumb
+ 104:	e1a07000 	mov	r7, r0
+        ldr   r10,=main
+ 108:	e59fa028 	ldr	sl, [pc, #40]	; 138 <_reset+0x24>
+        mov   lr,pc
+ 10c:	e1a0e00f 	mov	lr, pc
+
+/* Enter the C code, use BX instruction so as to never return */
+/* use BLX (?) main if you want to use c++ destructors below */
+
+        bx    r10                       // enter main()
+ 110:	e12fff1a 	bx	sl
+
+00000114 <_reset>:
+
+/* "global object"-dtors are never called and it should not be 
+   needed since there is no OS to exit to. */
+/* Call destructors */
+#		LDR		r0, =__dtors_start__
+#		LDR		r1, =__dtors_end__
+dtor_loop:
+#		CMP		r0, r1
+#		BEQ		dtor_end
+#		LDR		r2, [r0], #4
+#		STMFD	sp!, {r0-r1}
+#		MOV		lr, pc
+#		MOV		pc, r2
+#		LDMFD	sp!, {r0-r1}
+#		B		dtor_loop
+dtor_end:
+   
+        .size   _start, . - _start
+        .endfunc
+
+        .global _reset, reset, exit, abort
+        .func   _reset
+_reset:
+reset:
+exit:
+abort:
+#if 0
+// Disable interrupts, then force a hardware reset by driving P23 low
+// -------------------------------------------------------------------
+        mrs   r0,cpsr                   // get PSR
+        orr   r0,r0,#I_BIT|F_BIT        // disable IRQ and FIQ
+        msr   cpsr,r0                   // set up status register
+
+        ldr   r1,=(PS_BASE)             // PS Base Address
+        ldr   r0,=(PS_PIO)              // PIO Module
+        str   r0,[r1,#PS_PCER_OFF]      // enable its clock
+        ldr   r1,=(PIO_BASE)            // PIO Base Address
+        ldr   r0,=(1<<23)               // P23
+        str   r0,[r1,#PIO_PER_OFF]      // make sure pin is contolled by PIO
+        str   r0,[r1,#PIO_CODR_OFF]     // set the pin low
+        str   r0,[r1,#PIO_OER_OFF]      // make it an output
+#endif
+        b     .                         // loop until reset
+ 114:	eafffffe 	b	114 <_reset>
+ 118:	40000500 	andmi	r0, r0, r0, lsl #10
+ 11c:	000005d0 	ldreqd	r0, [r0], -r0
+ 120:	40000000 	andmi	r0, r0, r0
+ 124:	40000000 	andmi	r0, r0, r0
+ 128:	40000000 	andmi	r0, r0, r0
+ 12c:	40000004 	andmi	r0, r0, r4
+ 130:	000005cf 	andeq	r0, r0, pc, asr #11
+ 134:	000005cf 	andeq	r0, r0, pc, asr #11
+ 138:	000005a4 	andeq	r0, r0, r4, lsr #11
+
+0000013c <IRQ_Routine>:
+/*  ----------------------------------------------------  */
+void IRQ_Routine(void)
+{
+
+    while (1);
+ 13c:	eafffffe 	b	13c <IRQ_Routine>
+
+00000140 <FIQ_Routine>:
+}
+void FIQ_Routine(void)
+{
+    while (1);
+ 140:	eafffffe 	b	140 <FIQ_Routine>
+
+00000144 <SWI_Routine>:
+}
+void SWI_Routine(void)
+{
+    while (1);
+ 144:	eafffffe 	b	144 <SWI_Routine>
+
+00000148 <UNDEF_Routine>:
+}
+void UNDEF_Routine(void)
+{
+    while (1);
+ 148:	eafffffe 	b	148 <UNDEF_Routine>
+
+0000014c <feed>:
+}
+
+
+/**********************************************************
+                      Initialize
+**********************************************************/
+
+#define PLOCK 0x400
+static void feed(void)
+{
+    PLLFEED = 0xAA;
+ 14c:	e59f3010 	ldr	r3, [pc, #16]	; 164 <feed+0x18>
+ 150:	e3a020aa 	mov	r2, #170	; 0xaa
+ 154:	e5832000 	str	r2, [r3]
+    PLLFEED = 0x55;
+ 158:	e3a02055 	mov	r2, #85	; 0x55
+ 15c:	e5832000 	str	r2, [r3]
+ 160:	e1a0f00e 	mov	pc, lr
+ 164:	e01fc08c 	ands	ip, pc, ip, lsl #1
+
+00000168 <sys_init>:
+} void sys_init(void)
+{
+
+    //                              Setting the Phased Lock Loop (PLL)
+    //               ----------------------------------
+    //
+    // LPC-P2148 has a 12.0000 mhz crystal
+    //
+    // We'd like the LPC2148 to run at 60 mhz (has to be an even multiple of crystal)
+    // 
+    // According to the Philips LPC2148 manual:   M = cclk / Fosc   where:  M    = PLL multiplier (bits 0-4 of PLLCFG)
+    //                                                                                                                                              cclk = 60000000 hz
+    //                                                                                                                                              Fosc = 12000000 hz
+    //
+    // Solving:     M = 60000000 / 12000000 = 5           
+    //
+    //                      Note: M - 1 must be entered into bits 0-4 of PLLCFG (assign 4 to these bits)
+    //
+    //
+    // The Current Controlled Oscilator (CCO) must operate in the range 156 mhz to 320 mhz
+    //
+    // According to the Philips LPC2148 manual:     Fcco = cclk * 2 * P    where:   Fcco = CCO frequency 
+    //                                                                                                                                                      cclk = 60000000 hz
+    //                                                                                                                                                      P = PLL divisor (bits 5-6 of PLLCFG)
+    //
+    // Solving:     Fcco = 60000000 * 2 * P
+    //                      P = 2  (trial value)
+    //                      Fcco = 60000000 * 2 * 2
+    //                      Fcc0 = 240000000 hz    (good choice for P since it's within the 156 mhz to 320 mhz range)
+    //
+    // From Table 22 (page 34) of Philips LPC2148 manual    P = 2, PLLCFG bits 5-6 = 1  (assign 1 to these bits)
+    //
+    // Finally:      PLLCFG = 0  01  00100  =  0x24
+    //
+    // Final note: to load PLLCFG register, we must use the 0xAA followed 0x55 write sequence to the PLLFEED register
+    //             this is done in the short function feed() below
+    //
+
+    // Setting Multiplier and Divider values
+    PLLCFG = 0x24;
+ 168:	e59f3068 	ldr	r3, [pc, #104]	; 1d8 <sys_init+0x70>
+ 16c:	e1a0c00d 	mov	ip, sp
+ 170:	e3a02024 	mov	r2, #36	; 0x24
+ 174:	e92dd810 	stmdb	sp!, {r4, fp, ip, lr, pc}
+ 178:	e5832000 	str	r2, [r3]
+ 17c:	e24cb004 	sub	fp, ip, #4	; 0x4
+    feed();
+ 180:	ebfffff1 	bl	14c <feed>
+
+    // Enabling the PLL */  
+    PLLCON = 0x1;
+ 184:	e59f3050 	ldr	r3, [pc, #80]	; 1dc <sys_init+0x74>
+ 188:	e3a02001 	mov	r2, #1	; 0x1
+ 18c:	e5832000 	str	r2, [r3]
+    feed();
+ 190:	ebffffed 	bl	14c <feed>
+
+    // Wait for the PLL to lock to set frequency
+    while (!(PLLSTAT & PLOCK));
+ 194:	e59f3044 	ldr	r3, [pc, #68]	; 1e0 <sys_init+0x78>
+ 198:	e5933000 	ldr	r3, [r3]
+ 19c:	e3130b01 	tst	r3, #1024	; 0x400
+ 1a0:	0afffffb 	beq	194 <sys_init+0x2c>
+
+    // Connect the PLL as the clock source
+    PLLCON = 0x3;
+ 1a4:	e59f3030 	ldr	r3, [pc, #48]	; 1dc <sys_init+0x74>
+ 1a8:	e3a04003 	mov	r4, #3	; 0x3
+ 1ac:	e5834000 	str	r4, [r3]
+    feed();
+ 1b0:	ebffffe5 	bl	14c <feed>
+
+    // Enabling MAM and setting number of clocks used for Flash memory fetch
+    MAMTIM = 0x3;
+ 1b4:	e59f3028 	ldr	r3, [pc, #40]	; 1e4 <sys_init+0x7c>
+ 1b8:	e5834000 	str	r4, [r3]
+    MAMCR = 0x2;
+ 1bc:	e59f3024 	ldr	r3, [pc, #36]	; 1e8 <sys_init+0x80>
+ 1c0:	e3a02002 	mov	r2, #2	; 0x2
+ 1c4:	e5832000 	str	r2, [r3]
+
+    // Setting peripheral Clock (pclk) to System Clock (cclk)
+    VPBDIV = 0x1;
+ 1c8:	e59f301c 	ldr	r3, [pc, #28]	; 1ec <sys_init+0x84>
+ 1cc:	e3a02001 	mov	r2, #1	; 0x1
+ 1d0:	e5832000 	str	r2, [r3]
+ 1d4:	e91ba810 	ldmdb	fp, {r4, fp, sp, pc}
+ 1d8:	e01fc084 	ands	ip, pc, r4, lsl #1
+ 1dc:	e01fc080 	ands	ip, pc, r0, lsl #1
+ 1e0:	e01fc088 	ands	ip, pc, r8, lsl #1
+ 1e4:	e01fc004 	ands	ip, pc, r4
+ 1e8:	e01fc000 	ands	ip, pc, r0
+ 1ec:	e01fc100 	ands	ip, pc, r0, lsl #2
+
+000001f0 <_sbrk_r>:
+}
+
+
+
+
+
+/* "malloc clue function" */
+
+	/**** Locally used variables. ****/
+extern char end[];              /*  end is set in the linker command 	*/
+				/* file and is the end of statically 	*/
+				/* allocated data (thus start of heap).	*/
+
+static char *heap_ptr;		/* Points to current end of the heap.	*/
+
+/************************** _sbrk_r *************************************/
+/*  Support function.  Adjusts end of heap to provide more memory to	*/
+/* memory allocator. Simple and dumb with no sanity checks.		*/
+/*  struct _reent *r	-- re-entrancy structure, used by newlib to 	*/
+/*			support multiple threads of operation.		*/
+/*  ptrdiff_t nbytes	-- number of bytes to add.			*/
+/*  Returns pointer to start of new heap area.				*/
+/*  Note:  This implementation is not thread safe (despite taking a	*/
+/* _reent structure as a parameter).  					*/
+/*  Since _s_r is not used in the current implementation, the following	*/
+/* messages must be suppressed.						*/
+
+void * _sbrk_r(
+    struct _reent *_s_r, 
+    ptrdiff_t nbytes)
+{
+	char  *base;		/*  errno should be set to  ENOMEM on error	*/
+
+	if (!heap_ptr) {	/*  Initialize if first time through.		*/
+ 1f0:	e59f2020 	ldr	r2, [pc, #32]	; 218 <_sbrk_r+0x28>
+ 1f4:	e5923000 	ldr	r3, [r2]
+ 1f8:	e3530000 	cmp	r3, #0	; 0x0
+		heap_ptr = end;
+ 1fc:	059f3018 	ldreq	r3, [pc, #24]	; 21c <_sbrk_r+0x2c>
+ 200:	05823000 	streq	r3, [r2]
+	}
+	base = heap_ptr;	/*  Point to end of heap.			*/
+ 204:	e5923000 	ldr	r3, [r2]
+	heap_ptr += nbytes;	/*  Increase heap.				*/
+	
+	return base;		/*  Return pointer to start of new heap area.	*/
+}
+ 208:	e1a00003 	mov	r0, r3
+ 20c:	e0833001 	add	r3, r3, r1
+ 210:	e5823000 	str	r3, [r2]
+ 214:	e1a0f00e 	mov	pc, lr
+ 218:	40000000 	andmi	r0, r0, r0
+ 21c:	40000500 	andmi	r0, r0, r0, lsl #10
+
+00000220 <delay>:
+#define LINE1	0x80
+#define LINE2	0xC0
+
+void delay(unsigned int i)
+{
+ 220:	e24dd008 	sub	sp, sp, #8	; 0x8
+	volatile unsigned int j=0,k = 0;
+ 224:	e3a03000 	mov	r3, #0	; 0x0
+ 228:	e58d3004 	str	r3, [sp, #4]
+ 22c:	e58d3000 	str	r3, [sp]
+	for (j=0;j<i;j++)
+ 230:	e58d3004 	str	r3, [sp, #4]
+ 234:	e59d3004 	ldr	r3, [sp, #4]
+ 238:	e1530000 	cmp	r3, r0
+ 23c:	2a000011 	bcs	288 <delay+0x68>
+		for (k=0;k<6000;k++);	// 
+ 240:	e3a03000 	mov	r3, #0	; 0x0
+ 244:	e58d3000 	str	r3, [sp]
+ 248:	e59d3000 	ldr	r3, [sp]
+ 24c:	e59f203c 	ldr	r2, [pc, #60]	; 290 <delay+0x70>
+ 250:	e1530002 	cmp	r3, r2
+ 254:	8a000005 	bhi	270 <delay+0x50>
+ 258:	e59d3000 	ldr	r3, [sp]
+ 25c:	e2833001 	add	r3, r3, #1	; 0x1
+ 260:	e58d3000 	str	r3, [sp]
+ 264:	e59d3000 	ldr	r3, [sp]
+ 268:	e1530002 	cmp	r3, r2
+ 26c:	9afffff9 	bls	258 <delay+0x38>
+ 270:	e59d3004 	ldr	r3, [sp, #4]
+ 274:	e2833001 	add	r3, r3, #1	; 0x1
+ 278:	e58d3004 	str	r3, [sp, #4]
+ 27c:	e59d3004 	ldr	r3, [sp, #4]
+ 280:	e1530000 	cmp	r3, r0
+ 284:	3affffed 	bcc	240 <delay+0x20>
+ 288:	e28dd008 	add	sp, sp, #8	; 0x8
+ 28c:	e1a0f00e 	mov	pc, lr
+ 290:	0000176f 	andeq	r1, r0, pc, ror #14
+
+00000294 <latch>:
+}
+
+void latch(void)
+{
+ 294:	e1a0c00d 	mov	ip, sp
+ 298:	e92dd800 	stmdb	sp!, {fp, ip, lr, pc}
+	delay(10);
+ 29c:	e3a0000a 	mov	r0, #10	; 0xa
+ 2a0:	e24cb004 	sub	fp, ip, #4	; 0x4
+ 2a4:	ebffffdd 	bl	220 <delay>
+	IOSET0 |= (1 << 18);	// LCD_EN = 1
+ 2a8:	e59f2024 	ldr	r2, [pc, #36]	; 2d4 <latch+0x40>
+ 2ac:	e5923000 	ldr	r3, [r2]
+ 2b0:	e3833701 	orr	r3, r3, #262144	; 0x40000
+ 2b4:	e5823000 	str	r3, [r2]
+	delay(10);
+ 2b8:	e3a0000a 	mov	r0, #10	; 0xa
+ 2bc:	ebffffd7 	bl	220 <delay>
+	IOCLR0 |= (1 << 18);
+ 2c0:	e59f2010 	ldr	r2, [pc, #16]	; 2d8 <latch+0x44>
+ 2c4:	e5923000 	ldr	r3, [r2]
+ 2c8:	e3833701 	orr	r3, r3, #262144	; 0x40000
+ 2cc:	e5823000 	str	r3, [r2]
+ 2d0:	e91ba800 	ldmdb	fp, {fp, sp, pc}
+ 2d4:	e0028004 	and	r8, r2, r4
+ 2d8:	e002800c 	and	r8, r2, ip
+
+000002dc <lcd2148_cmd>:
+}
+
+void lcd2148_cmd(unsigned char cmd)
+{
+ 2dc:	e1a0c00d 	mov	ip, sp
+ 2e0:	e92dd870 	stmdb	sp!, {r4, r5, r6, fp, ip, lr, pc}
+	IOCLR0 |= (1 << 16);		// RS = 0, command
+ 2e4:	e59f5058 	ldr	r5, [pc, #88]	; 344 <lcd2148_cmd+0x68>
+ 2e8:	e5953000 	ldr	r3, [r5]
+ 2ec:	e3833801 	orr	r3, r3, #65536	; 0x10000
+ 2f0:	e5853000 	str	r3, [r5]
+
+	IOCLR0 |= (0x0f << 19);
+ 2f4:	e5953000 	ldr	r3, [r5]
+ 2f8:	e383371e 	orr	r3, r3, #7864320	; 0x780000
+	IOSET0 |= ((cmd & 0xf0) << 15);	// write higher nibble first
+ 2fc:	e59f6044 	ldr	r6, [pc, #68]	; 348 <lcd2148_cmd+0x6c>
+ 300:	e5853000 	str	r3, [r5]
+ 304:	e5963000 	ldr	r3, [r6]
+ 308:	e20020f0 	and	r2, r0, #240	; 0xf0
+ 30c:	e1833782 	orr	r3, r3, r2, lsl #15
+ 310:	e5863000 	str	r3, [r6]
+ 314:	e24cb004 	sub	fp, ip, #4	; 0x4
+ 318:	e1a04000 	mov	r4, r0
+	latch();
+ 31c:	ebffffdc 	bl	294 <latch>
+
+	IOCLR0 |= (0x0f << 19);
+ 320:	e5953000 	ldr	r3, [r5]
+ 324:	e383371e 	orr	r3, r3, #7864320	; 0x780000
+ 328:	e5853000 	str	r3, [r5]
+	IOSET0 |= ((cmd & 0x0f) << 19);	// write lower nibble
+ 32c:	e5963000 	ldr	r3, [r6]
+ 330:	e204400f 	and	r4, r4, #15	; 0xf
+ 334:	e1833984 	orr	r3, r3, r4, lsl #19
+ 338:	e5863000 	str	r3, [r6]
+	latch();
+ 33c:	e91b6870 	ldmdb	fp, {r4, r5, r6, fp, sp, lr}
+ 340:	eaffffd3 	b	294 <latch>
+ 344:	e002800c 	and	r8, r2, ip
+ 348:	e0028004 	and	r8, r2, r4
+
+0000034c <lcd2148_init>:
+}
+
+
+
+void lcd2148_init(void)
+{
+ 34c:	e1a0c00d 	mov	ip, sp
+ 350:	e92dd830 	stmdb	sp!, {r4, r5, fp, ip, lr, pc}
+ 354:	e24cb004 	sub	fp, ip, #4	; 0x4
+	sys_init();//for pll
+ 358:	ebffff82 	bl	168 <sys_init>
+	PINSEL1&=~((1<<0)|(1<<1)|(1<<2)|(1<<3)|(1<<4)|(1<<5)|(1<<6)|(1<<7)|(1<<8)|(1<<9)|(1<<10)|(1<<11)|(1<<12)|(1<<13));
+ 35c:	e59f20e4 	ldr	r2, [pc, #228]	; 448 <STACK_SIZE+0x48>
+ 360:	e5923000 	ldr	r3, [r2]
+ 364:	e3c33dff 	bic	r3, r3, #16320	; 0x3fc0
+ 368:	e3c3303f 	bic	r3, r3, #63	; 0x3f
+ 36c:	e5823000 	str	r3, [r2]
+	IODIR0|=(1<<16)|(1<<17)|(1<<18)|(1<<19)|(1<<20)|(1<<21)|(1<<22);//AS O/P
+ 370:	e59f20d4 	ldr	r2, [pc, #212]	; 44c <STACK_SIZE+0x4c>
+ 374:	e5923000 	ldr	r3, [r2]
+ 378:	e383387f 	orr	r3, r3, #8323072	; 0x7f0000
+ 37c:	e5823000 	str	r3, [r2]
+	IOCLR0 |= 0x00007F00;
+ 380:	e59f40c8 	ldr	r4, [pc, #200]	; 450 <STACK_SIZE+0x50>
+ 384:	e5943000 	ldr	r3, [r4]
+ 388:	e3833c7f 	orr	r3, r3, #32512	; 0x7f00
+ 38c:	e5843000 	str	r3, [r4]
+	
+	delay(100);
+ 390:	e3a00064 	mov	r0, #100	; 0x64
+ 394:	ebffffa1 	bl	220 <delay>
+	IOCLR0 |= (0xf << 19);
+ 398:	e5943000 	ldr	r3, [r4]
+ 39c:	e383371e 	orr	r3, r3, #7864320	; 0x780000
+	IOSET0 |= (3 << 19);		// cmd(0x30)
+ 3a0:	e59f50ac 	ldr	r5, [pc, #172]	; 454 <STACK_SIZE+0x54>
+ 3a4:	e5843000 	str	r3, [r4]
+ 3a8:	e5953000 	ldr	r3, [r5]
+ 3ac:	e3833706 	orr	r3, r3, #1572864	; 0x180000
+ 3b0:	e5853000 	str	r3, [r5]
+	latch();
+ 3b4:	ebffffb6 	bl	294 <latch>
+
+	delay(5);
+ 3b8:	e3a00005 	mov	r0, #5	; 0x5
+ 3bc:	ebffff97 	bl	220 <delay>
+	IOCLR0 |= (0xf << 19);
+ 3c0:	e5943000 	ldr	r3, [r4]
+ 3c4:	e383371e 	orr	r3, r3, #7864320	; 0x780000
+ 3c8:	e5843000 	str	r3, [r4]
+	IOSET0 |= (3 << 19);		// cmd(0x30)
+ 3cc:	e5953000 	ldr	r3, [r5]
+ 3d0:	e3833706 	orr	r3, r3, #1572864	; 0x180000
+ 3d4:	e5853000 	str	r3, [r5]
+	latch();
+ 3d8:	ebffffad 	bl	294 <latch>
+	
+	delay(1);
+ 3dc:	e3a00001 	mov	r0, #1	; 0x1
+ 3e0:	ebffff8e 	bl	220 <delay>
+	IOCLR0 |= (0xf << 19);
+ 3e4:	e5943000 	ldr	r3, [r4]
+ 3e8:	e383371e 	orr	r3, r3, #7864320	; 0x780000
+ 3ec:	e5843000 	str	r3, [r4]
+	IOSET0 |= (3 << 19);		// cmd(0x30)
+ 3f0:	e5953000 	ldr	r3, [r5]
+ 3f4:	e3833706 	orr	r3, r3, #1572864	; 0x180000
+ 3f8:	e5853000 	str	r3, [r5]
+	latch();
+ 3fc:	ebffffa4 	bl	294 <latch>
+
+	IOCLR0 |= (0xf << 19);
+ 400:	e5943000 	ldr	r3, [r4]
+ 404:	e383371e 	orr	r3, r3, #7864320	; 0x780000
+ 408:	e5843000 	str	r3, [r4]
+	IOSET0 |= (2 << 19);		// cmd(0x20), 4-bit mode
+ 40c:	e5953000 	ldr	r3, [r5]
+ 410:	e3833601 	orr	r3, r3, #1048576	; 0x100000
+ 414:	e5853000 	str	r3, [r5]
+	latch();					// LCD_EN pulse
+ 418:	ebffff9d 	bl	294 <latch>
+	
+	lcd2148_cmd(0x28);			// 2 line display, 5x8 display
+ 41c:	e3a00028 	mov	r0, #40	; 0x28
+ 420:	ebffffad 	bl	2dc <lcd2148_cmd>
+	lcd2148_cmd(0x0f);			// display ON, cursor ON, blink ON
+ 424:	e3a0000f 	mov	r0, #15	; 0xf
+ 428:	ebffffab 	bl	2dc <lcd2148_cmd>
+	lcd2148_cmd(0x01);			// clear display
+ 42c:	e3a00001 	mov	r0, #1	; 0x1
+ 430:	ebffffa9 	bl	2dc <lcd2148_cmd>
+	lcd2148_cmd(0x02);			// cursor home
+ 434:	e3a00002 	mov	r0, #2	; 0x2
+ 438:	ebffffa7 	bl	2dc <lcd2148_cmd>
+	lcd2148_cmd(0x06);			// increment cursor by 1, no shift
+ 43c:	e3a00006 	mov	r0, #6	; 0x6
+ 440:	e91b6830 	ldmdb	fp, {r4, r5, fp, sp, lr}
+ 444:	eaffffa4 	b	2dc <lcd2148_cmd>
+ 448:	e002c004 	and	ip, r2, r4
+ 44c:	e0028008 	and	r8, r2, r8
+ 450:	e002800c 	and	r8, r2, ip
+ 454:	e0028004 	and	r8, r2, r4
+
+00000458 <lcd2148_data>:
+}
+void lcd2148_data(unsigned char data)
+{
+ 458:	e1a0c00d 	mov	ip, sp
+ 45c:	e92dd870 	stmdb	sp!, {r4, r5, r6, fp, ip, lr, pc}
+	IOSET0 |= (1 << 16);		// RS = 1, data
+ 460:	e59f6058 	ldr	r6, [pc, #88]	; 4c0 <lcd2148_data+0x68>
+ 464:	e5963000 	ldr	r3, [r6]
+ 468:	e3833801 	orr	r3, r3, #65536	; 0x10000
+ 46c:	e5863000 	str	r3, [r6]
+
+	IOCLR0 |= (0x0f << 19);
+ 470:	e59f504c 	ldr	r5, [pc, #76]	; 4c4 <lcd2148_data+0x6c>
+ 474:	e5953000 	ldr	r3, [r5]
+ 478:	e383371e 	orr	r3, r3, #7864320	; 0x780000
+ 47c:	e5853000 	str	r3, [r5]
+	IOSET0 |= ((data & 0xf0) << 15);	// write higher nibble first
+ 480:	e5963000 	ldr	r3, [r6]
+ 484:	e20020f0 	and	r2, r0, #240	; 0xf0
+ 488:	e1833782 	orr	r3, r3, r2, lsl #15
+ 48c:	e5863000 	str	r3, [r6]
+ 490:	e24cb004 	sub	fp, ip, #4	; 0x4
+ 494:	e1a04000 	mov	r4, r0
+	latch();
+ 498:	ebffff7d 	bl	294 <latch>
+
+	IOCLR0 |= (0x0f << 19);
+ 49c:	e5953000 	ldr	r3, [r5]
+ 4a0:	e383371e 	orr	r3, r3, #7864320	; 0x780000
+ 4a4:	e5853000 	str	r3, [r5]
+	IOSET0 |= ((data & 0x0f) << 19);	// write lower nibble
+ 4a8:	e5963000 	ldr	r3, [r6]
+ 4ac:	e204400f 	and	r4, r4, #15	; 0xf
+ 4b0:	e1833984 	orr	r3, r3, r4, lsl #19
+ 4b4:	e5863000 	str	r3, [r6]
+	latch();
+ 4b8:	e91b6870 	ldmdb	fp, {r4, r5, r6, fp, sp, lr}
+ 4bc:	eaffff74 	b	294 <latch>
+ 4c0:	e0028004 	and	r8, r2, r4
+ 4c4:	e002800c 	and	r8, r2, ip
+
+000004c8 <lcd2148_string>:
+}
+void lcd2148_string(unsigned char str[32])
+{
+ 4c8:	e1a0c00d 	mov	ip, sp
+ 4cc:	e92dd8f0 	stmdb	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+	unsigned char k=0;
+
+	IOCLR0 |= ((1 << 16)|(1 << 17)|(1 << 18));	
+ 4d0:	e59f30ac 	ldr	r3, [pc, #172]	; 584 <lcd2148_string+0xbc>
+ 4d4:	e5932000 	ldr	r2, [r3]
+ 4d8:	e3822807 	orr	r2, r2, #458752	; 0x70000
+ 4dc:	e5832000 	str	r2, [r3]
+	while(str[k]!='\0')	//Till null character is encountered
+ 4e0:	e5d03000 	ldrb	r3, [r0]
+ 4e4:	e3530000 	cmp	r3, #0	; 0x0
+ 4e8:	e24cb004 	sub	fp, ip, #4	; 0x4
+ 4ec:	e1a05000 	mov	r5, r0
+ 4f0:	e3a07000 	mov	r7, #0	; 0x0
+ 4f4:	091ba8f0 	ldmeqdb	fp, {r4, r5, r6, r7, fp, sp, pc}
+		{
+			if(k==16) // As LCD is 16x2
+ 4f8:	e3570010 	cmp	r7, #16	; 0x10
+ 4fc:	e59f4084 	ldr	r4, [pc, #132]	; 588 <lcd2148_string+0xc0>
+ 500:	e59f607c 	ldr	r6, [pc, #124]	; 584 <lcd2148_string+0xbc>
+ 504:	e3a000c0 	mov	r0, #192	; 0xc0
+				lcd2148_cmd(LINE2);// go to the LINE 2
+ 508:	0bffff73 	bleq	2dc <lcd2148_cmd>
+
+			IOSET0 |= (1 << 16);	// RS = 1, data
+ 50c:	e5943000 	ldr	r3, [r4]
+ 510:	e3833801 	orr	r3, r3, #65536	; 0x10000
+ 514:	e5843000 	str	r3, [r4]
+			IOCLR0 |= (0x0f << 19);
+ 518:	e5963000 	ldr	r3, [r6]
+ 51c:	e383371e 	orr	r3, r3, #7864320	; 0x780000
+ 520:	e5863000 	str	r3, [r6]
+			IOSET0 |= ((str[k]& 0xf0) << 15);	// write higher nibble first
+ 524:	e7d53007 	ldrb	r3, [r5, r7]
+ 528:	e5942000 	ldr	r2, [r4]
+ 52c:	e20330f0 	and	r3, r3, #240	; 0xf0
+ 530:	e1822783 	orr	r2, r2, r3, lsl #15
+ 534:	e5842000 	str	r2, [r4]
+			latch();
+ 538:	ebffff55 	bl	294 <latch>
+			IOSET0 |= (1 << 16);// RS = 1, data
+ 53c:	e5943000 	ldr	r3, [r4]
+ 540:	e3833801 	orr	r3, r3, #65536	; 0x10000
+ 544:	e5843000 	str	r3, [r4]
+			IOCLR0 |= (0x0f << 19);
+ 548:	e5963000 	ldr	r3, [r6]
+ 54c:	e383371e 	orr	r3, r3, #7864320	; 0x780000
+ 550:	e5863000 	str	r3, [r6]
+			IOSET0 |= ((str[k] & 0x0f) << 19);	// write lower nibble
+ 554:	e7d53007 	ldrb	r3, [r5, r7]
+ 558:	e5942000 	ldr	r2, [r4]
+ 55c:	e203300f 	and	r3, r3, #15	; 0xf
+ 560:	e1822983 	orr	r2, r2, r3, lsl #19
+ 564:	e5842000 	str	r2, [r4]
+			latch();
+ 568:	ebffff49 	bl	294 <latch>
+			
+			k++;
+ 56c:	e2873001 	add	r3, r7, #1	; 0x1
+ 570:	e20370ff 	and	r7, r3, #255	; 0xff
+ 574:	e7d53007 	ldrb	r3, [r5, r7]
+ 578:	e3530000 	cmp	r3, #0	; 0x0
+ 57c:	091ba8f0 	ldmeqdb	fp, {r4, r5, r6, r7, fp, sp, pc}
+ 580:	eaffffdc 	b	4f8 <lcd2148_string+0x30>
+ 584:	e002800c 	and	r8, r2, ip
+ 588:	e0028004 	and	r8, r2, r4
+
+0000058c <lcd2148_gotoxy1>:
+		}
+}
+
+
+void lcd2148_gotoxy1(unsigned char pos)
+{
+	lcd2148_cmd(LINE1+pos);
+ 58c:	e2400080 	sub	r0, r0, #128	; 0x80
+ 590:	e20000ff 	and	r0, r0, #255	; 0xff
+ 594:	eaffff50 	b	2dc <lcd2148_cmd>
+
+00000598 <lcd2148_gotoxy2>:
+}
+
+void lcd2148_gotoxy2(unsigned char pos)
+{
+	lcd2148_cmd(LINE2+pos);
+ 598:	e2400040 	sub	r0, r0, #64	; 0x40
+ 59c:	e20000ff 	and	r0, r0, #255	; 0xff
+ 5a0:	eaffff4d 	b	2dc <lcd2148_cmd>
+
+000005a4 <main>:
+#include"startup.h"
+#include"LPC214x.h"
+#include"lcd_2148.h"
+int main()
+{
+ 5a4:	e1a0c00d 	mov	ip, sp
+ 5a8:	e92dd800 	stmdb	sp!, {fp, ip, lr, pc}
+ 5ac:	e24cb004 	sub	fp, ip, #4	; 0x4
+	/*lcd2148_init();
+	lcd2148_data('A');
+	lcd2148_init();
+	lcd2148_gotoxy2(1);
+	lcd2148_data('A');*/
+	lcd2148_init();
+ 5b0:	ebffff65 	bl	34c <lcd2148_init>
+	lcd2148_string("nikhil");
+ 5b4:	e59f0008 	ldr	r0, [pc, #8]	; 5c4 <main+0x20>
+ 5b8:	ebffffc2 	bl	4c8 <lcd2148_string>
+}
+ 5bc:	e3a00000 	mov	r0, #0	; 0x0
+ 5c0:	e91ba800 	ldmdb	fp, {fp, sp, pc}
+ 5c4:	000005c8 	andeq	r0, r0, r8, asr #11
+ 5c8:	686b696e 	stmvsda	fp!, {r1, r2, r3, r5, r6, r8, fp, sp, lr}^
+ 5cc:	Address 0x5cc is out of bounds.
+

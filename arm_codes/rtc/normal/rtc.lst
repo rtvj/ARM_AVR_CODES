@@ -1,0 +1,914 @@
+   1              		.file	"rtc.c"
+   3              		.text
+   4              	.Ltext0:
+  32              		.global	sec
+  33              		.data
+  34              		.align	2
+  37              	sec:
+  38 0000 37000000 		.word	55
+  39              		.global	min
+  40              		.align	2
+  43              	min:
+  44 0004 37000000 		.word	55
+  45              		.global	hour
+  46              		.align	2
+  49              	hour:
+  50 0008 01000000 		.word	1
+  51              		.global	dow
+  52              		.align	2
+  55              	dow:
+  56 000c 02000000 		.word	2
+  57              		.global	dom
+  58              		.align	2
+  61              	dom:
+  62 0010 02000000 		.word	2
+  63              		.global	month
+  64              		.align	2
+  67              	month:
+  68 0014 05000000 		.word	5
+  69              		.global	year
+  70              		.align	2
+  73              	year:
+  74 0018 DC070000 		.word	2012
+  75              		.text
+  76              		.align	2
+  78              		.global	rtc_init
+  80              	rtc_init:
+  82              	.Ltext1:
+   1:rtc.h         **** unsigned int sec=55,min=55,hour=1,dow=2,dom=2,month=5,year=2012;
+   2:rtc.h         **** 
+   3:rtc.h         **** void rtc_init()
+   4:rtc.h         **** {
+  84              	.LM1:
+  85              		@ args = 0, pretend = 0, frame = 0
+  86              		@ frame_needed = 0, uses_anonymous_args = 0
+  87              		@ link register save eliminated.
+   5:rtc.h         **** 	CCR=0X11;//CLKEN =1;CLKSRC =1
+  89              	.LM2:
+  90 0000 08309FE5 		ldr	r3, .L2
+  91 0004 1120A0E3 		mov	r2, #17
+  93              	.LM3:
+  94              		@ lr needed for prologue
+  96              	.LM4:
+  97 0008 002083E5 		str	r2, [r3, #0]
+  98 000c 0EF0A0E1 		mov	pc, lr
+  99              	.L3:
+ 100              		.align	2
+ 101              	.L2:
+ 102 0010 084002E0 		.word	-536723448
+ 104              		.align	2
+ 106              		.global	rtc_write
+ 108              	rtc_write:
+   6:rtc.h         **** }
+   7:rtc.h         **** 
+   8:rtc.h         **** void rtc_write()
+   9:rtc.h         **** {
+ 110              	.LM5:
+ 111              		@ args = 0, pretend = 0, frame = 0
+ 112              		@ frame_needed = 0, uses_anonymous_args = 0
+ 113 0014 30402DE9 		stmfd	sp!, {r4, r5, lr}
+  10:rtc.h         **** 	SEC =sec&0x3f;
+  11:rtc.h         **** 	MIN =min&0X3f;
+  12:rtc.h         **** 	HOUR =hour&0X1f;
+  13:rtc.h         **** 	DOW=dow&0X7;
+  14:rtc.h         **** 	DOM = dom&0x1f;
+  15:rtc.h         **** 	MONTH =month&0x1f;
+  16:rtc.h         **** 	YEAR =year&0xfff;
+ 115              	.LM6:
+ 116 0018 8C309FE5 		ldr	r3, .L5
+ 117 001c 005093E5 		ldr	r5, [r3, #0]
+ 119              	.LM7:
+ 120 0020 88309FE5 		ldr	r3, .L5+4
+ 121 0024 002093E5 		ldr	r2, [r3, #0]
+ 123              	.LM8:
+ 124 0028 84309FE5 		ldr	r3, .L5+8
+ 125 002c 001093E5 		ldr	r1, [r3, #0]
+ 127              	.LM9:
+ 128 0030 80309FE5 		ldr	r3, .L5+12
+ 129 0034 000093E5 		ldr	r0, [r3, #0]
+ 131              	.LM10:
+ 132 0038 7C309FE5 		ldr	r3, .L5+16
+ 133 003c 00C093E5 		ldr	ip, [r3, #0]
+ 135              	.LM11:
+ 136 0040 78309FE5 		ldr	r3, .L5+20
+ 137 0044 00E093E5 		ldr	lr, [r3, #0]
+ 139              	.LM12:
+ 140 0048 74309FE5 		ldr	r3, .L5+24
+ 141 004c 004093E5 		ldr	r4, [r3, #0]
+ 143              	.LM13:
+ 144 0050 70309FE5 		ldr	r3, .L5+28
+ 145 0054 3F2002E2 		and	r2, r2, #63
+ 146 0058 002083E5 		str	r2, [r3, #0]
+ 148              	.LM14:
+ 149 005c 68309FE5 		ldr	r3, .L5+32
+ 150 0060 3F1001E2 		and	r1, r1, #63
+ 151 0064 001083E5 		str	r1, [r3, #0]
+ 153              	.LM15:
+ 154 0068 60309FE5 		ldr	r3, .L5+36
+ 155 006c 1F0000E2 		and	r0, r0, #31
+ 156 0070 000083E5 		str	r0, [r3, #0]
+ 158              	.LM16:
+ 159 0074 58309FE5 		ldr	r3, .L5+40
+ 160 0078 07C00CE2 		and	ip, ip, #7
+ 161 007c 00C083E5 		str	ip, [r3, #0]
+ 163              	.LM17:
+ 164 0080 50309FE5 		ldr	r3, .L5+44
+ 165 0084 1FE00EE2 		and	lr, lr, #31
+ 166 0088 00E083E5 		str	lr, [r3, #0]
+ 168              	.LM18:
+ 169 008c 48309FE5 		ldr	r3, .L5+48
+ 170 0090 1F4004E2 		and	r4, r4, #31
+ 171 0094 004083E5 		str	r4, [r3, #0]
+ 173              	.LM19:
+ 174 0098 055AA0E1 		mov	r5, r5, asl #20
+ 175 009c 3C309FE5 		ldr	r3, .L5+52
+ 176 00a0 255AA0E1 		mov	r5, r5, lsr #20
+ 177 00a4 005083E5 		str	r5, [r3, #0]
+ 178 00a8 3080BDE8 		ldmfd	sp!, {r4, r5, pc}
+ 179              	.L6:
+ 180              		.align	2
+ 181              	.L5:
+ 182 00ac 00000000 		.word	year
+ 183 00b0 00000000 		.word	sec
+ 184 00b4 00000000 		.word	min
+ 185 00b8 00000000 		.word	hour
+ 186 00bc 00000000 		.word	dow
+ 187 00c0 00000000 		.word	dom
+ 188 00c4 00000000 		.word	month
+ 189 00c8 204002E0 		.word	-536723424
+ 190 00cc 244002E0 		.word	-536723420
+ 191 00d0 284002E0 		.word	-536723416
+ 192 00d4 304002E0 		.word	-536723408
+ 193 00d8 2C4002E0 		.word	-536723412
+ 194 00dc 384002E0 		.word	-536723400
+ 195 00e0 3C4002E0 		.word	-536723396
+ 197              		.align	2
+ 199              		.global	rtc_read_sec
+ 201              	rtc_read_sec:
+  17:rtc.h         **** }
+  18:rtc.h         **** 
+  19:rtc.h         **** unsigned int  rtc_read_sec()
+  20:rtc.h         **** {
+ 203              	.LM20:
+ 204              		@ args = 0, pretend = 0, frame = 0
+ 205              		@ frame_needed = 0, uses_anonymous_args = 0
+ 206              		@ link register save eliminated.
+  21:rtc.h         **** 	return (CTIME0 &0x3f);
+ 208              	.LM21:
+ 209 00e4 08309FE5 		ldr	r3, .L8
+ 210 00e8 000093E5 		ldr	r0, [r3, #0]
+ 211 00ec 3F0000E2 		and	r0, r0, #63
+ 213              	.LM22:
+ 214              		@ lr needed for prologue
+  22:rtc.h         **** }
+ 216              	.LM23:
+ 217 00f0 0EF0A0E1 		mov	pc, lr
+ 218              	.L9:
+ 219              		.align	2
+ 220              	.L8:
+ 221 00f4 144002E0 		.word	-536723436
+ 223              		.align	2
+ 225              		.global	rtc_read_min
+ 227              	rtc_read_min:
+  23:rtc.h         **** 
+  24:rtc.h         **** unsigned int  rtc_read_min()
+  25:rtc.h         **** {
+ 229              	.LM24:
+ 230              		@ args = 0, pretend = 0, frame = 0
+ 231              		@ frame_needed = 0, uses_anonymous_args = 0
+ 232              		@ link register save eliminated.
+  26:rtc.h         **** 	return ((CTIME0 &0x3f00)>>8);
+ 234              	.LM25:
+ 235 00f8 0C309FE5 		ldr	r3, .L11
+ 236 00fc 000093E5 		ldr	r0, [r3, #0]
+ 237 0100 3F0C00E2 		and	r0, r0, #16128
+ 238 0104 2004A0E1 		mov	r0, r0, lsr #8
+ 240              	.LM26:
+ 241              		@ lr needed for prologue
+  27:rtc.h         **** }
+ 243              	.LM27:
+ 244 0108 0EF0A0E1 		mov	pc, lr
+ 245              	.L12:
+ 246              		.align	2
+ 247              	.L11:
+ 248 010c 144002E0 		.word	-536723436
+ 250              		.align	2
+ 252              		.global	rtc_read_hour
+ 254              	rtc_read_hour:
+  28:rtc.h         **** 
+  29:rtc.h         **** unsigned int  rtc_read_hour()
+  30:rtc.h         **** {
+ 256              	.LM28:
+ 257              		@ args = 0, pretend = 0, frame = 0
+ 258              		@ frame_needed = 0, uses_anonymous_args = 0
+ 259              		@ link register save eliminated.
+  31:rtc.h         **** 	return ((CTIME0 &0x1f0000)>>16);
+ 261              	.LM29:
+ 262 0110 0C309FE5 		ldr	r3, .L14
+ 263 0114 000093E5 		ldr	r0, [r3, #0]
+ 264 0118 1F0800E2 		and	r0, r0, #2031616
+ 265 011c 2008A0E1 		mov	r0, r0, lsr #16
+ 267              	.LM30:
+ 268              		@ lr needed for prologue
+  32:rtc.h         **** }
+ 270              	.LM31:
+ 271 0120 0EF0A0E1 		mov	pc, lr
+ 272              	.L15:
+ 273              		.align	2
+ 274              	.L14:
+ 275 0124 144002E0 		.word	-536723436
+ 277              		.align	2
+ 279              		.global	rtc_read_dow
+ 281              	rtc_read_dow:
+  33:rtc.h         **** 
+  34:rtc.h         **** unsigned int  rtc_read_dow()
+  35:rtc.h         **** {
+ 283              	.LM32:
+ 284              		@ args = 0, pretend = 0, frame = 0
+ 285              		@ frame_needed = 0, uses_anonymous_args = 0
+ 286              		@ link register save eliminated.
+  36:rtc.h         **** 	return ((CTIME0 &0x7000000)>>24);
+ 288              	.LM33:
+ 289 0128 0C309FE5 		ldr	r3, .L17
+ 290 012c 000093E5 		ldr	r0, [r3, #0]
+ 291 0130 070400E2 		and	r0, r0, #117440512
+ 292 0134 200CA0E1 		mov	r0, r0, lsr #24
+ 294              	.LM34:
+ 295              		@ lr needed for prologue
+  37:rtc.h         **** }
+ 297              	.LM35:
+ 298 0138 0EF0A0E1 		mov	pc, lr
+ 299              	.L18:
+ 300              		.align	2
+ 301              	.L17:
+ 302 013c 144002E0 		.word	-536723436
+ 304              		.align	2
+ 306              		.global	rtc_read_dom
+ 308              	rtc_read_dom:
+  38:rtc.h         **** unsigned int  rtc_read_dom()
+  39:rtc.h         **** {
+ 310              	.LM36:
+ 311              		@ args = 0, pretend = 0, frame = 0
+ 312              		@ frame_needed = 0, uses_anonymous_args = 0
+ 313              		@ link register save eliminated.
+  40:rtc.h         **** 	return (CTIME1 &0x1f);
+ 315              	.LM37:
+ 316 0140 08309FE5 		ldr	r3, .L20
+ 317 0144 000093E5 		ldr	r0, [r3, #0]
+ 318 0148 1F0000E2 		and	r0, r0, #31
+ 320              	.LM38:
+ 321              		@ lr needed for prologue
+  41:rtc.h         **** }
+ 323              	.LM39:
+ 324 014c 0EF0A0E1 		mov	pc, lr
+ 325              	.L21:
+ 326              		.align	2
+ 327              	.L20:
+ 328 0150 184002E0 		.word	-536723432
+ 330              		.align	2
+ 332              		.global	rtc_read_month
+ 334              	rtc_read_month:
+  42:rtc.h         **** 
+  43:rtc.h         **** unsigned int  rtc_read_month()
+  44:rtc.h         **** {
+ 336              	.LM40:
+ 337              		@ args = 0, pretend = 0, frame = 0
+ 338              		@ frame_needed = 0, uses_anonymous_args = 0
+ 339              		@ link register save eliminated.
+  45:rtc.h         **** 	return ((CTIME1 &0x1f00)>>8);
+ 341              	.LM41:
+ 342 0154 0C309FE5 		ldr	r3, .L23
+ 343 0158 000093E5 		ldr	r0, [r3, #0]
+ 344 015c 1F0C00E2 		and	r0, r0, #7936
+ 345 0160 2004A0E1 		mov	r0, r0, lsr #8
+ 347              	.LM42:
+ 348              		@ lr needed for prologue
+  46:rtc.h         **** }
+ 350              	.LM43:
+ 351 0164 0EF0A0E1 		mov	pc, lr
+ 352              	.L24:
+ 353              		.align	2
+ 354              	.L23:
+ 355 0168 184002E0 		.word	-536723432
+ 357              		.align	2
+ 359              		.global	rtc_read_year
+ 361              	rtc_read_year:
+  47:rtc.h         **** 
+  48:rtc.h         **** unsigned int  rtc_read_year()
+  49:rtc.h         **** {
+ 363              	.LM44:
+ 364              		@ args = 0, pretend = 0, frame = 0
+ 365              		@ frame_needed = 0, uses_anonymous_args = 0
+ 366              		@ link register save eliminated.
+  50:rtc.h         **** 	return ((CTIME1 &0xfff0000)>>16);
+ 368              	.LM45:
+ 369 016c 10309FE5 		ldr	r3, .L26
+ 370 0170 10009FE5 		ldr	r0, .L26+4
+ 371 0174 003093E5 		ldr	r3, [r3, #0]
+ 372 0178 000003E0 		and	r0, r3, r0
+ 373 017c 2008A0E1 		mov	r0, r0, lsr #16
+ 375              	.LM46:
+ 376              		@ lr needed for prologue
+  51:rtc.h         **** }
+ 378              	.LM47:
+ 379 0180 0EF0A0E1 		mov	pc, lr
+ 380              	.L27:
+ 381              		.align	2
+ 382              	.L26:
+ 383 0184 184002E0 		.word	-536723432
+ 384 0188 0000FF0F 		.word	268369920
+ 386              		.align	2
+ 389              		.global	delay
+ 391              	delay:
+  52:rtc.h         **** void delay(unsigned int i)
+  53:rtc.h         **** {
+ 393              	.LM48:
+ 394              		@ args = 0, pretend = 0, frame = 8
+ 395              		@ frame_needed = 0, uses_anonymous_args = 0
+ 396              		@ link register save eliminated.
+ 397 018c 08D04DE2 		sub	sp, sp, #8
+  54:rtc.h         **** 	volatile unsigned int j=0,k = 0;
+ 399              	.LM49:
+ 400              	.LBB2:
+ 401 0190 0030A0E3 		mov	r3, #0
+ 402 0194 04308DE5 		str	r3, [sp, #4]
+ 403 0198 00308DE5 		str	r3, [sp, #0]
+  55:rtc.h         **** 	for (j=0;j<i;j++)
+ 405              	.LM50:
+ 406 019c 04308DE5 		str	r3, [sp, #4]
+ 407 01a0 04309DE5 		ldr	r3, [sp, #4]
+ 408 01a4 000053E1 		cmp	r3, r0
+ 410              	.LM51:
+ 411              		@ lr needed for prologue
+ 413              	.LM52:
+ 414 01a8 7B00002A 		bcs	.L40
+ 415              	.L38:
+  56:rtc.h         **** 		for (k=0;k<6000;k++);	
+ 417              	.LM53:
+ 418 01ac 0030A0E3 		mov	r3, #0
+ 419 01b0 00308DE5 		str	r3, [sp, #0]
+ 420 01b4 00309DE5 		ldr	r3, [sp, #0]
+ 421 01b8 3C209FE5 		ldr	r2, .L43
+ 422 01bc 020053E1 		cmp	r3, r2
+ 423 01c0 7500008A 		bhi	.L42
+ 424              	.L37:
+ 425 01c4 00309DE5 		ldr	r3, [sp, #0]
+ 426 01c8 013083E2 		add	r3, r3, #1
+ 427 01cc 00308DE5 		str	r3, [sp, #0]
+ 428 01d0 00309DE5 		ldr	r3, [sp, #0]
+ 429 01d4 020053E1 		cmp	r3, r2
+ 430 01d8 6F00009A 		bls	.L37
+ 431              	.L42:
+ 433              	.LM54:
+ 434 01dc 04309DE5 		ldr	r3, [sp, #4]
+ 435 01e0 013083E2 		add	r3, r3, #1
+ 436 01e4 04308DE5 		str	r3, [sp, #4]
+ 437 01e8 04309DE5 		ldr	r3, [sp, #4]
+ 438 01ec 000053E1 		cmp	r3, r0
+ 439 01f0 6900003A 		bcc	.L38
+ 440              	.L40:
+ 441 01f4 08D08DE2 		add	sp, sp, #8
+ 442 01f8 0EF0A0E1 		mov	pc, lr
+ 443              	.L44:
+ 444              		.align	2
+ 445              	.L43:
+ 446 01fc 6F170000 		.word	5999
+ 447              	.LBE2:
+ 457              		.align	2
+ 459              		.global	uart0_init
+ 461              	uart0_init:
+ 463              	.Ltext2:
+   1:uart.h        **** #include"startup.h"
+   2:uart.h        **** #include"LPC214x.h"
+   3:uart.h        **** 
+   4:uart.h        **** #define val 60000000/(16*baud)
+   5:uart.h        **** #define baud 9600
+   6:uart.h        **** void uart0_init()
+   7:uart.h        **** {
+ 465              	.LM55:
+ 466              		@ args = 0, pretend = 0, frame = 0
+ 467              		@ frame_needed = 0, uses_anonymous_args = 0
+ 468              		@ link register save eliminated.
+   8:uart.h        **** 	PINSEL0&=~(1<<1)|(1<<3);
+ 470              	.LM56:
+ 471 0200 48209FE5 		ldr	r2, .L46
+ 472 0204 003092E5 		ldr	r3, [r2, #0]
+ 473 0208 0230C3E3 		bic	r3, r3, #2
+ 474 020c 003082E5 		str	r3, [r2, #0]
+   9:uart.h        **** 	PINSEL0|=(1<<0)|(1<<2);
+ 476              	.LM57:
+ 477 0210 003092E5 		ldr	r3, [r2, #0]
+ 478 0214 053083E3 		orr	r3, r3, #5
+ 479 0218 003082E5 		str	r3, [r2, #0]
+  10:uart.h        **** 	
+  11:uart.h        **** 	U0LCR|=(1<<7);// enable DLAB bit
+ 481              	.LM58:
+ 482 021c 30109FE5 		ldr	r1, .L46+4
+ 483 0220 003091E5 		ldr	r3, [r1, #0]
+ 484 0224 803083E3 		orr	r3, r3, #128
+ 485 0228 003081E5 		str	r3, [r1, #0]
+  12:uart.h        **** 	U0DLL=val&(0xFF);
+ 487              	.LM59:
+ 488 022c 24309FE5 		ldr	r3, .L46+8
+ 489 0230 8620A0E3 		mov	r2, #134
+ 490 0234 002083E5 		str	r2, [r3, #0]
+  13:uart.h        **** 	U0DLM=val>>8;
+ 492              	.LM60:
+ 493 0238 1C309FE5 		ldr	r3, .L46+12
+ 494 023c 0120A0E3 		mov	r2, #1
+ 495 0240 002083E5 		str	r2, [r3, #0]
+  14:uart.h        **** 	U0LCR=0X03;//parity disable,1 stop bit,8 bit data
+ 497              	.LM61:
+ 498 0244 0330A0E3 		mov	r3, #3
+ 500              	.LM62:
+ 501              		@ lr needed for prologue
+ 503              	.LM63:
+ 504 0248 003081E5 		str	r3, [r1, #0]
+ 505 024c 0EF0A0E1 		mov	pc, lr
+ 506              	.L47:
+ 507              		.align	2
+ 508              	.L46:
+ 509 0250 00C002E0 		.word	-536690688
+ 510 0254 0CC000E0 		.word	-536821748
+ 511 0258 00C000E0 		.word	-536821760
+ 512 025c 04C000E0 		.word	-536821756
+ 514              		.align	2
+ 517              		.global	uart0_tx_char
+ 519              	uart0_tx_char:
+  15:uart.h        **** }
+  16:uart.h        **** 
+  17:uart.h        **** void uart0_tx_char(unsigned char data)
+  18:uart.h        **** {
+ 521              	.LM64:
+ 522              		@ args = 0, pretend = 0, frame = 0
+ 523              		@ frame_needed = 0, uses_anonymous_args = 0
+ 524              		@ link register save eliminated.
+ 525              		@ lr needed for prologue
+ 526 0260 FF0000E2 		and	r0, r0, #255
+  19:uart.h        **** 	while(!(U0LSR&(1<<5)));  
+ 528              	.LM65:
+ 529              	.L49:
+ 530 0264 14309FE5 		ldr	r3, .L53
+ 531 0268 003093E5 		ldr	r3, [r3, #0]
+ 532 026c 200013E3 		tst	r3, #32
+ 533 0270 0C309F15 		ldrne	r3, .L53+4
+ 534 0274 00008315 		strne	r0, [r3, #0]
+ 535 0278 0EF0A011 		movne	pc, lr
+ 536 027c 970000EA 		b	.L49
+ 537              	.L54:
+ 538              		.align	2
+ 539              	.L53:
+ 540 0280 14C000E0 		.word	-536821740
+ 541 0284 00C000E0 		.word	-536821760
+  20:uart.h        **** 	U0THR=data;
+ 543              	.LM66:
+ 545              		.align	2
+ 548              		.global	uart0_tx_str
+ 550              	uart0_tx_str:
+  21:uart.h        **** }	
+  22:uart.h        **** 
+  23:uart.h        **** void uart0_tx_str(unsigned char *ptr) 
+  24:uart.h        **** {
+ 552              	.LM67:
+ 553              		@ args = 0, pretend = 0, frame = 0
+ 554              		@ frame_needed = 1, uses_anonymous_args = 0
+ 555 0288 0DC0A0E1 		mov	ip, sp
+ 556 028c 10D82DE9 		stmfd	sp!, {r4, fp, ip, lr, pc}
+ 557 0290 0040A0E1 		mov	r4, r0
+  25:uart.h        ****     while(*ptr !='\0')
+ 559              	.LM68:
+ 560 0294 0000D0E5 		ldrb	r0, [r0, #0]	@ zero_extendqisi2
+ 561 0298 000050E3 		cmp	r0, #0
+ 563              	.LM69:
+ 564 029c 04B04CE2 		sub	fp, ip, #4
+ 566              	.LM70:
+ 567 02a0 10A81B09 		ldmeqea	fp, {r4, fp, sp, pc}
+ 568              	.L59:
+  26:uart.h        **** 	{
+  27:uart.h        **** 	uart0_tx_char(*ptr);
+ 570              	.LM71:
+ 571 02a4 FF0000E2 		and	r0, r0, #255
+ 572 02a8 FEFFFFEB 		bl	uart0_tx_char
+  28:uart.h        **** 	ptr ++; // uart1_tx_char(*(ptr++));
+ 574              	.LM72:
+ 575 02ac 0100F4E5 		ldrb	r0, [r4, #1]!	@ zero_extendqisi2
+ 576 02b0 000050E3 		cmp	r0, #0
+ 577 02b4 10A81B09 		ldmeqea	fp, {r4, fp, sp, pc}
+ 578 02b8 A70000EA 		b	.L59
+ 580              		.align	2
+ 583              		.global	uart0_tx_num
+ 585              	uart0_tx_num:
+  29:uart.h        **** 	}
+  30:uart.h        **** }
+  31:uart.h        **** 
+  32:uart.h        **** void uart0_tx_num(unsigned int num ) 
+  33:uart.h        **** {
+ 587              	.LM73:
+ 588              		@ args = 0, pretend = 0, frame = 8
+ 589              		@ frame_needed = 1, uses_anonymous_args = 0
+ 590 02bc 0DC0A0E1 		mov	ip, sp
+ 591 02c0 10D82DE9 		stmfd	sp!, {r4, fp, ip, lr, pc}
+ 592 02c4 04B04CE2 		sub	fp, ip, #4
+ 593 02c8 08D04DE2 		sub	sp, sp, #8
+  34:uart.h        **** 	unsigned char i,count[5];	
+  35:uart.h        **** 	
+  36:uart.h        **** 	for(i=1;i<=4;i++)
+ 595              	.LM74:
+ 596              	.LBB3:
+ 597 02cc 0140A0E3 		mov	r4, #1
+ 598              	.L67:
+  37:uart.h        **** 	{
+  38:uart.h        **** 	count[i] = num % 10;
+ 600              	.LM75:
+ 601 02d0 60309FE5 		ldr	r3, .L76
+ 602 02d4 931082E0 		umull	r1, r2, r3, r0
+ 603 02d8 10C04BE2 		sub	ip, fp, #16
+ 605              	.LM76:
+ 606 02dc 013084E2 		add	r3, r4, #1
+ 608              	.LM77:
+ 609 02e0 A221A0E1 		mov	r2, r2, lsr #3
+ 610 02e4 04108CE0 		add	r1, ip, r4
+ 612              	.LM78:
+ 613 02e8 FF4003E2 		and	r4, r3, #255
+ 615              	.LM79:
+ 616 02ec 023182E0 		add	r3, r2, r2, asl #2
+ 617 02f0 833040E0 		sub	r3, r0, r3, asl #1
+ 619              	.LM80:
+ 620 02f4 040054E3 		cmp	r4, #4
+ 622              	.LM81:
+ 623 02f8 083041E5 		strb	r3, [r1, #-8]
+  39:uart.h        **** 	num = num / 10 ;
+ 625              	.LM82:
+ 626 02fc 0200A0E1 		mov	r0, r2
+ 628              	.LM83:
+ 629 0300 B200009A 		bls	.L67
+  40:uart.h        **** 	}
+  41:uart.h        **** 	i--;// At the time of exit from the 'for loop',its value is greater than 1 of max value,
+ 631              	.LM84:
+ 632 0304 013044E2 		sub	r3, r4, #1
+  42:uart.h        **** 		// in this case it is 6 which is greater than 5;hence to decrease by 1 i--. 
+  43:uart.h        **** 	while(i!=0)
+ 634              	.LM85:
+ 635 0308 FF4013E2 		ands	r4, r3, #255
+ 636 030c 10A81B09 		ldmeqea	fp, {r4, fp, sp, pc}
+ 637              	.L71:
+  44:uart.h        **** 	{
+  45:uart.h        **** 	uart0_tx_char(count[i] + 0x30);
+ 639              	.LM86:
+ 640 0310 10104BE2 		sub	r1, fp, #16
+ 641 0314 043081E0 		add	r3, r1, r4
+ 642 0318 080053E5 		ldrb	r0, [r3, #-8]	@ zero_extendqisi2
+ 643 031c 300080E2 		add	r0, r0, #48
+ 644 0320 FF0000E2 		and	r0, r0, #255
+ 645 0324 FEFFFFEB 		bl	uart0_tx_char
+  46:uart.h        **** 	i--;
+ 647              	.LM87:
+ 648 0328 013044E2 		sub	r3, r4, #1
+ 649 032c FF4013E2 		ands	r4, r3, #255
+ 650 0330 10A81B09 		ldmeqea	fp, {r4, fp, sp, pc}
+ 651 0334 C20000EA 		b	.L71
+ 652              	.L77:
+ 653              		.align	2
+ 654              	.L76:
+ 655 0338 CDCCCCCC 		.word	-858993459
+ 656              	.LBE3:
+ 662              		.align	2
+ 664              		.global	uart0_rx_char
+ 666              	uart0_rx_char:
+  47:uart.h        **** 	}
+  48:uart.h        **** }
+  49:uart.h        **** unsigned char uart0_rx_char(void)
+  50:uart.h        **** {
+ 668              	.LM88:
+ 669              		@ args = 0, pretend = 0, frame = 0
+ 670              		@ frame_needed = 0, uses_anonymous_args = 0
+ 671              		@ link register save eliminated.
+ 672              		@ lr needed for prologue
+  51:uart.h        **** 	while(!(U0LSR&(1<<0)));  
+ 674              	.LM89:
+ 675              	.L79:
+ 676 033c 18309FE5 		ldr	r3, .L83
+ 677 0340 003093E5 		ldr	r3, [r3, #0]
+ 678 0344 010013E3 		tst	r3, #1
+ 679 0348 10309F15 		ldrne	r3, .L83+4
+ 680 034c 00009315 		ldrne	r0, [r3, #0]
+ 681 0350 FF000012 		andne	r0, r0, #255
+  52:uart.h        **** 	return U0RBR;
+  53:uart.h        **** }
+ 683              	.LM90:
+ 684 0354 0EF0A011 		movne	pc, lr
+ 685 0358 CD0000EA 		b	.L79
+ 686              	.L84:
+ 687              		.align	2
+ 688              	.L83:
+ 689 035c 14C000E0 		.word	-536821740
+ 690 0360 00C000E0 		.word	-536821760
+ 692              		.align	2
+ 695              		.global	uart0_rx_str
+ 697              	uart0_rx_str:
+  54:uart.h        **** 	
+  55:uart.h        **** void uart0_rx_str(unsigned char *ptr)
+  56:uart.h        **** {     unsigned int i;
+ 699              	.LM91:
+ 700              		@ args = 0, pretend = 0, frame = 0
+ 701              		@ frame_needed = 1, uses_anonymous_args = 0
+ 702 0364 0DC0A0E1 		mov	ip, sp
+ 703 0368 30D82DE9 		stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+ 704 036c 04B04CE2 		sub	fp, ip, #4
+ 705 0370 0040A0E1 		mov	r4, r0
+  57:uart.h        ****       for(i=0;i<100;i++)
+ 707              	.LM92:
+ 708              	.LBB4:
+ 709 0374 0050A0E3 		mov	r5, #0
+ 710              	.L91:
+  58:uart.h        ****       {
+  59:uart.h        ****        *(ptr+i)=uart0_rx_char();
+ 712              	.LM93:
+ 713 0378 FEFFFFEB 		bl	uart0_rx_char
+ 714 037c 0500C4E7 		strb	r0, [r4, r5]
+  60:uart.h        ****         if(*(ptr+i)=='\r')
+ 716              	.LM94:
+ 717 0380 0530D4E7 		ldrb	r3, [r4, r5]	@ zero_extendqisi2
+ 718 0384 0D0053E3 		cmp	r3, #13
+ 719 0388 0030A003 		moveq	r3, #0
+ 720 038c 0530C407 		streqb	r3, [r4, r5]
+  61:uart.h        ****         {
+  62:uart.h        ****         *(ptr+i)='\0';
+  63:uart.h        **** 		
+  64:uart.h        ****         break;
+ 722              	.LM95:
+ 723 0390 30A81B09 		ldmeqea	fp, {r4, r5, fp, sp, pc}
+ 725              	.LM96:
+ 726 0394 015085E2 		add	r5, r5, #1
+ 727 0398 630055E3 		cmp	r5, #99
+ 728 039c 30A81B89 		ldmhiea	fp, {r4, r5, fp, sp, pc}
+ 729 03a0 DC0000EA 		b	.L91
+ 730              	.LBE4:
+ 735              		.align	2
+ 737              		.global	uart0_rx_num
+ 739              	uart0_rx_num:
+  65:uart.h        **** 		}
+  66:uart.h        ****        }      
+  67:uart.h        **** }	
+  68:uart.h        **** 
+  69:uart.h        **** // Receiving number
+  70:uart.h        **** //For 1 digit no.
+  71:uart.h        **** unsigned char uart0_rx_num(void)
+  72:uart.h        **** {
+ 741              	.LM97:
+ 742              		@ args = 0, pretend = 0, frame = 0
+ 743              		@ frame_needed = 1, uses_anonymous_args = 0
+ 744 03a4 0DC0A0E1 		mov	ip, sp
+ 745 03a8 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+ 746 03ac 04B04CE2 		sub	fp, ip, #4
+  73:uart.h        **** 	unsigned char num;
+  74:uart.h        **** 	while(1)
+  75:uart.h        **** 	{
+  76:uart.h        **** 	num = uart0_rx_char();
+ 748              	.LM98:
+ 749              	.LBB5:
+ 750 03b0 FEFFFFEB 		bl	uart0_rx_char
+  77:uart.h        **** 	num = num - 0x30;
+ 752              	.LM99:
+ 753 03b4 300040E2 		sub	r0, r0, #48
+ 754 03b8 FF0000E2 		and	r0, r0, #255
+  78:uart.h        **** 	return num;
+  79:uart.h        **** 	}
+  80:uart.h        **** }
+ 756              	.LM100:
+ 757 03bc 00A81BE9 		ldmea	fp, {fp, sp, pc}
+ 758              	.LBE5:
+ 761              		.global	days
+ 762              		.data
+ 765              	days:
+ 766 001c 4D6F6E64 		.ascii	"Monday\000"
+ 766      617900
+ 767 0023 000000   		.space	3
+ 768 0026 54756573 		.ascii	"Tuesday\000"
+ 768      64617900 
+ 769 002e 0000     		.space	2
+ 770 0030 5765646E 		.ascii	"Wednesday\000"
+ 770      65736461 
+ 770      7900
+ 771 003a 54687572 		.ascii	"Thursday\000"
+ 771      73646179 
+ 771      00
+ 772 0043 00       		.space	1
+ 773 0044 46726964 		.ascii	"Friday\000"
+ 773      617900
+ 774 004b 000000   		.space	3
+ 775 004e 53617475 		.ascii	"Saturday\000"
+ 775      72646179 
+ 775      00
+ 776 0057 00       		.space	1
+ 777 0058 53756E64 		.ascii	"Sunday\000"
+ 777      617900
+ 778 005f 000000   		.space	3
+ 779 0062 0000     		.section	.rodata.str1.4,"aMS",%progbits,1
+ 780              		.align	2
+ 781              	.LC0:
+ 782 0000 4461793A 		.ascii	"Day:%02s Date:%02d/%02d/%02d Time: %02d:%02d:%02d\n"
+ 782      25303273 
+ 782      20446174 
+ 782      653A2530 
+ 782      32642F25 
+ 783 0032 00       		.ascii	"\000"
+ 784 0033 00       		.text
+ 785              		.align	2
+ 787              		.global	main
+ 789              	main:
+ 791              	.Ltext3:
+   1:rtc.c         **** #include"startup.h"
+   2:rtc.c         **** #include"LPC214x.h"
+   3:rtc.c         **** #include"rtc.h"
+   4:rtc.c         **** #include"uart.h"
+   5:rtc.c         **** unsigned int sec_read,min_read,hour_read,dow_read,dom_read,month_read,year_read,mystr[20];
+   6:rtc.c         **** char days[7][10]={"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday",};
+   7:rtc.c         **** 
+   8:rtc.c         **** int main()
+   9:rtc.c         **** {	
+ 793              	.LM101:
+ 794              		@ args = 0, pretend = 0, frame = 0
+ 795              		@ frame_needed = 1, uses_anonymous_args = 0
+ 796 03c0 0DC0A0E1 		mov	ip, sp
+ 797 03c4 F0DF2DE9 		stmfd	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, ip, lr, pc}
+ 798 03c8 04B04CE2 		sub	fp, ip, #4
+ 799 03cc 14D04DE2 		sub	sp, sp, #20
+  10:rtc.c         **** 	sys_init();//for pll
+ 801              	.LM102:
+ 802 03d0 FEFFFFEB 		bl	sys_init
+  11:rtc.c         **** 	uart0_init();
+ 804              	.LM103:
+ 805 03d4 FEFFFFEB 		bl	uart0_init
+  12:rtc.c         **** 	rtc_init();
+ 807              	.LM104:
+ 808 03d8 FEFFFFEB 		bl	rtc_init
+  13:rtc.c         **** 	rtc_write();
+ 810              	.LM105:
+ 811 03dc FEFFFFEB 		bl	rtc_write
+ 812              	.L102:
+  14:rtc.c         **** 	while(1)
+  15:rtc.c         **** 	{
+  16:rtc.c         **** 	sec_read=rtc_read_sec();
+ 814              	.LM106:
+ 815 03e0 FEFFFFEB 		bl	rtc_read_sec
+ 816 03e4 A4909FE5 		ldr	r9, .L103
+ 817 03e8 000089E5 		str	r0, [r9, #0]
+  17:rtc.c         **** 	min_read=rtc_read_min();
+ 819              	.LM107:
+ 820 03ec FEFFFFEB 		bl	rtc_read_min
+ 821 03f0 9CA09FE5 		ldr	sl, .L103+4
+ 822 03f4 00008AE5 		str	r0, [sl, #0]
+  18:rtc.c         **** 	hour_read=rtc_read_hour();
+ 824              	.LM108:
+ 825 03f8 FEFFFFEB 		bl	rtc_read_hour
+ 826 03fc 94809FE5 		ldr	r8, .L103+8
+ 827 0400 000088E5 		str	r0, [r8, #0]
+  19:rtc.c         **** 	dow_read=rtc_read_dow();
+ 829              	.LM109:
+ 830 0404 FEFFFFEB 		bl	rtc_read_dow
+ 831 0408 8C609FE5 		ldr	r6, .L103+12
+ 832 040c 000086E5 		str	r0, [r6, #0]
+  20:rtc.c         **** 	dom_read=rtc_read_dom();
+ 834              	.LM110:
+ 835 0410 FEFFFFEB 		bl	rtc_read_dom
+ 836 0414 84509FE5 		ldr	r5, .L103+16
+ 837 0418 000085E5 		str	r0, [r5, #0]
+  21:rtc.c         **** 	month_read=rtc_read_month();
+ 839              	.LM111:
+ 840 041c FEFFFFEB 		bl	rtc_read_month
+ 841 0420 7C409FE5 		ldr	r4, .L103+20
+ 842 0424 000084E5 		str	r0, [r4, #0]
+  22:rtc.c         **** 	year_read=rtc_read_year();
+ 844              	.LM112:
+ 845 0428 FEFFFFEB 		bl	rtc_read_year
+  23:rtc.c         **** /*	
+  24:rtc.c         **** 	if (dow_read==0x00)
+  25:rtc.c         **** 		sprintf(mystr,"Day:Monday Date:%02d/%02d/%02d Time: %02d:%02d:%02d\n",dom_read,month_read,year_re
+  26:rtc.c         **** 
+  27:rtc.c         **** 	else if (dow_read==0x01)
+  28:rtc.c         **** 		sprintf(mystr,"Day:Tuesday Date:%02d/%02d/%02d Time: %02d:%02d:%02d\n",dom_read,month_read,year_r
+  29:rtc.c         **** 
+  30:rtc.c         **** 	else if (dow_read==0x02)
+  31:rtc.c         **** 		sprintf(mystr,"Day:Wednesday Date:%02d/%02d/%02d Time: %02d:%02d:%02d\n",dom_read,month_read,year
+  32:rtc.c         **** 
+  33:rtc.c         **** 	else if (dow_read==0x03)
+  34:rtc.c         **** 		sprintf(mystr,"Day:Thursday Date:%02d/%02d/%02d Time: %02d:%02d:%02d\n"dom_read,month_read,year_r
+  35:rtc.c         **** 
+  36:rtc.c         **** 	else if (dow_read==0x04)
+  37:rtc.c         **** 		sprintf(mystr,"Day:Friday Date:%02d/%02d/%02d Time: %02d:%02d:%02d\n"dom_read,month_read,year_rea
+  38:rtc.c         **** 	
+  39:rtc.c         **** 	else if (dow_read==0x05)
+  40:rtc.c         **** 		sprintf(mystr,"Day:Saturday Date:%02d/%02d/%02d Time: %02d:%02d:%02d\n",dom_read,month_read,year_
+  41:rtc.c         **** 	
+  42:rtc.c         **** 	else if (dow_read==0x06)
+  43:rtc.c         **** 		sprintf(mystr,"Day:Sunday Date:%02d/%02d/%02d Time: %02d:%02d:%02d\n",dom_read,month_read,year_re
+  44:rtc.c         **** */
+  45:rtc.c         **** 
+  46:rtc.c         **** sprintf(mystr,"Day:%02s Date:%02d/%02d/%02d Time: %02d:%02d:%02d\n"
+ 847              	.LM113:
+ 848 042c 001096E5 		ldr	r1, [r6, #0]
+ 849 0430 70209FE5 		ldr	r2, .L103+24
+ 850 0434 003095E5 		ldr	r3, [r5, #0]
+ 851 0438 00E094E5 		ldr	lr, [r4, #0]
+ 853              	.LM114:
+ 854 043c 68C09FE5 		ldr	ip, .L103+28
+ 856              	.LM115:
+ 857 0440 004098E5 		ldr	r4, [r8, #0]
+ 858 0444 00509AE5 		ldr	r5, [sl, #0]
+ 859 0448 006099E5 		ldr	r6, [r9, #0]
+ 860 044c 011181E0 		add	r1, r1, r1, asl #2
+ 862              	.LM116:
+ 863 0450 0070A0E1 		mov	r7, r0
+ 865              	.LM117:
+ 866 0454 812082E0 		add	r2, r2, r1, asl #1
+ 867 0458 50009FE5 		ldr	r0, .L103+32
+ 868 045c 50109FE5 		ldr	r1, .L103+36
+ 870              	.LM118:
+ 871 0460 00708CE5 		str	r7, [ip, #0]
+ 873              	.LM119:
+ 874 0464 00E08DE5 		str	lr, [sp, #0]
+ 875 0468 04708DE5 		str	r7, [sp, #4]
+ 876 046c 08408DE5 		str	r4, [sp, #8]
+ 877 0470 0C508DE5 		str	r5, [sp, #12]
+ 878 0474 10608DE5 		str	r6, [sp, #16]
+ 879 0478 FEFFFFEB 		bl	sprintf
+  47:rtc.c         **** ,days[dow_read],dom_read,month_read,year_read,hour_read,min_read,sec_read);
+  48:rtc.c         **** 	uart0_tx_str(mystr);
+ 881              	.LM120:
+ 882 047c 2C009FE5 		ldr	r0, .L103+32
+ 883 0480 FEFFFFEB 		bl	uart0_tx_str
+  49:rtc.c         **** 	delay(750);
+ 885              	.LM121:
+ 886 0484 2C009FE5 		ldr	r0, .L103+40
+ 887 0488 FEFFFFEB 		bl	delay
+ 888 048c F60000EA 		b	.L102
+ 889              	.L104:
+ 890              		.align	2
+ 891              	.L103:
+ 892 0490 00000000 		.word	sec_read
+ 893 0494 00000000 		.word	min_read
+ 894 0498 00000000 		.word	hour_read
+ 895 049c 00000000 		.word	dow_read
+ 896 04a0 00000000 		.word	dom_read
+ 897 04a4 00000000 		.word	month_read
+ 898 04a8 00000000 		.word	days
+ 899 04ac 00000000 		.word	year_read
+ 900 04b0 00000000 		.word	mystr
+ 901 04b4 00000000 		.word	.LC0
+ 902 04b8 EE020000 		.word	750
+  50:rtc.c         **** 	
+  51:rtc.c         **** 	}
+  52:rtc.c         **** }	
+ 904              	.LM122:
+ 906              		.comm	sec_read, 4, 32
+ 907              		.comm	min_read, 4, 32
+ 908              		.comm	hour_read, 4, 32
+ 909              		.comm	dow_read, 4, 32
+ 910              		.comm	dom_read, 4, 32
+ 911              		.comm	month_read, 4, 32
+ 912              		.comm	year_read, 4, 32
+ 913              		.comm	mystr, 80, 32
+ 930              		.text
+ 932              	.Letext:
+ 933              		.ident	"GCC: (GNU) 3.3"
+DEFINED SYMBOLS
+                            *ABS*:00000000 rtc.c
+     /tmp/ccg57RZ4.s:37     .data:00000000 sec
+     /tmp/ccg57RZ4.s:43     .data:00000004 min
+     /tmp/ccg57RZ4.s:49     .data:00000008 hour
+     /tmp/ccg57RZ4.s:55     .data:0000000c dow
+     /tmp/ccg57RZ4.s:61     .data:00000010 dom
+     /tmp/ccg57RZ4.s:67     .data:00000014 month
+     /tmp/ccg57RZ4.s:73     .data:00000018 year
+     /tmp/ccg57RZ4.s:80     .text:00000000 rtc_init
+     /tmp/ccg57RZ4.s:108    .text:00000014 rtc_write
+     /tmp/ccg57RZ4.s:201    .text:000000e4 rtc_read_sec
+     /tmp/ccg57RZ4.s:227    .text:000000f8 rtc_read_min
+     /tmp/ccg57RZ4.s:254    .text:00000110 rtc_read_hour
+     /tmp/ccg57RZ4.s:281    .text:00000128 rtc_read_dow
+     /tmp/ccg57RZ4.s:308    .text:00000140 rtc_read_dom
+     /tmp/ccg57RZ4.s:334    .text:00000154 rtc_read_month
+     /tmp/ccg57RZ4.s:361    .text:0000016c rtc_read_year
+     /tmp/ccg57RZ4.s:391    .text:0000018c delay
+     /tmp/ccg57RZ4.s:461    .text:00000200 uart0_init
+     /tmp/ccg57RZ4.s:519    .text:00000260 uart0_tx_char
+     /tmp/ccg57RZ4.s:550    .text:00000288 uart0_tx_str
+     /tmp/ccg57RZ4.s:585    .text:000002bc uart0_tx_num
+     /tmp/ccg57RZ4.s:666    .text:0000033c uart0_rx_char
+     /tmp/ccg57RZ4.s:697    .text:00000364 uart0_rx_str
+     /tmp/ccg57RZ4.s:739    .text:000003a4 uart0_rx_num
+     /tmp/ccg57RZ4.s:765    .data:0000001c days
+     /tmp/ccg57RZ4.s:789    .text:000003c0 main
+                            *COM*:00000004 sec_read
+                            *COM*:00000004 min_read
+                            *COM*:00000004 hour_read
+                            *COM*:00000004 dow_read
+                            *COM*:00000004 dom_read
+                            *COM*:00000004 month_read
+                            *COM*:00000004 year_read
+                            *COM*:00000050 mystr
+
+UNDEFINED SYMBOLS
+sys_init
+sprintf

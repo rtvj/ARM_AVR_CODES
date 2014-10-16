@@ -1,0 +1,385 @@
+   1              		.file	"main.c"
+   3              		.text
+   4              	.Ltext0:
+  32              		.align	2
+  34              		.global	uart0_init
+  36              	uart0_init:
+  38              	.Ltext1:
+   1:uart.h        **** #include"startup.h"
+   2:uart.h        **** #include"LPC214x.h"
+   3:uart.h        **** #define baud 9600
+   4:uart.h        **** #define val 60000000/(16*baud)
+   5:uart.h        **** 
+   6:uart.h        **** void uart0_init()
+   7:uart.h        **** {
+  40              	.LM1:
+  41              		@ args = 0, pretend = 0, frame = 0
+  42              		@ frame_needed = 0, uses_anonymous_args = 0
+  43              		@ link register save eliminated.
+   8:uart.h        **** 	PINSEL0&=~(1<<1)|(1<<3);
+  45              	.LM2:
+  46 0000 44209FE5 		ldr	r2, .L2
+  47 0004 003092E5 		ldr	r3, [r2, #0]
+  48 0008 0230C3E3 		bic	r3, r3, #2
+  49 000c 003082E5 		str	r3, [r2, #0]
+   9:uart.h        **** 	PINSEL0|=(1<<0)|(1<<2);
+  51              	.LM3:
+  52 0010 003092E5 		ldr	r3, [r2, #0]
+  10:uart.h        **** 	
+  11:uart.h        **** 	//U0LCR|=(1<<7);// enable DLAB bit 83
+  12:uart.h        **** 	U0LCR = 0x83 ;
+  54              	.LM4:
+  55 0014 34109FE5 		ldr	r1, .L2+4
+  57              	.LM5:
+  58 0018 053083E3 		orr	r3, r3, #5
+  59 001c 003082E5 		str	r3, [r2, #0]
+  61              	.LM6:
+  62 0020 8330A0E3 		mov	r3, #131
+  63 0024 003081E5 		str	r3, [r1, #0]
+  13:uart.h        **** 	U0DLL=val&0xFF;
+  65              	.LM7:
+  66 0028 24309FE5 		ldr	r3, .L2+8
+  67 002c 8620A0E3 		mov	r2, #134
+  68 0030 002083E5 		str	r2, [r3, #0]
+  14:uart.h        **** 	U0DLM=val>>8;
+  70              	.LM8:
+  71 0034 1C309FE5 		ldr	r3, .L2+12
+  72 0038 0120A0E3 		mov	r2, #1
+  73 003c 002083E5 		str	r2, [r3, #0]
+  15:uart.h        **** 	U0LCR=0X03;//parity disable,1 stop bit,8 bit data
+  75              	.LM9:
+  76 0040 0330A0E3 		mov	r3, #3
+  78              	.LM10:
+  79              		@ lr needed for prologue
+  81              	.LM11:
+  82 0044 003081E5 		str	r3, [r1, #0]
+  83 0048 0EF0A0E1 		mov	pc, lr
+  84              	.L3:
+  85              		.align	2
+  86              	.L2:
+  87 004c 00C002E0 		.word	-536690688
+  88 0050 0CC000E0 		.word	-536821748
+  89 0054 00C000E0 		.word	-536821760
+  90 0058 04C000E0 		.word	-536821756
+  92              		.align	2
+  95              		.global	uart0_tx_char
+  97              	uart0_tx_char:
+  16:uart.h        **** }
+  17:uart.h        **** 
+  18:uart.h        **** void uart0_tx_char(unsigned char data)
+  19:uart.h        **** {
+  99              	.LM12:
+ 100              		@ args = 0, pretend = 0, frame = 0
+ 101              		@ frame_needed = 0, uses_anonymous_args = 0
+ 102              		@ link register save eliminated.
+ 103              		@ lr needed for prologue
+ 104 005c FF0000E2 		and	r0, r0, #255
+  20:uart.h        **** 	while(!(U0LSR&(1<<5)));  
+ 106              	.LM13:
+ 107              	.L5:
+ 108 0060 14309FE5 		ldr	r3, .L9
+ 109 0064 003093E5 		ldr	r3, [r3, #0]
+ 110 0068 200013E3 		tst	r3, #32
+ 111 006c 0C309F15 		ldrne	r3, .L9+4
+ 112 0070 00008315 		strne	r0, [r3, #0]
+ 113 0074 0EF0A011 		movne	pc, lr
+ 114 0078 160000EA 		b	.L5
+ 115              	.L10:
+ 116              		.align	2
+ 117              	.L9:
+ 118 007c 14C000E0 		.word	-536821740
+ 119 0080 00C000E0 		.word	-536821760
+  21:uart.h        **** 	U0THR=data;
+ 121              	.LM14:
+ 123              		.align	2
+ 126              		.global	uart0_tx_str
+ 128              	uart0_tx_str:
+  22:uart.h        **** }	
+  23:uart.h        **** 
+  24:uart.h        **** void uart0_tx_str(unsigned char *ptr) 
+  25:uart.h        **** {
+ 130              	.LM15:
+ 131              		@ args = 0, pretend = 0, frame = 0
+ 132              		@ frame_needed = 1, uses_anonymous_args = 0
+ 133 0084 0DC0A0E1 		mov	ip, sp
+ 134 0088 10D82DE9 		stmfd	sp!, {r4, fp, ip, lr, pc}
+ 135 008c 0040A0E1 		mov	r4, r0
+  26:uart.h        ****     while(*ptr !='\0')
+ 137              	.LM16:
+ 138 0090 0000D0E5 		ldrb	r0, [r0, #0]	@ zero_extendqisi2
+ 139 0094 000050E3 		cmp	r0, #0
+ 141              	.LM17:
+ 142 0098 04B04CE2 		sub	fp, ip, #4
+ 144              	.LM18:
+ 145 009c 10A81B09 		ldmeqea	fp, {r4, fp, sp, pc}
+ 146              	.L15:
+  27:uart.h        **** 	{
+  28:uart.h        **** 	uart0_tx_char(*ptr);
+ 148              	.LM19:
+ 149 00a0 FF0000E2 		and	r0, r0, #255
+ 150 00a4 FEFFFFEB 		bl	uart0_tx_char
+  29:uart.h        **** 	ptr ++; // uart1_tx_char(*(ptr++));
+ 152              	.LM20:
+ 153 00a8 0100F4E5 		ldrb	r0, [r4, #1]!	@ zero_extendqisi2
+ 154 00ac 000050E3 		cmp	r0, #0
+ 155 00b0 10A81B09 		ldmeqea	fp, {r4, fp, sp, pc}
+ 156 00b4 260000EA 		b	.L15
+ 158              		.align	2
+ 161              		.global	uart0_tx_num
+ 163              	uart0_tx_num:
+  30:uart.h        **** 	}
+  31:uart.h        **** }
+  32:uart.h        **** 
+  33:uart.h        **** void uart0_tx_num(unsigned int num ) 
+  34:uart.h        **** {
+ 165              	.LM21:
+ 166              		@ args = 0, pretend = 0, frame = 12
+ 167              		@ frame_needed = 1, uses_anonymous_args = 0
+ 168 00b8 0DC0A0E1 		mov	ip, sp
+ 169 00bc 10D82DE9 		stmfd	sp!, {r4, fp, ip, lr, pc}
+  35:uart.h        **** 	unsigned char i=1,count[10];	
+  36:uart.h        **** 	
+  37:uart.h        **** 	while(num!=0)
+ 171              	.LM22:
+ 172              	.LBB2:
+ 173 00c0 000050E3 		cmp	r0, #0
+ 175              	.LM23:
+ 176 00c4 04B04CE2 		sub	fp, ip, #4
+ 177 00c8 0CD04DE2 		sub	sp, sp, #12
+ 179              	.LM24:
+ 180 00cc 0140A0E3 		mov	r4, #1
+ 182              	.LM25:
+ 183 00d0 4000000A 		beq	.L28
+ 184              	.L22:
+  38:uart.h        **** 	{
+  39:uart.h        **** 	count[i] = num % 10;
+ 186              	.LM26:
+ 187 00d4 60309FE5 		ldr	r3, .L31
+ 188 00d8 902383E0 		umull	r2, r3, r0, r3
+ 189 00dc A331A0E1 		mov	r3, r3, lsr #3
+ 190 00e0 032183E0 		add	r2, r3, r3, asl #2
+ 191 00e4 10C04BE2 		sub	ip, fp, #16
+ 192 00e8 822040E0 		sub	r2, r0, r2, asl #1
+  40:uart.h        **** 	num = num / 10 ;
+  41:uart.h        **** 	i++;
+ 194              	.LM27:
+ 195 00ec 011084E2 		add	r1, r4, #1
+ 197              	.LM28:
+ 198 00f0 0300A0E1 		mov	r0, r3
+ 200              	.LM29:
+ 201 00f4 000053E3 		cmp	r3, #0
+ 203              	.LM30:
+ 204 00f8 04308CE0 		add	r3, ip, r4
+ 205 00fc 0C2043E5 		strb	r2, [r3, #-12]
+ 207              	.LM31:
+ 208 0100 FF4001E2 		and	r4, r1, #255
+ 209 0104 3300001A 		bne	.L22
+ 210              	.L28:
+  42:uart.h        **** 	}
+  43:uart.h        **** 	i--;// At the time of exit from the 'for loop',its value is greater than 1 of max value,
+ 212              	.LM32:
+ 213 0108 013044E2 		sub	r3, r4, #1
+  44:uart.h        **** 		// in this case it is 6 which is greater than 5;hence to decrease by 1 i--. 
+  45:uart.h        **** 	while(i!=0)
+ 215              	.LM33:
+ 216 010c FF4013E2 		ands	r4, r3, #255
+ 217 0110 10A81B09 		ldmeqea	fp, {r4, fp, sp, pc}
+ 218              	.L26:
+  46:uart.h        **** 	{
+  47:uart.h        **** 	uart0_tx_char(count[i] + 0x30);
+ 220              	.LM34:
+ 221 0114 10204BE2 		sub	r2, fp, #16
+ 222 0118 043082E0 		add	r3, r2, r4
+ 223 011c 0C0053E5 		ldrb	r0, [r3, #-12]	@ zero_extendqisi2
+ 224 0120 300080E2 		add	r0, r0, #48
+ 225 0124 FF0000E2 		and	r0, r0, #255
+ 226 0128 FEFFFFEB 		bl	uart0_tx_char
+  48:uart.h        **** 	i--;
+ 228              	.LM35:
+ 229 012c 013044E2 		sub	r3, r4, #1
+ 230 0130 FF4013E2 		ands	r4, r3, #255
+ 231 0134 10A81B09 		ldmeqea	fp, {r4, fp, sp, pc}
+ 232 0138 430000EA 		b	.L26
+ 233              	.L32:
+ 234              		.align	2
+ 235              	.L31:
+ 236 013c CDCCCCCC 		.word	-858993459
+ 237              	.LBE2:
+ 243              		.align	2
+ 245              		.global	uart0_rx_char
+ 247              	uart0_rx_char:
+  49:uart.h        **** 	}
+  50:uart.h        **** }
+  51:uart.h        **** unsigned char uart0_rx_char(void)
+  52:uart.h        **** {
+ 249              	.LM36:
+ 250              		@ args = 0, pretend = 0, frame = 0
+ 251              		@ frame_needed = 0, uses_anonymous_args = 0
+ 252              		@ link register save eliminated.
+ 253              		@ lr needed for prologue
+  53:uart.h        **** 	while(!(U0LSR&(1<<0)));  
+ 255              	.LM37:
+ 256              	.L34:
+ 257 0140 18309FE5 		ldr	r3, .L38
+ 258 0144 003093E5 		ldr	r3, [r3, #0]
+ 259 0148 010013E3 		tst	r3, #1
+ 260 014c 10309F15 		ldrne	r3, .L38+4
+ 261 0150 00009315 		ldrne	r0, [r3, #0]
+ 262 0154 FF000012 		andne	r0, r0, #255
+  54:uart.h        **** 	return U0RBR;
+  55:uart.h        **** }
+ 264              	.LM38:
+ 265 0158 0EF0A011 		movne	pc, lr
+ 266 015c 4E0000EA 		b	.L34
+ 267              	.L39:
+ 268              		.align	2
+ 269              	.L38:
+ 270 0160 14C000E0 		.word	-536821740
+ 271 0164 00C000E0 		.word	-536821760
+ 273              		.align	2
+ 276              		.global	uart0_rx_str
+ 278              	uart0_rx_str:
+  56:uart.h        **** 	
+  57:uart.h        **** void uart0_rx_str(unsigned char *ptr)
+  58:uart.h        **** {     unsigned int i;
+ 280              	.LM39:
+ 281              		@ args = 0, pretend = 0, frame = 0
+ 282              		@ frame_needed = 1, uses_anonymous_args = 0
+ 283 0168 0DC0A0E1 		mov	ip, sp
+ 284 016c 30D82DE9 		stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+ 285 0170 04B04CE2 		sub	fp, ip, #4
+ 286 0174 0040A0E1 		mov	r4, r0
+  59:uart.h        ****       for(i=0;i<100;i++)
+ 288              	.LM40:
+ 289              	.LBB3:
+ 290 0178 0050A0E3 		mov	r5, #0
+ 291              	.L46:
+  60:uart.h        ****       {
+  61:uart.h        ****        *(ptr+i)=uart0_rx_char();
+ 293              	.LM41:
+ 294 017c FEFFFFEB 		bl	uart0_rx_char
+ 295 0180 0500C4E7 		strb	r0, [r4, r5]
+  62:uart.h        ****         if(*(ptr+i)=='\r')
+ 297              	.LM42:
+ 298 0184 0530D4E7 		ldrb	r3, [r4, r5]	@ zero_extendqisi2
+ 299 0188 0D0053E3 		cmp	r3, #13
+ 300 018c 0030A003 		moveq	r3, #0
+ 301 0190 0530C407 		streqb	r3, [r4, r5]
+  63:uart.h        ****         {
+  64:uart.h        ****         *(ptr+i)='\0';
+  65:uart.h        **** 		
+  66:uart.h        ****         break;
+ 303              	.LM43:
+ 304 0194 30A81B09 		ldmeqea	fp, {r4, r5, fp, sp, pc}
+ 306              	.LM44:
+ 307 0198 015085E2 		add	r5, r5, #1
+ 308 019c 630055E3 		cmp	r5, #99
+ 309 01a0 30A81B89 		ldmhiea	fp, {r4, r5, fp, sp, pc}
+ 310 01a4 5D0000EA 		b	.L46
+ 311              	.LBE3:
+ 316              		.align	2
+ 318              		.global	uart0_rx_num
+ 320              	uart0_rx_num:
+  67:uart.h        **** 		}
+  68:uart.h        ****        }      
+  69:uart.h        **** }	
+  70:uart.h        **** 
+  71:uart.h        **** // Receiving number
+  72:uart.h        **** //For 1 digit no.
+  73:uart.h        **** unsigned int uart0_rx_num(void)
+  74:uart.h        **** {
+ 322              	.LM45:
+ 323              		@ args = 0, pretend = 0, frame = 0
+ 324              		@ frame_needed = 1, uses_anonymous_args = 0
+ 325 01a8 0DC0A0E1 		mov	ip, sp
+ 326 01ac 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+ 327 01b0 04B04CE2 		sub	fp, ip, #4
+  75:uart.h        **** 	unsigned int num;
+  76:uart.h        **** 	
+  77:uart.h        **** 	num = uart0_rx_char();
+ 329              	.LM46:
+ 330              	.LBB4:
+ 331 01b4 FEFFFFEB 		bl	uart0_rx_char
+ 332 01b8 FF0000E2 		and	r0, r0, #255
+  78:uart.h        **** 	num = num - 0x30;
+ 334              	.LM47:
+ 335 01bc 300040E2 		sub	r0, r0, #48
+  79:uart.h        **** 	return num;
+  80:uart.h        **** 
+  81:uart.h        **** 	
+  82:uart.h        **** }
+ 337              	.LM48:
+ 338 01c0 00A81BE9 		ldmea	fp, {fp, sp, pc}
+ 339              	.LBE4:
+ 345              		.align	2
+ 347              		.global	main
+ 349              	main:
+ 351              	.Ltext2:
+   1:main.c        **** #include"uart.h"
+   2:main.c        **** void main()
+   3:main.c        **** {
+ 353              	.LM49:
+ 354              		@ args = 0, pretend = 0, frame = 100
+ 355              		@ frame_needed = 1, uses_anonymous_args = 0
+ 356 01c4 0DC0A0E1 		mov	ip, sp
+ 357 01c8 10D82DE9 		stmfd	sp!, {r4, fp, ip, lr, pc}
+ 358 01cc 04B04CE2 		sub	fp, ip, #4
+ 359 01d0 64D04DE2 		sub	sp, sp, #100
+   4:main.c        **** 	sys_init();//for pll
+ 361              	.LM50:
+ 362              	.LBB5:
+ 363 01d4 FEFFFFEB 		bl	sys_init
+   5:main.c        **** 	uart0_init();
+ 365              	.LM51:
+ 366 01d8 FEFFFFEB 		bl	uart0_init
+ 367              	.L53:
+   6:main.c        **** 	while(1) {
+   7:main.c        **** 	//uart0_tx_char('A');
+   8:main.c        **** 	/*unsigned char ch;
+   9:main.c        **** 	while(1)
+  10:main.c        **** 	{
+  11:main.c        **** 	ch=uart0_rx_char();
+  12:main.c        **** 	uart0_tx_char(ch);
+  13:main.c        **** 	}
+  14:main.c        **** 	*/
+  15:main.c        **** 	
+  16:main.c        **** 	unsigned char mystr[100];
+  17:main.c        **** 	uart0_rx_str(mystr); 
+ 369              	.LM52:
+ 370              	.LBB6:
+ 371 01dc 74404BE2 		sub	r4, fp, #116
+ 372 01e0 0400A0E1 		mov	r0, r4
+ 373 01e4 FEFFFFEB 		bl	uart0_rx_str
+  18:main.c        **** 	uart0_tx_str(mystr); 
+ 375              	.LM53:
+ 376 01e8 0400A0E1 		mov	r0, r4
+ 377 01ec FEFFFFEB 		bl	uart0_tx_str
+  19:main.c        **** 	
+  20:main.c        **** 	
+  21:main.c        **** 	uart0_tx_num(1234);
+ 379              	.LM54:
+ 380 01f0 04009FE5 		ldr	r0, .L54
+ 381 01f4 FEFFFFEB 		bl	uart0_tx_num
+ 382              	.LBE6:
+ 383 01f8 750000EA 		b	.L53
+ 384              	.L55:
+ 385              		.align	2
+ 386              	.L54:
+ 387 01fc D2040000 		.word	1234
+ 388              	.LBE5:
+ 393              		.text
+ 395              	.Letext:
+ 396              		.ident	"GCC: (GNU) 3.3"
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+     /tmp/cc7auzEM.s:36     .text:00000000 uart0_init
+     /tmp/cc7auzEM.s:97     .text:0000005c uart0_tx_char
+     /tmp/cc7auzEM.s:128    .text:00000084 uart0_tx_str
+     /tmp/cc7auzEM.s:163    .text:000000b8 uart0_tx_num
+     /tmp/cc7auzEM.s:247    .text:00000140 uart0_rx_char
+     /tmp/cc7auzEM.s:278    .text:00000168 uart0_rx_str
+     /tmp/cc7auzEM.s:320    .text:000001a8 uart0_rx_num
+     /tmp/cc7auzEM.s:349    .text:000001c4 main
+
+UNDEFINED SYMBOLS
+sys_init

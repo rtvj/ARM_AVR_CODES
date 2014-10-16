@@ -1,0 +1,335 @@
+   1              		.file	"startup.c"
+   3              		.text
+   4              	.Ltext0:
+ 127              		.align	2
+ 129              		.global	IRQ_Routine
+ 131              	IRQ_Routine:
+   1:startup.c     **** /*
+   2:startup.c     **** 	Initialisation functions for exception handlers, PLL and MAM
+   3:startup.c     **** 	
+   4:startup.c     **** 	Partially copied from Jim Lynch's tutorial
+   5:startup.c     **** */
+   6:startup.c     **** 
+   7:startup.c     **** /**********************************************************
+   8:startup.c     ****                   Header files
+   9:startup.c     ****  **********************************************************/
+  10:startup.c     **** 
+  11:startup.c     **** #include "startup.h"
+  12:startup.c     **** #include <stdlib.h>
+  13:startup.c     **** #include <sys/stat.h>
+  14:startup.c     **** 
+  15:startup.c     **** 
+  16:startup.c     **** void IRQ_Routine(void) __attribute__ ((interrupt("IRQ")));
+  17:startup.c     **** void FIQ_Routine(void) __attribute__ ((interrupt("FIQ")));
+  18:startup.c     **** void SWI_Routine(void) __attribute__ ((interrupt("SWI")));
+  19:startup.c     **** void UNDEF_Routine(void) __attribute__ ((interrupt("UNDEF")));
+  20:startup.c     **** 
+  21:startup.c     **** /*  Stubs for various interrupts (may be replaced later)  */
+  22:startup.c     **** /*  ----------------------------------------------------  */
+  23:startup.c     **** void IRQ_Routine(void)
+  24:startup.c     **** {
+ 133              	.LM1:
+ 134              		@ Interrupt Service Routine.
+ 135              		@ args = 0, pretend = 0, frame = 0
+ 136              		@ frame_needed = 0, uses_anonymous_args = 0
+ 137              		@ link register save eliminated.
+ 138              		@ lr needed for prologue
+  25:startup.c     **** 
+  26:startup.c     ****     while (1);
+ 140              	.LM2:
+ 141              	.L5:
+ 142 0000 FEFFFFEA 		b	.L5
+ 144              		.align	2
+ 146              		.global	FIQ_Routine
+ 148              	FIQ_Routine:
+  27:startup.c     **** }
+  28:startup.c     **** void FIQ_Routine(void)
+  29:startup.c     **** {
+ 150              	.LM3:
+ 151              		@ Fast Interrupt Service Routine.
+ 152              		@ args = 0, pretend = 0, frame = 0
+ 153              		@ frame_needed = 0, uses_anonymous_args = 0
+ 154              		@ link register save eliminated.
+ 155              		@ lr needed for prologue
+  30:startup.c     ****     while (1);
+ 157              	.LM4:
+ 158              	.L11:
+ 159 0004 FFFFFFEA 		b	.L11
+ 161              		.align	2
+ 163              		.global	SWI_Routine
+ 165              	SWI_Routine:
+  31:startup.c     **** }
+  32:startup.c     **** void SWI_Routine(void)
+  33:startup.c     **** {
+ 167              	.LM5:
+ 168              		@ ARM Exception Handler.
+ 169              		@ args = 0, pretend = 0, frame = 0
+ 170              		@ frame_needed = 0, uses_anonymous_args = 0
+ 171              		@ link register save eliminated.
+ 172              		@ lr needed for prologue
+  34:startup.c     ****     while (1);
+ 174              	.LM6:
+ 175              	.L17:
+ 176 0008 000000EA 		b	.L17
+ 178              		.align	2
+ 180              		.global	UNDEF_Routine
+ 182              	UNDEF_Routine:
+  35:startup.c     **** }
+  36:startup.c     **** void UNDEF_Routine(void)
+  37:startup.c     **** {
+ 184              	.LM7:
+ 185              		@ ARM Exception Handler.
+ 186              		@ args = 0, pretend = 0, frame = 0
+ 187              		@ frame_needed = 0, uses_anonymous_args = 0
+ 188              		@ link register save eliminated.
+ 189              		@ lr needed for prologue
+  38:startup.c     ****     while (1);
+ 191              	.LM8:
+ 192              	.L23:
+ 193 000c 010000EA 		b	.L23
+ 195              		.align	2
+ 198              	feed:
+  39:startup.c     **** }
+  40:startup.c     **** 
+  41:startup.c     **** 
+  42:startup.c     **** /**********************************************************
+  43:startup.c     ****                       Initialize
+  44:startup.c     **** **********************************************************/
+  45:startup.c     **** 
+  46:startup.c     **** #define PLOCK 0x400
+  47:startup.c     **** static void feed(void)
+  48:startup.c     **** {
+ 200              	.LM9:
+ 201              		@ args = 0, pretend = 0, frame = 0
+ 202              		@ frame_needed = 0, uses_anonymous_args = 0
+ 203              		@ link register save eliminated.
+  49:startup.c     ****     PLLFEED = 0xAA;
+ 205              	.LM10:
+ 206 0010 10309FE5 		ldr	r3, .L26
+ 207 0014 AA20A0E3 		mov	r2, #170
+ 208 0018 002083E5 		str	r2, [r3, #0]
+  50:startup.c     ****     PLLFEED = 0x55;
+ 210              	.LM11:
+ 211 001c 5520A0E3 		mov	r2, #85
+ 213              	.LM12:
+ 214              		@ lr needed for prologue
+ 216              	.LM13:
+ 217 0020 002083E5 		str	r2, [r3, #0]
+ 218 0024 0EF0A0E1 		mov	pc, lr
+ 219              	.L27:
+ 220              		.align	2
+ 221              	.L26:
+ 222 0028 8CC01FE0 		.word	-534790004
+ 224              		.align	2
+ 226              		.global	sys_init
+ 228              	sys_init:
+  51:startup.c     **** } void sys_init(void)
+  52:startup.c     **** {
+ 230              	.LM14:
+ 231              		@ args = 0, pretend = 0, frame = 0
+ 232              		@ frame_needed = 1, uses_anonymous_args = 0
+  53:startup.c     **** 
+  54:startup.c     ****     //                              Setting the Phased Lock Loop (PLL)
+  55:startup.c     ****     //               ----------------------------------
+  56:startup.c     ****     //
+  57:startup.c     ****     // LPC-P2148 has a 12.0000 mhz crystal
+  58:startup.c     ****     //
+  59:startup.c     ****     // We'd like the LPC2148 to run at 60 mhz (has to be an even multiple of crystal)
+  60:startup.c     ****     // 
+  61:startup.c     ****     // According to the Philips LPC2148 manual:   M = cclk / Fosc   where:  M    = PLL multiplier (
+  62:startup.c     ****     //                                                                                             
+  63:startup.c     ****     //                                                                                             
+  64:startup.c     ****     //
+  65:startup.c     ****     // Solving:     M = 60000000 / 12000000 = 5           
+  66:startup.c     ****     //
+  67:startup.c     ****     //                      Note: M - 1 must be entered into bits 0-4 of PLLCFG (assign 4 to these 
+  68:startup.c     ****     //
+  69:startup.c     ****     //
+  70:startup.c     ****     // The Current Controlled Oscilator (CCO) must operate in the range 156 mhz to 320 mhz
+  71:startup.c     ****     //
+  72:startup.c     ****     // According to the Philips LPC2148 manual:     Fcco = cclk * 2 * P    where:   Fcco = CCO freq
+  73:startup.c     ****     //                                                                                             
+  74:startup.c     ****     //                                                                                             
+  75:startup.c     ****     //
+  76:startup.c     ****     // Solving:     Fcco = 60000000 * 2 * P
+  77:startup.c     ****     //                      P = 2  (trial value)
+  78:startup.c     ****     //                      Fcco = 60000000 * 2 * 2
+  79:startup.c     ****     //                      Fcc0 = 240000000 hz    (good choice for P since it's within the 156 mhz
+  80:startup.c     ****     //
+  81:startup.c     ****     // From Table 22 (page 34) of Philips LPC2148 manual    P = 2, PLLCFG bits 5-6 = 1  (assign 1 t
+  82:startup.c     ****     //
+  83:startup.c     ****     // Finally:      PLLCFG = 0  01  00100  =  0x24
+  84:startup.c     ****     //
+  85:startup.c     ****     // Final note: to load PLLCFG register, we must use the 0xAA followed 0x55 write sequence to th
+  86:startup.c     ****     //             this is done in the short function feed() below
+  87:startup.c     ****     //
+  88:startup.c     **** 
+  89:startup.c     ****     // Setting Multiplier and Divider values
+  90:startup.c     ****     PLLCFG = 0x24;
+ 234              	.LM15:
+ 235 002c 68309FE5 		ldr	r3, .L33
+ 237              	.LM16:
+ 238 0030 0DC0A0E1 		mov	ip, sp
+ 240              	.LM17:
+ 241 0034 2420A0E3 		mov	r2, #36
+ 243              	.LM18:
+ 244 0038 10D82DE9 		stmfd	sp!, {r4, fp, ip, lr, pc}
+ 246              	.LM19:
+ 247 003c 002083E5 		str	r2, [r3, #0]
+ 249              	.LM20:
+ 250 0040 04B04CE2 		sub	fp, ip, #4
+  91:startup.c     ****     feed();
+ 252              	.LM21:
+ 253 0044 020000EB 		bl	feed
+  92:startup.c     **** 
+  93:startup.c     ****     // Enabling the PLL */  
+  94:startup.c     ****     PLLCON = 0x1;
+ 255              	.LM22:
+ 256 0048 50309FE5 		ldr	r3, .L33+4
+ 257 004c 0120A0E3 		mov	r2, #1
+ 258 0050 002083E5 		str	r2, [r3, #0]
+  95:startup.c     ****     feed();
+ 260              	.LM23:
+ 261 0054 020000EB 		bl	feed
+  96:startup.c     **** 
+  97:startup.c     ****     // Wait for the PLL to lock to set frequency
+  98:startup.c     ****     while (!(PLLSTAT & PLOCK));
+ 263              	.LM24:
+ 264              	.L29:
+ 265 0058 44309FE5 		ldr	r3, .L33+8
+ 266 005c 003093E5 		ldr	r3, [r3, #0]
+ 267 0060 010B13E3 		tst	r3, #1024
+ 268 0064 1400000A 		beq	.L29
+  99:startup.c     **** 
+ 100:startup.c     ****     // Connect the PLL as the clock source
+ 101:startup.c     ****     PLLCON = 0x3;
+ 270              	.LM25:
+ 271 0068 30309FE5 		ldr	r3, .L33+4
+ 272 006c 0340A0E3 		mov	r4, #3
+ 273 0070 004083E5 		str	r4, [r3, #0]
+ 102:startup.c     ****     feed();
+ 275              	.LM26:
+ 276 0074 020000EB 		bl	feed
+ 103:startup.c     **** 
+ 104:startup.c     ****     // Enabling MAM and setting number of clocks used for Flash memory fetch
+ 105:startup.c     ****     MAMTIM = 0x3;
+ 278              	.LM27:
+ 279 0078 28309FE5 		ldr	r3, .L33+12
+ 280 007c 004083E5 		str	r4, [r3, #0]
+ 106:startup.c     ****     MAMCR = 0x2;
+ 282              	.LM28:
+ 283 0080 24309FE5 		ldr	r3, .L33+16
+ 284 0084 0220A0E3 		mov	r2, #2
+ 285 0088 002083E5 		str	r2, [r3, #0]
+ 107:startup.c     **** 
+ 108:startup.c     ****     // Setting peripheral Clock (pclk) to System Clock (cclk)
+ 109:startup.c     ****     VPBDIV = 0x1;
+ 287              	.LM29:
+ 288 008c 1C309FE5 		ldr	r3, .L33+20
+ 289 0090 0120A0E3 		mov	r2, #1
+ 290 0094 002083E5 		str	r2, [r3, #0]
+ 291 0098 10A81BE9 		ldmea	fp, {r4, fp, sp, pc}
+ 292              	.L34:
+ 293              		.align	2
+ 294              	.L33:
+ 295 009c 84C01FE0 		.word	-534790012
+ 296 00a0 80C01FE0 		.word	-534790016
+ 297 00a4 88C01FE0 		.word	-534790008
+ 298 00a8 04C01FE0 		.word	-534790140
+ 299 00ac 00C01FE0 		.word	-534790144
+ 300 00b0 00C11FE0 		.word	-534789888
+ 302              		.align	2
+ 306              		.global	_sbrk_r
+ 308              	_sbrk_r:
+ 110:startup.c     **** }
+ 111:startup.c     **** 
+ 112:startup.c     **** 
+ 113:startup.c     **** 
+ 114:startup.c     **** 
+ 115:startup.c     **** 
+ 116:startup.c     **** /* "malloc clue function" */
+ 117:startup.c     **** 
+ 118:startup.c     **** 	/**** Locally used variables. ****/
+ 119:startup.c     **** extern char end[];              /*  end is set in the linker command 	*/
+ 120:startup.c     **** 				/* file and is the end of statically 	*/
+ 121:startup.c     **** 				/* allocated data (thus start of heap).	*/
+ 122:startup.c     **** 
+ 123:startup.c     **** static char *heap_ptr;		/* Points to current end of the heap.	*/
+ 124:startup.c     **** 
+ 125:startup.c     **** /************************** _sbrk_r *************************************/
+ 126:startup.c     **** /*  Support function.  Adjusts end of heap to provide more memory to	*/
+ 127:startup.c     **** /* memory allocator. Simple and dumb with no sanity checks.		*/
+ 128:startup.c     **** /*  struct _reent *r	-- re-entrancy structure, used by newlib to 	*/
+ 129:startup.c     **** /*			support multiple threads of operation.		*/
+ 130:startup.c     **** /*  ptrdiff_t nbytes	-- number of bytes to add.			*/
+ 131:startup.c     **** /*  Returns pointer to start of new heap area.				*/
+ 132:startup.c     **** /*  Note:  This implementation is not thread safe (despite taking a	*/
+ 133:startup.c     **** /* _reent structure as a parameter).  					*/
+ 134:startup.c     **** /*  Since _s_r is not used in the current implementation, the following	*/
+ 135:startup.c     **** /* messages must be suppressed.						*/
+ 136:startup.c     **** 
+ 137:startup.c     **** void * _sbrk_r(
+ 138:startup.c     ****     struct _reent *_s_r, 
+ 139:startup.c     ****     ptrdiff_t nbytes)
+ 140:startup.c     **** {
+ 310              	.LM30:
+ 311              		@ args = 0, pretend = 0, frame = 0
+ 312              		@ frame_needed = 0, uses_anonymous_args = 0
+ 313              		@ link register save eliminated.
+ 141:startup.c     **** 	char  *base;		/*  errno should be set to  ENOMEM on error	*/
+ 142:startup.c     **** 
+ 143:startup.c     **** 	if (!heap_ptr) {	/*  Initialize if first time through.		*/
+ 315              	.LM31:
+ 316              	.LBB2:
+ 317 00b4 20209FE5 		ldr	r2, .L37
+ 318 00b8 003092E5 		ldr	r3, [r2, #0]
+ 319 00bc 000053E3 		cmp	r3, #0
+ 144:startup.c     **** 		heap_ptr = end;
+ 321              	.LM32:
+ 322 00c0 18309F05 		ldreq	r3, .L37+4
+ 323 00c4 00308205 		streq	r3, [r2, #0]
+ 145:startup.c     **** 	}
+ 146:startup.c     **** 	base = heap_ptr;	/*  Point to end of heap.			*/
+ 325              	.LM33:
+ 326 00c8 003092E5 		ldr	r3, [r2, #0]
+ 147:startup.c     **** 	heap_ptr += nbytes;	/*  Increase heap.				*/
+ 148:startup.c     **** 	
+ 149:startup.c     **** 	return base;		/*  Return pointer to start of new heap area.	*/
+ 150:startup.c     **** }
+ 328              	.LM34:
+ 329              	.LBE2:
+ 330 00cc 0300A0E1 		mov	r0, r3
+ 332              	.LM35:
+ 333              	.LBB3:
+ 334 00d0 013083E0 		add	r3, r3, r1
+ 336              	.LM36:
+ 337              		@ lr needed for prologue
+ 339              	.LM37:
+ 340 00d4 003082E5 		str	r3, [r2, #0]
+ 341 00d8 0EF0A0E1 		mov	pc, lr
+ 342              	.L38:
+ 343              		.align	2
+ 344              	.L37:
+ 345 00dc 00000000 		.word	heap_ptr
+ 346 00e0 00000000 		.word	end
+ 347              	.LBE3:
+ 355              		.bss
+ 356              		.align	2
+ 357              	heap_ptr:
+ 358 0000 00000000 		.space	4
+ 360              		.text
+ 362              	.Letext:
+ 363              		.ident	"GCC: (GNU) 3.3"
+DEFINED SYMBOLS
+                            *ABS*:00000000 startup.c
+     /tmp/ccg9OkNa.s:131    .text:00000000 IRQ_Routine
+     /tmp/ccg9OkNa.s:148    .text:00000004 FIQ_Routine
+     /tmp/ccg9OkNa.s:165    .text:00000008 SWI_Routine
+     /tmp/ccg9OkNa.s:182    .text:0000000c UNDEF_Routine
+     /tmp/ccg9OkNa.s:198    .text:00000010 feed
+     /tmp/ccg9OkNa.s:228    .text:0000002c sys_init
+     /tmp/ccg9OkNa.s:308    .text:000000b4 _sbrk_r
+     /tmp/ccg9OkNa.s:357    .bss:00000000 heap_ptr
+
+UNDEFINED SYMBOLS
+end

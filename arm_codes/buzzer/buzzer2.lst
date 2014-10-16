@@ -1,0 +1,113 @@
+   1              		.file	"buzzer2.c"
+   3              		.text
+   4              	.Ltext0:
+  31              		.align	2
+  33              		.global	main
+  35              	main:
+   1:buzzer2.c     **** #include"startup.h"
+   2:buzzer2.c     **** #include"LPC214x.h"
+   3:buzzer2.c     **** 
+   4:buzzer2.c     **** int main()
+   5:buzzer2.c     **** {	unsigned int i,j;
+  37              	.LM1:
+  38              		@ args = 0, pretend = 0, frame = 0
+  39              		@ frame_needed = 1, uses_anonymous_args = 0
+  40 0000 0DC0A0E1 		mov	ip, sp
+  41 0004 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+  42 0008 04B04CE2 		sub	fp, ip, #4
+   6:buzzer2.c     **** 	sys_init();//for pll
+  44              	.LM2:
+  45              	.LBB2:
+  46 000c FEFFFFEB 		bl	sys_init
+   7:buzzer2.c     **** 	PINSEL0&=~(1<<22);// Pins P1.25-16 are used as GPIO pins.
+  48              	.LM3:
+  49 0010 9C209FE5 		ldr	r2, .L34
+  50 0014 003092E5 		ldr	r3, [r2, #0]
+  51 0018 0135C3E3 		bic	r3, r3, #4194304
+  52 001c 003082E5 		str	r3, [r2, #0]
+   8:buzzer2.c     **** 	PINSEL0&=~(1<<23);
+  54              	.LM4:
+  55 0020 003092E5 		ldr	r3, [r2, #0]
+  56 0024 0235C3E3 		bic	r3, r3, #8388608
+  57 0028 003082E5 		str	r3, [r2, #0]
+   9:buzzer2.c     **** 	IODIR0|=(1<<11);//AS O/P
+  59              	.LM5:
+  60 002c 84209FE5 		ldr	r2, .L34+4
+  61 0030 003092E5 		ldr	r3, [r2, #0]
+  62 0034 023B83E3 		orr	r3, r3, #2048
+  63 0038 003082E5 		str	r3, [r2, #0]
+  64              	.L25:
+  10:buzzer2.c     **** 	while(1)
+  11:buzzer2.c     **** 	{
+  12:buzzer2.c     **** 	IOSET0|=(1<<11);
+  66              	.LM6:
+  67 003c 78209FE5 		ldr	r2, .L34+8
+  68 0040 003092E5 		ldr	r3, [r2, #0]
+  13:buzzer2.c     **** 	for(i=0;i<5500;i++){
+  70              	.LM7:
+  71 0044 74109FE5 		ldr	r1, .L34+12
+  73              	.LM8:
+  74 0048 023B83E3 		orr	r3, r3, #2048
+  75 004c 003082E5 		str	r3, [r2, #0]
+  77              	.LM9:
+  78 0050 0020A0E3 		mov	r2, #0
+  79              	.L14:
+  14:buzzer2.c     **** 		for(j=0;j<5500;j++);}
+  81              	.LM10:
+  82 0054 0030A0E3 		mov	r3, #0
+  83              	.L13:
+  84 0058 013083E2 		add	r3, r3, #1
+  85 005c 010053E1 		cmp	r3, r1
+  86 0060 1400009A 		bls	.L13
+  88              	.LM11:
+  89 0064 54109FE5 		ldr	r1, .L34+12
+  90 0068 012082E2 		add	r2, r2, #1
+  91 006c 010052E1 		cmp	r2, r1
+  92 0070 1300009A 		bls	.L14
+  15:buzzer2.c     **** 	IOCLR0|=(1<<11);
+  94              	.LM12:
+  95 0074 48209FE5 		ldr	r2, .L34+16
+  96 0078 003092E5 		ldr	r3, [r2, #0]
+  97 007c 023B83E3 		orr	r3, r3, #2048
+  98 0080 003082E5 		str	r3, [r2, #0]
+  16:buzzer2.c     **** 	for(i=0;i<5500;i++){
+ 100              	.LM13:
+ 101 0084 0130A0E1 		mov	r3, r1
+ 103              	.LM14:
+ 104 0088 0020A0E3 		mov	r2, #0
+ 105              	.L24:
+  17:buzzer2.c     **** 		for(j=0;j<5500;j++);}	
+ 107              	.LM15:
+ 108 008c 0310A0E1 		mov	r1, r3
+ 109 0090 0030A0E3 		mov	r3, #0
+ 110              	.L23:
+ 111 0094 013083E2 		add	r3, r3, #1
+ 112 0098 010053E1 		cmp	r3, r1
+ 113 009c 2300009A 		bls	.L23
+ 115              	.LM16:
+ 116 00a0 18309FE5 		ldr	r3, .L34+12
+ 117 00a4 012082E2 		add	r2, r2, #1
+ 118 00a8 030052E1 		cmp	r2, r3
+ 119 00ac 2100009A 		bls	.L24
+ 120 00b0 0D0000EA 		b	.L25
+ 121              	.L35:
+ 122              		.align	2
+ 123              	.L34:
+ 124 00b4 00C002E0 		.word	-536690688
+ 125 00b8 088002E0 		.word	-536707064
+ 126 00bc 048002E0 		.word	-536707068
+ 127 00c0 7B150000 		.word	5499
+ 128 00c4 0C8002E0 		.word	-536707060
+  18:buzzer2.c     **** 	}
+  19:buzzer2.c     **** }	
+ 130              	.LM17:
+ 131              	.LBE2:
+ 137              		.text
+ 139              	.Letext:
+ 140              		.ident	"GCC: (GNU) 3.3"
+DEFINED SYMBOLS
+                            *ABS*:00000000 buzzer2.c
+     /tmp/ccwop61f.s:35     .text:00000000 main
+
+UNDEFINED SYMBOLS
+sys_init

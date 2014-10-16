@@ -1,0 +1,1357 @@
+   1              		.file	"rtc_alarm.c"
+   3              		.text
+   4              	.Ltext0:
+  32              		.global	sec
+  33              		.data
+  34              		.align	2
+  37              	sec:
+  38 0000 37000000 		.word	55
+  39              		.global	min
+  40              		.align	2
+  43              	min:
+  44 0004 37000000 		.word	55
+  45              		.global	hour
+  46              		.align	2
+  49              	hour:
+  50 0008 01000000 		.word	1
+  51              		.global	dow
+  52              		.align	2
+  55              	dow:
+  56 000c 06000000 		.word	6
+  57              		.global	dom
+  58              		.align	2
+  61              	dom:
+  62 0010 02000000 		.word	2
+  63              		.global	month
+  64              		.align	2
+  67              	month:
+  68 0014 05000000 		.word	5
+  69              		.global	year
+  70              		.align	2
+  73              	year:
+  74 0018 DC070000 		.word	2012
+  75              		.text
+  76              		.align	2
+  78              		.global	rtc_init
+  80              	rtc_init:
+  82              	.Ltext1:
+   1:rtc_alarm.h   **** unsigned int sec=55,min=55,hour=1,dow=6,dom=2,month=5,year=2012;
+   2:rtc_alarm.h   **** 
+   3:rtc_alarm.h   **** void rtc_init()
+   4:rtc_alarm.h   **** {
+  84              	.LM1:
+  85              		@ args = 0, pretend = 0, frame = 0
+  86              		@ frame_needed = 0, uses_anonymous_args = 0
+  87              		@ link register save eliminated.
+   5:rtc_alarm.h   **** 	CCR=0X11;//CLKEN =1;CLKSRC =1
+  89              	.LM2:
+  90 0000 08309FE5 		ldr	r3, .L2
+  91 0004 1120A0E3 		mov	r2, #17
+  93              	.LM3:
+  94              		@ lr needed for prologue
+  96              	.LM4:
+  97 0008 002083E5 		str	r2, [r3, #0]
+  98 000c 0EF0A0E1 		mov	pc, lr
+  99              	.L3:
+ 100              		.align	2
+ 101              	.L2:
+ 102 0010 084002E0 		.word	-536723448
+ 104              		.align	2
+ 106              		.global	rtc_write
+ 108              	rtc_write:
+   6:rtc_alarm.h   **** }
+   7:rtc_alarm.h   **** 
+   8:rtc_alarm.h   **** void rtc_write()
+   9:rtc_alarm.h   **** {
+ 110              	.LM5:
+ 111              		@ args = 0, pretend = 0, frame = 0
+ 112              		@ frame_needed = 0, uses_anonymous_args = 0
+ 113 0014 30402DE9 		stmfd	sp!, {r4, r5, lr}
+  10:rtc_alarm.h   **** 	SEC =sec&0x3f;
+  11:rtc_alarm.h   **** 	MIN =min&0X3f;
+  12:rtc_alarm.h   **** 	HOUR =hour&0X1f;
+  13:rtc_alarm.h   **** 	DOW=dow&0X07;
+  14:rtc_alarm.h   **** 	DOM = dom&0x1f;
+  15:rtc_alarm.h   **** 	MONTH =month&0x1f;
+  16:rtc_alarm.h   **** 	YEAR =year&0x0fff;
+ 115              	.LM6:
+ 116 0018 8C309FE5 		ldr	r3, .L5
+ 117 001c 005093E5 		ldr	r5, [r3, #0]
+ 119              	.LM7:
+ 120 0020 88309FE5 		ldr	r3, .L5+4
+ 121 0024 002093E5 		ldr	r2, [r3, #0]
+ 123              	.LM8:
+ 124 0028 84309FE5 		ldr	r3, .L5+8
+ 125 002c 001093E5 		ldr	r1, [r3, #0]
+ 127              	.LM9:
+ 128 0030 80309FE5 		ldr	r3, .L5+12
+ 129 0034 000093E5 		ldr	r0, [r3, #0]
+ 131              	.LM10:
+ 132 0038 7C309FE5 		ldr	r3, .L5+16
+ 133 003c 00C093E5 		ldr	ip, [r3, #0]
+ 135              	.LM11:
+ 136 0040 78309FE5 		ldr	r3, .L5+20
+ 137 0044 00E093E5 		ldr	lr, [r3, #0]
+ 139              	.LM12:
+ 140 0048 74309FE5 		ldr	r3, .L5+24
+ 141 004c 004093E5 		ldr	r4, [r3, #0]
+ 143              	.LM13:
+ 144 0050 70309FE5 		ldr	r3, .L5+28
+ 145 0054 3F2002E2 		and	r2, r2, #63
+ 146 0058 002083E5 		str	r2, [r3, #0]
+ 148              	.LM14:
+ 149 005c 68309FE5 		ldr	r3, .L5+32
+ 150 0060 3F1001E2 		and	r1, r1, #63
+ 151 0064 001083E5 		str	r1, [r3, #0]
+ 153              	.LM15:
+ 154 0068 60309FE5 		ldr	r3, .L5+36
+ 155 006c 1F0000E2 		and	r0, r0, #31
+ 156 0070 000083E5 		str	r0, [r3, #0]
+ 158              	.LM16:
+ 159 0074 58309FE5 		ldr	r3, .L5+40
+ 160 0078 07C00CE2 		and	ip, ip, #7
+ 161 007c 00C083E5 		str	ip, [r3, #0]
+ 163              	.LM17:
+ 164 0080 50309FE5 		ldr	r3, .L5+44
+ 165 0084 1FE00EE2 		and	lr, lr, #31
+ 166 0088 00E083E5 		str	lr, [r3, #0]
+ 168              	.LM18:
+ 169 008c 48309FE5 		ldr	r3, .L5+48
+ 170 0090 1F4004E2 		and	r4, r4, #31
+ 171 0094 004083E5 		str	r4, [r3, #0]
+ 173              	.LM19:
+ 174 0098 055AA0E1 		mov	r5, r5, asl #20
+ 175 009c 3C309FE5 		ldr	r3, .L5+52
+ 176 00a0 255AA0E1 		mov	r5, r5, lsr #20
+ 177 00a4 005083E5 		str	r5, [r3, #0]
+ 178 00a8 3080BDE8 		ldmfd	sp!, {r4, r5, pc}
+ 179              	.L6:
+ 180              		.align	2
+ 181              	.L5:
+ 182 00ac 00000000 		.word	year
+ 183 00b0 00000000 		.word	sec
+ 184 00b4 00000000 		.word	min
+ 185 00b8 00000000 		.word	hour
+ 186 00bc 00000000 		.word	dow
+ 187 00c0 00000000 		.word	dom
+ 188 00c4 00000000 		.word	month
+ 189 00c8 204002E0 		.word	-536723424
+ 190 00cc 244002E0 		.word	-536723420
+ 191 00d0 284002E0 		.word	-536723416
+ 192 00d4 304002E0 		.word	-536723408
+ 193 00d8 2C4002E0 		.word	-536723412
+ 194 00dc 384002E0 		.word	-536723400
+ 195 00e0 3C4002E0 		.word	-536723396
+ 197              		.align	2
+ 199              		.global	rtc_read_sec
+ 201              	rtc_read_sec:
+  17:rtc_alarm.h   **** }
+  18:rtc_alarm.h   **** 
+  19:rtc_alarm.h   **** unsigned int  rtc_read_sec()
+  20:rtc_alarm.h   **** {
+ 203              	.LM20:
+ 204              		@ args = 0, pretend = 0, frame = 0
+ 205              		@ frame_needed = 0, uses_anonymous_args = 0
+ 206              		@ link register save eliminated.
+  21:rtc_alarm.h   **** 	return (CTIME0 &0x3f);
+ 208              	.LM21:
+ 209 00e4 08309FE5 		ldr	r3, .L8
+ 210 00e8 000093E5 		ldr	r0, [r3, #0]
+ 211 00ec 3F0000E2 		and	r0, r0, #63
+ 213              	.LM22:
+ 214              		@ lr needed for prologue
+  22:rtc_alarm.h   **** }
+ 216              	.LM23:
+ 217 00f0 0EF0A0E1 		mov	pc, lr
+ 218              	.L9:
+ 219              		.align	2
+ 220              	.L8:
+ 221 00f4 144002E0 		.word	-536723436
+ 223              		.align	2
+ 225              		.global	rtc_read_min
+ 227              	rtc_read_min:
+  23:rtc_alarm.h   **** 
+  24:rtc_alarm.h   **** unsigned int  rtc_read_min()
+  25:rtc_alarm.h   **** {
+ 229              	.LM24:
+ 230              		@ args = 0, pretend = 0, frame = 0
+ 231              		@ frame_needed = 0, uses_anonymous_args = 0
+ 232              		@ link register save eliminated.
+  26:rtc_alarm.h   **** 	return ((CTIME0 &0x3f00)>>8);
+ 234              	.LM25:
+ 235 00f8 0C309FE5 		ldr	r3, .L11
+ 236 00fc 000093E5 		ldr	r0, [r3, #0]
+ 237 0100 3F0C00E2 		and	r0, r0, #16128
+ 238 0104 2004A0E1 		mov	r0, r0, lsr #8
+ 240              	.LM26:
+ 241              		@ lr needed for prologue
+  27:rtc_alarm.h   **** }
+ 243              	.LM27:
+ 244 0108 0EF0A0E1 		mov	pc, lr
+ 245              	.L12:
+ 246              		.align	2
+ 247              	.L11:
+ 248 010c 144002E0 		.word	-536723436
+ 250              		.align	2
+ 252              		.global	rtc_read_hour
+ 254              	rtc_read_hour:
+  28:rtc_alarm.h   **** 
+  29:rtc_alarm.h   **** unsigned int  rtc_read_hour()
+  30:rtc_alarm.h   **** {
+ 256              	.LM28:
+ 257              		@ args = 0, pretend = 0, frame = 0
+ 258              		@ frame_needed = 0, uses_anonymous_args = 0
+ 259              		@ link register save eliminated.
+  31:rtc_alarm.h   **** 	return ((CTIME0 &0x1f0000)>>16);
+ 261              	.LM29:
+ 262 0110 0C309FE5 		ldr	r3, .L14
+ 263 0114 000093E5 		ldr	r0, [r3, #0]
+ 264 0118 1F0800E2 		and	r0, r0, #2031616
+ 265 011c 2008A0E1 		mov	r0, r0, lsr #16
+ 267              	.LM30:
+ 268              		@ lr needed for prologue
+  32:rtc_alarm.h   **** }
+ 270              	.LM31:
+ 271 0120 0EF0A0E1 		mov	pc, lr
+ 272              	.L15:
+ 273              		.align	2
+ 274              	.L14:
+ 275 0124 144002E0 		.word	-536723436
+ 277              		.align	2
+ 279              		.global	rtc_read_dow
+ 281              	rtc_read_dow:
+  33:rtc_alarm.h   **** 
+  34:rtc_alarm.h   **** unsigned int  rtc_read_dow()
+  35:rtc_alarm.h   **** {
+ 283              	.LM32:
+ 284              		@ args = 0, pretend = 0, frame = 0
+ 285              		@ frame_needed = 0, uses_anonymous_args = 0
+ 286              		@ link register save eliminated.
+  36:rtc_alarm.h   **** 	return ((CTIME0 &0x7000000)>>24);
+ 288              	.LM33:
+ 289 0128 0C309FE5 		ldr	r3, .L17
+ 290 012c 000093E5 		ldr	r0, [r3, #0]
+ 291 0130 070400E2 		and	r0, r0, #117440512
+ 292 0134 200CA0E1 		mov	r0, r0, lsr #24
+ 294              	.LM34:
+ 295              		@ lr needed for prologue
+  37:rtc_alarm.h   **** }
+ 297              	.LM35:
+ 298 0138 0EF0A0E1 		mov	pc, lr
+ 299              	.L18:
+ 300              		.align	2
+ 301              	.L17:
+ 302 013c 144002E0 		.word	-536723436
+ 304              		.align	2
+ 306              		.global	rtc_read_dom
+ 308              	rtc_read_dom:
+  38:rtc_alarm.h   **** unsigned int  rtc_read_dom()
+  39:rtc_alarm.h   **** {
+ 310              	.LM36:
+ 311              		@ args = 0, pretend = 0, frame = 0
+ 312              		@ frame_needed = 0, uses_anonymous_args = 0
+ 313              		@ link register save eliminated.
+  40:rtc_alarm.h   **** 	return (CTIME1 &0x1f);
+ 315              	.LM37:
+ 316 0140 08309FE5 		ldr	r3, .L20
+ 317 0144 000093E5 		ldr	r0, [r3, #0]
+ 318 0148 1F0000E2 		and	r0, r0, #31
+ 320              	.LM38:
+ 321              		@ lr needed for prologue
+  41:rtc_alarm.h   **** }
+ 323              	.LM39:
+ 324 014c 0EF0A0E1 		mov	pc, lr
+ 325              	.L21:
+ 326              		.align	2
+ 327              	.L20:
+ 328 0150 184002E0 		.word	-536723432
+ 330              		.align	2
+ 332              		.global	rtc_read_month
+ 334              	rtc_read_month:
+  42:rtc_alarm.h   **** 
+  43:rtc_alarm.h   **** unsigned int  rtc_read_month()
+  44:rtc_alarm.h   **** {
+ 336              	.LM40:
+ 337              		@ args = 0, pretend = 0, frame = 0
+ 338              		@ frame_needed = 0, uses_anonymous_args = 0
+ 339              		@ link register save eliminated.
+  45:rtc_alarm.h   **** 	return ((CTIME1 &0x1f00)>>8);
+ 341              	.LM41:
+ 342 0154 0C309FE5 		ldr	r3, .L23
+ 343 0158 000093E5 		ldr	r0, [r3, #0]
+ 344 015c 1F0C00E2 		and	r0, r0, #7936
+ 345 0160 2004A0E1 		mov	r0, r0, lsr #8
+ 347              	.LM42:
+ 348              		@ lr needed for prologue
+  46:rtc_alarm.h   **** }
+ 350              	.LM43:
+ 351 0164 0EF0A0E1 		mov	pc, lr
+ 352              	.L24:
+ 353              		.align	2
+ 354              	.L23:
+ 355 0168 184002E0 		.word	-536723432
+ 357              		.align	2
+ 359              		.global	rtc_read_year
+ 361              	rtc_read_year:
+  47:rtc_alarm.h   **** 
+  48:rtc_alarm.h   **** unsigned int  rtc_read_year()
+  49:rtc_alarm.h   **** {
+ 363              	.LM44:
+ 364              		@ args = 0, pretend = 0, frame = 0
+ 365              		@ frame_needed = 0, uses_anonymous_args = 0
+ 366              		@ link register save eliminated.
+  50:rtc_alarm.h   **** 	return ((CTIME1 &0xfff0000)>>16);
+ 368              	.LM45:
+ 369 016c 10309FE5 		ldr	r3, .L26
+ 370 0170 10009FE5 		ldr	r0, .L26+4
+ 371 0174 003093E5 		ldr	r3, [r3, #0]
+ 372 0178 000003E0 		and	r0, r3, r0
+ 373 017c 2008A0E1 		mov	r0, r0, lsr #16
+ 375              	.LM46:
+ 376              		@ lr needed for prologue
+  51:rtc_alarm.h   **** }
+ 378              	.LM47:
+ 379 0180 0EF0A0E1 		mov	pc, lr
+ 380              	.L27:
+ 381              		.align	2
+ 382              	.L26:
+ 383 0184 184002E0 		.word	-536723432
+ 384 0188 0000FF0F 		.word	268369920
+ 386              		.align	2
+ 389              		.global	delay
+ 391              	delay:
+  52:rtc_alarm.h   **** void delay(unsigned int i)
+  53:rtc_alarm.h   **** {
+ 393              	.LM48:
+ 394              		@ args = 0, pretend = 0, frame = 8
+ 395              		@ frame_needed = 0, uses_anonymous_args = 0
+ 396              		@ link register save eliminated.
+ 397 018c 08D04DE2 		sub	sp, sp, #8
+  54:rtc_alarm.h   **** 	volatile unsigned int j=0,k = 0;
+ 399              	.LM49:
+ 400              	.LBB2:
+ 401 0190 0030A0E3 		mov	r3, #0
+ 402 0194 04308DE5 		str	r3, [sp, #4]
+ 403 0198 00308DE5 		str	r3, [sp, #0]
+  55:rtc_alarm.h   **** 	for (j=0;j<i;j++)
+ 405              	.LM50:
+ 406 019c 04308DE5 		str	r3, [sp, #4]
+ 407 01a0 04309DE5 		ldr	r3, [sp, #4]
+ 408 01a4 000053E1 		cmp	r3, r0
+ 410              	.LM51:
+ 411              		@ lr needed for prologue
+ 413              	.LM52:
+ 414 01a8 7B00002A 		bcs	.L40
+ 415              	.L38:
+  56:rtc_alarm.h   **** 		for (k=0;k<6000;k++);	
+ 417              	.LM53:
+ 418 01ac 0030A0E3 		mov	r3, #0
+ 419 01b0 00308DE5 		str	r3, [sp, #0]
+ 420 01b4 00309DE5 		ldr	r3, [sp, #0]
+ 421 01b8 3C209FE5 		ldr	r2, .L43
+ 422 01bc 020053E1 		cmp	r3, r2
+ 423 01c0 7500008A 		bhi	.L42
+ 424              	.L37:
+ 425 01c4 00309DE5 		ldr	r3, [sp, #0]
+ 426 01c8 013083E2 		add	r3, r3, #1
+ 427 01cc 00308DE5 		str	r3, [sp, #0]
+ 428 01d0 00309DE5 		ldr	r3, [sp, #0]
+ 429 01d4 020053E1 		cmp	r3, r2
+ 430 01d8 6F00009A 		bls	.L37
+ 431              	.L42:
+ 433              	.LM54:
+ 434 01dc 04309DE5 		ldr	r3, [sp, #4]
+ 435 01e0 013083E2 		add	r3, r3, #1
+ 436 01e4 04308DE5 		str	r3, [sp, #4]
+ 437 01e8 04309DE5 		ldr	r3, [sp, #4]
+ 438 01ec 000053E1 		cmp	r3, r0
+ 439 01f0 6900003A 		bcc	.L38
+ 440              	.L40:
+ 441 01f4 08D08DE2 		add	sp, sp, #8
+ 442 01f8 0EF0A0E1 		mov	pc, lr
+ 443              	.L44:
+ 444              		.align	2
+ 445              	.L43:
+ 446 01fc 6F170000 		.word	5999
+ 447              	.LBE2:
+ 453              		.align	2
+ 455              		.global	alarm_start
+ 457              	alarm_start:
+  57:rtc_alarm.h   **** }
+  58:rtc_alarm.h   **** /*
+  59:rtc_alarm.h   **** void alarm_start()
+  60:rtc_alarm.h   **** {
+  61:rtc_alarm.h   **** 	CIIR=0X00;// initialise by 0
+  62:rtc_alarm.h   **** 	ILR=0X01;// RTCCIF =When one, the Counter Increment Interrupt block generated an interrupt.
+  63:rtc_alarm.h   **** 	CIIR|=(1<<0);// When 1, an increment of the Second value generates an interrupt. 
+  64:rtc_alarm.h   **** }
+  65:rtc_alarm.h   **** 
+  66:rtc_alarm.h   **** void alarm_stop(unsigned int val)
+  67:rtc_alarm.h   **** {
+  68:rtc_alarm.h   **** 	ILR=0X02;//RTCALF =When one, the alarm registers generated an interrupt. Writing a one to this bit
+  69:rtc_alarm.h   **** 	ALSEC=val;//The values in these registers are compared with the time counters.
+  70:rtc_alarm.h   **** 	AMR&=~(1<<0);//When 1, the  value is not compared for the alarm;hence 0.
+  71:rtc_alarm.h   **** }
+  72:rtc_alarm.h   **** */
+  73:rtc_alarm.h   **** 
+  74:rtc_alarm.h   **** void alarm_start()
+  75:rtc_alarm.h   **** {
+ 459              	.LM55:
+ 460              		@ args = 0, pretend = 0, frame = 0
+ 461              		@ frame_needed = 0, uses_anonymous_args = 0
+ 462              		@ link register save eliminated.
+  76:rtc_alarm.h   **** 	CIIR=0x00;
+ 464              	.LM56:
+ 465 0200 20209FE5 		ldr	r2, .L46
+ 466 0204 0030A0E3 		mov	r3, #0
+ 467 0208 003082E5 		str	r3, [r2, #0]
+  77:rtc_alarm.h   **** 	ILR=0x1;			
+ 469              	.LM57:
+ 470 020c 18309FE5 		ldr	r3, .L46+4
+ 471 0210 0110A0E3 		mov	r1, #1
+ 472 0214 001083E5 		str	r1, [r3, #0]
+  78:rtc_alarm.h   **** 	CIIR|=(1<<0);
+ 474              	.LM58:
+ 475 0218 003092E5 		ldr	r3, [r2, #0]
+ 476 021c 013083E1 		orr	r3, r3, r1
+ 478              	.LM59:
+ 479              		@ lr needed for prologue
+ 481              	.LM60:
+ 482 0220 003082E5 		str	r3, [r2, #0]
+ 483 0224 0EF0A0E1 		mov	pc, lr
+ 484              	.L47:
+ 485              		.align	2
+ 486              	.L46:
+ 487 0228 0C4002E0 		.word	-536723444
+ 488 022c 004002E0 		.word	-536723456
+ 490              		.align	2
+ 493              		.global	alarm_stop
+ 495              	alarm_stop:
+  79:rtc_alarm.h   **** }
+  80:rtc_alarm.h   **** 
+  81:rtc_alarm.h   **** void alarm_stop(unsigned int value)
+  82:rtc_alarm.h   **** {
+ 497              	.LM61:
+ 498              		@ args = 0, pretend = 0, frame = 0
+ 499              		@ frame_needed = 0, uses_anonymous_args = 0
+ 500              		@ link register save eliminated.
+  83:rtc_alarm.h   **** 	ILR|=0x2;
+ 502              	.LM62:
+ 503 0230 24209FE5 		ldr	r2, .L49
+ 504 0234 003092E5 		ldr	r3, [r2, #0]
+ 505 0238 023083E3 		orr	r3, r3, #2
+ 506 023c 003082E5 		str	r3, [r2, #0]
+  84:rtc_alarm.h   **** 	ALSEC=value;
+ 508              	.LM63:
+ 509 0240 18309FE5 		ldr	r3, .L49+4
+  85:rtc_alarm.h   **** 	AMR&=~(1<<0);
+ 511              	.LM64:
+ 512 0244 18209FE5 		ldr	r2, .L49+8
+ 514              	.LM65:
+ 515 0248 000083E5 		str	r0, [r3, #0]
+ 517              	.LM66:
+ 518 024c 003092E5 		ldr	r3, [r2, #0]
+ 519 0250 0130C3E3 		bic	r3, r3, #1
+ 521              	.LM67:
+ 522              		@ lr needed for prologue
+ 524              	.LM68:
+ 525 0254 003082E5 		str	r3, [r2, #0]
+ 526 0258 0EF0A0E1 		mov	pc, lr
+ 527              	.L50:
+ 528              		.align	2
+ 529              	.L49:
+ 530 025c 004002E0 		.word	-536723456
+ 531 0260 604002E0 		.word	-536723360
+ 532 0264 104002E0 		.word	-536723440
+ 534              		.align	2
+ 536              		.global	buzzer_init
+ 538              	buzzer_init:
+  86:rtc_alarm.h   **** }
+  87:rtc_alarm.h   **** 
+  88:rtc_alarm.h   **** 
+  89:rtc_alarm.h   **** 
+  90:rtc_alarm.h   **** void buzzer_init()
+  91:rtc_alarm.h   **** {
+ 540              	.LM69:
+ 541              		@ args = 0, pretend = 0, frame = 0
+ 542              		@ frame_needed = 0, uses_anonymous_args = 0
+ 543              		@ link register save eliminated.
+  92:rtc_alarm.h   **** PINSEL0&=~((1<<22)|(1<<23));//   select  buzzer
+ 545              	.LM70:
+ 546 0268 2C209FE5 		ldr	r2, .L52
+ 547 026c 003092E5 		ldr	r3, [r2, #0]
+ 548 0270 0335C3E3 		bic	r3, r3, #12582912
+ 549 0274 003082E5 		str	r3, [r2, #0]
+  93:rtc_alarm.h   **** IODIR0|=(1<<11);//buzzer AS O/P 
+ 551              	.LM71:
+ 552 0278 20209FE5 		ldr	r2, .L52+4
+ 553 027c 003092E5 		ldr	r3, [r2, #0]
+ 554 0280 023B83E3 		orr	r3, r3, #2048
+ 555 0284 003082E5 		str	r3, [r2, #0]
+  94:rtc_alarm.h   **** IOSET0|=(1<<11);
+ 557              	.LM72:
+ 558 0288 14209FE5 		ldr	r2, .L52+8
+ 559 028c 003092E5 		ldr	r3, [r2, #0]
+ 560 0290 023B83E3 		orr	r3, r3, #2048
+ 562              	.LM73:
+ 563              		@ lr needed for prologue
+ 565              	.LM74:
+ 566 0294 003082E5 		str	r3, [r2, #0]
+ 567 0298 0EF0A0E1 		mov	pc, lr
+ 568              	.L53:
+ 569              		.align	2
+ 570              	.L52:
+ 571 029c 00C002E0 		.word	-536690688
+ 572 02a0 088002E0 		.word	-536707064
+ 573 02a4 048002E0 		.word	-536707068
+ 579              		.align	2
+ 581              		.global	uart0_init
+ 583              	uart0_init:
+ 585              	.Ltext2:
+   1:uart.h        **** #include"startup.h"
+   2:uart.h        **** #include"LPC214x.h"
+   3:uart.h        **** 
+   4:uart.h        **** #define val 60000000/(16*baud)
+   5:uart.h        **** #define baud 9600
+   6:uart.h        **** void uart0_init()
+   7:uart.h        **** {
+ 587              	.LM75:
+ 588              		@ args = 0, pretend = 0, frame = 0
+ 589              		@ frame_needed = 0, uses_anonymous_args = 0
+ 590              		@ link register save eliminated.
+   8:uart.h        **** 	PINSEL0&=~(1<<1)|(1<<3);
+ 592              	.LM76:
+ 593 02a8 48209FE5 		ldr	r2, .L55
+ 594 02ac 003092E5 		ldr	r3, [r2, #0]
+ 595 02b0 0230C3E3 		bic	r3, r3, #2
+ 596 02b4 003082E5 		str	r3, [r2, #0]
+   9:uart.h        **** 	PINSEL0|=(1<<0)|(1<<2);
+ 598              	.LM77:
+ 599 02b8 003092E5 		ldr	r3, [r2, #0]
+ 600 02bc 053083E3 		orr	r3, r3, #5
+ 601 02c0 003082E5 		str	r3, [r2, #0]
+  10:uart.h        **** 	
+  11:uart.h        **** 	U0LCR|=(1<<7);// enable DLAB bit
+ 603              	.LM78:
+ 604 02c4 30109FE5 		ldr	r1, .L55+4
+ 605 02c8 003091E5 		ldr	r3, [r1, #0]
+ 606 02cc 803083E3 		orr	r3, r3, #128
+ 607 02d0 003081E5 		str	r3, [r1, #0]
+  12:uart.h        **** 	U0DLL=val&(0xFF);
+ 609              	.LM79:
+ 610 02d4 24309FE5 		ldr	r3, .L55+8
+ 611 02d8 8620A0E3 		mov	r2, #134
+ 612 02dc 002083E5 		str	r2, [r3, #0]
+  13:uart.h        **** 	U0DLM=val>>8;
+ 614              	.LM80:
+ 615 02e0 1C309FE5 		ldr	r3, .L55+12
+ 616 02e4 0120A0E3 		mov	r2, #1
+ 617 02e8 002083E5 		str	r2, [r3, #0]
+  14:uart.h        **** 	U0LCR=0X03;//parity disable,1 stop bit,8 bit data
+ 619              	.LM81:
+ 620 02ec 0330A0E3 		mov	r3, #3
+ 622              	.LM82:
+ 623              		@ lr needed for prologue
+ 625              	.LM83:
+ 626 02f0 003081E5 		str	r3, [r1, #0]
+ 627 02f4 0EF0A0E1 		mov	pc, lr
+ 628              	.L56:
+ 629              		.align	2
+ 630              	.L55:
+ 631 02f8 00C002E0 		.word	-536690688
+ 632 02fc 0CC000E0 		.word	-536821748
+ 633 0300 00C000E0 		.word	-536821760
+ 634 0304 04C000E0 		.word	-536821756
+ 636              		.align	2
+ 639              		.global	uart0_tx_char
+ 641              	uart0_tx_char:
+  15:uart.h        **** }
+  16:uart.h        **** 
+  17:uart.h        **** void uart0_tx_char(unsigned char data)
+  18:uart.h        **** {
+ 643              	.LM84:
+ 644              		@ args = 0, pretend = 0, frame = 0
+ 645              		@ frame_needed = 0, uses_anonymous_args = 0
+ 646              		@ link register save eliminated.
+ 647              		@ lr needed for prologue
+ 648 0308 FF0000E2 		and	r0, r0, #255
+  19:uart.h        **** 	while(!(U0LSR&(1<<5)));  
+ 650              	.LM85:
+ 651              	.L58:
+ 652 030c 14309FE5 		ldr	r3, .L62
+ 653 0310 003093E5 		ldr	r3, [r3, #0]
+ 654 0314 200013E3 		tst	r3, #32
+ 655 0318 0C309F15 		ldrne	r3, .L62+4
+ 656 031c 00008315 		strne	r0, [r3, #0]
+ 657 0320 0EF0A011 		movne	pc, lr
+ 658 0324 C10000EA 		b	.L58
+ 659              	.L63:
+ 660              		.align	2
+ 661              	.L62:
+ 662 0328 14C000E0 		.word	-536821740
+ 663 032c 00C000E0 		.word	-536821760
+  20:uart.h        **** 	U0THR=data;
+ 665              	.LM86:
+ 667              		.align	2
+ 670              		.global	uart0_tx_str
+ 672              	uart0_tx_str:
+  21:uart.h        **** }	
+  22:uart.h        **** 
+  23:uart.h        **** void uart0_tx_str(unsigned char *ptr) 
+  24:uart.h        **** {
+ 674              	.LM87:
+ 675              		@ args = 0, pretend = 0, frame = 0
+ 676              		@ frame_needed = 1, uses_anonymous_args = 0
+ 677 0330 0DC0A0E1 		mov	ip, sp
+ 678 0334 10D82DE9 		stmfd	sp!, {r4, fp, ip, lr, pc}
+ 679 0338 0040A0E1 		mov	r4, r0
+  25:uart.h        ****     while(*ptr !='\0')
+ 681              	.LM88:
+ 682 033c 0000D0E5 		ldrb	r0, [r0, #0]	@ zero_extendqisi2
+ 683 0340 000050E3 		cmp	r0, #0
+ 685              	.LM89:
+ 686 0344 04B04CE2 		sub	fp, ip, #4
+ 688              	.LM90:
+ 689 0348 10A81B09 		ldmeqea	fp, {r4, fp, sp, pc}
+ 690              	.L68:
+  26:uart.h        **** 	{
+  27:uart.h        **** 	uart0_tx_char(*ptr);
+ 692              	.LM91:
+ 693 034c FF0000E2 		and	r0, r0, #255
+ 694 0350 FEFFFFEB 		bl	uart0_tx_char
+  28:uart.h        **** 	ptr ++; // uart1_tx_char(*(ptr++));
+ 696              	.LM92:
+ 697 0354 0100F4E5 		ldrb	r0, [r4, #1]!	@ zero_extendqisi2
+ 698 0358 000050E3 		cmp	r0, #0
+ 699 035c 10A81B09 		ldmeqea	fp, {r4, fp, sp, pc}
+ 700 0360 D10000EA 		b	.L68
+ 702              		.align	2
+ 705              		.global	uart0_tx_num
+ 707              	uart0_tx_num:
+  29:uart.h        **** 	}
+  30:uart.h        **** }
+  31:uart.h        **** 
+  32:uart.h        **** void uart0_tx_num(unsigned int num ) 
+  33:uart.h        **** {
+ 709              	.LM93:
+ 710              		@ args = 0, pretend = 0, frame = 8
+ 711              		@ frame_needed = 1, uses_anonymous_args = 0
+ 712 0364 0DC0A0E1 		mov	ip, sp
+ 713 0368 10D82DE9 		stmfd	sp!, {r4, fp, ip, lr, pc}
+ 714 036c 04B04CE2 		sub	fp, ip, #4
+ 715 0370 08D04DE2 		sub	sp, sp, #8
+  34:uart.h        **** 	unsigned char i,count[5];	
+  35:uart.h        **** 	
+  36:uart.h        **** 	for(i=1;i<=4;i++)
+ 717              	.LM94:
+ 718              	.LBB3:
+ 719 0374 0140A0E3 		mov	r4, #1
+ 720              	.L76:
+  37:uart.h        **** 	{
+  38:uart.h        **** 	count[i] = num % 10;
+ 722              	.LM95:
+ 723 0378 60309FE5 		ldr	r3, .L85
+ 724 037c 931082E0 		umull	r1, r2, r3, r0
+ 725 0380 10C04BE2 		sub	ip, fp, #16
+ 727              	.LM96:
+ 728 0384 013084E2 		add	r3, r4, #1
+ 730              	.LM97:
+ 731 0388 A221A0E1 		mov	r2, r2, lsr #3
+ 732 038c 04108CE0 		add	r1, ip, r4
+ 734              	.LM98:
+ 735 0390 FF4003E2 		and	r4, r3, #255
+ 737              	.LM99:
+ 738 0394 023182E0 		add	r3, r2, r2, asl #2
+ 739 0398 833040E0 		sub	r3, r0, r3, asl #1
+ 741              	.LM100:
+ 742 039c 040054E3 		cmp	r4, #4
+ 744              	.LM101:
+ 745 03a0 083041E5 		strb	r3, [r1, #-8]
+  39:uart.h        **** 	num = num / 10 ;
+ 747              	.LM102:
+ 748 03a4 0200A0E1 		mov	r0, r2
+ 750              	.LM103:
+ 751 03a8 DC00009A 		bls	.L76
+  40:uart.h        **** 	}
+  41:uart.h        **** 	i--;// At the time of exit from the 'for loop',its value is greater than 1 of max value,
+ 753              	.LM104:
+ 754 03ac 013044E2 		sub	r3, r4, #1
+  42:uart.h        **** 		// in this case it is 6 which is greater than 5;hence to decrease by 1 i--. 
+  43:uart.h        **** 	while(i!=0)
+ 756              	.LM105:
+ 757 03b0 FF4013E2 		ands	r4, r3, #255
+ 758 03b4 10A81B09 		ldmeqea	fp, {r4, fp, sp, pc}
+ 759              	.L80:
+  44:uart.h        **** 	{
+  45:uart.h        **** 	uart0_tx_char(count[i] + 0x30);
+ 761              	.LM106:
+ 762 03b8 10104BE2 		sub	r1, fp, #16
+ 763 03bc 043081E0 		add	r3, r1, r4
+ 764 03c0 080053E5 		ldrb	r0, [r3, #-8]	@ zero_extendqisi2
+ 765 03c4 300080E2 		add	r0, r0, #48
+ 766 03c8 FF0000E2 		and	r0, r0, #255
+ 767 03cc FEFFFFEB 		bl	uart0_tx_char
+  46:uart.h        **** 	i--;
+ 769              	.LM107:
+ 770 03d0 013044E2 		sub	r3, r4, #1
+ 771 03d4 FF4013E2 		ands	r4, r3, #255
+ 772 03d8 10A81B09 		ldmeqea	fp, {r4, fp, sp, pc}
+ 773 03dc EC0000EA 		b	.L80
+ 774              	.L86:
+ 775              		.align	2
+ 776              	.L85:
+ 777 03e0 CDCCCCCC 		.word	-858993459
+ 778              	.LBE3:
+ 784              		.align	2
+ 786              		.global	uart0_rx_char
+ 788              	uart0_rx_char:
+  47:uart.h        **** 	}
+  48:uart.h        **** }
+  49:uart.h        **** unsigned char uart0_rx_char(void)
+  50:uart.h        **** {
+ 790              	.LM108:
+ 791              		@ args = 0, pretend = 0, frame = 0
+ 792              		@ frame_needed = 0, uses_anonymous_args = 0
+ 793              		@ link register save eliminated.
+ 794              		@ lr needed for prologue
+  51:uart.h        **** 	while(!(U0LSR&(1<<0)));  
+ 796              	.LM109:
+ 797              	.L88:
+ 798 03e4 18309FE5 		ldr	r3, .L92
+ 799 03e8 003093E5 		ldr	r3, [r3, #0]
+ 800 03ec 010013E3 		tst	r3, #1
+ 801 03f0 10309F15 		ldrne	r3, .L92+4
+ 802 03f4 00009315 		ldrne	r0, [r3, #0]
+ 803 03f8 FF000012 		andne	r0, r0, #255
+  52:uart.h        **** 	return U0RBR;
+  53:uart.h        **** }
+ 805              	.LM110:
+ 806 03fc 0EF0A011 		movne	pc, lr
+ 807 0400 F70000EA 		b	.L88
+ 808              	.L93:
+ 809              		.align	2
+ 810              	.L92:
+ 811 0404 14C000E0 		.word	-536821740
+ 812 0408 00C000E0 		.word	-536821760
+ 814              		.align	2
+ 817              		.global	uart0_rx_str
+ 819              	uart0_rx_str:
+  54:uart.h        **** 	
+  55:uart.h        **** void uart0_rx_str(unsigned char *ptr)
+  56:uart.h        **** {     unsigned int i;
+ 821              	.LM111:
+ 822              		@ args = 0, pretend = 0, frame = 0
+ 823              		@ frame_needed = 1, uses_anonymous_args = 0
+ 824 040c 0DC0A0E1 		mov	ip, sp
+ 825 0410 30D82DE9 		stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+ 826 0414 04B04CE2 		sub	fp, ip, #4
+ 827 0418 0040A0E1 		mov	r4, r0
+  57:uart.h        ****       for(i=0;i<100;i++)
+ 829              	.LM112:
+ 830              	.LBB4:
+ 831 041c 0050A0E3 		mov	r5, #0
+ 832              	.L100:
+  58:uart.h        ****       {
+  59:uart.h        ****        *(ptr+i)=uart0_rx_char();
+ 834              	.LM113:
+ 835 0420 FEFFFFEB 		bl	uart0_rx_char
+ 836 0424 0500C4E7 		strb	r0, [r4, r5]
+  60:uart.h        ****         if(*(ptr+i)=='\r')
+ 838              	.LM114:
+ 839 0428 0530D4E7 		ldrb	r3, [r4, r5]	@ zero_extendqisi2
+ 840 042c 0D0053E3 		cmp	r3, #13
+ 841 0430 0030A003 		moveq	r3, #0
+ 842 0434 0530C407 		streqb	r3, [r4, r5]
+  61:uart.h        ****         {
+  62:uart.h        ****         *(ptr+i)='\0';
+  63:uart.h        **** 		
+  64:uart.h        ****         break;
+ 844              	.LM115:
+ 845 0438 30A81B09 		ldmeqea	fp, {r4, r5, fp, sp, pc}
+ 847              	.LM116:
+ 848 043c 015085E2 		add	r5, r5, #1
+ 849 0440 630055E3 		cmp	r5, #99
+ 850 0444 30A81B89 		ldmhiea	fp, {r4, r5, fp, sp, pc}
+ 851 0448 060100EA 		b	.L100
+ 852              	.LBE4:
+ 857              		.align	2
+ 859              		.global	uart0_rx_num
+ 861              	uart0_rx_num:
+  65:uart.h        **** 		}
+  66:uart.h        ****        }      
+  67:uart.h        **** }	
+  68:uart.h        **** 
+  69:uart.h        **** // Receiving number
+  70:uart.h        **** //For 1 digit no.
+  71:uart.h        **** unsigned char uart0_rx_num(void)
+  72:uart.h        **** {
+ 863              	.LM117:
+ 864              		@ args = 0, pretend = 0, frame = 0
+ 865              		@ frame_needed = 1, uses_anonymous_args = 0
+ 866 044c 0DC0A0E1 		mov	ip, sp
+ 867 0450 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+ 868 0454 04B04CE2 		sub	fp, ip, #4
+  73:uart.h        **** 	unsigned char num;
+  74:uart.h        **** 	while(1)
+  75:uart.h        **** 	{
+  76:uart.h        **** 	num = uart0_rx_char();
+ 870              	.LM118:
+ 871              	.LBB5:
+ 872 0458 FEFFFFEB 		bl	uart0_rx_char
+  77:uart.h        **** 	num = num - 0x30;
+ 874              	.LM119:
+ 875 045c 300040E2 		sub	r0, r0, #48
+ 876 0460 FF0000E2 		and	r0, r0, #255
+  78:uart.h        **** 	return num;
+  79:uart.h        **** 	}
+  80:uart.h        **** }
+ 878              	.LM120:
+ 879 0464 00A81BE9 		ldmea	fp, {fp, sp, pc}
+ 880              	.LBE5:
+ 884              		.align	2
+ 886              		.global	timer_init
+ 888              	timer_init:
+ 890              	.Ltext3:
+   1:timer_poll.h  **** 
+   2:timer_poll.h  **** void timer_init()
+   3:timer_poll.h  **** {
+ 892              	.LM121:
+ 893              		@ args = 0, pretend = 0, frame = 0
+ 894              		@ frame_needed = 0, uses_anonymous_args = 0
+ 895              		@ link register save eliminated.
+   4:timer_poll.h  **** 	T0TCR|=(1<<1);//reset TC & PC
+ 897              	.LM122:
+ 898 0468 44109FE5 		ldr	r1, .L108
+ 899 046c 003091E5 		ldr	r3, [r1, #0]
+ 900 0470 023083E3 		orr	r3, r3, #2
+ 901 0474 003081E5 		str	r3, [r1, #0]
+   5:timer_poll.h  **** 	T0CTCR=0X00;// select timer mode on positive rising edge
+ 903              	.LM123:
+ 904 0478 38309FE5 		ldr	r3, .L108+4
+ 905 047c 0020A0E3 		mov	r2, #0
+ 906 0480 002083E5 		str	r2, [r3, #0]
+   6:timer_poll.h  **** 	T0PR=60;// for 1 sec delay
+ 908              	.LM124:
+ 909 0484 30309FE5 		ldr	r3, .L108+8
+ 910 0488 3C20A0E3 		mov	r2, #60
+ 911 048c 002083E5 		str	r2, [r3, #0]
+   7:timer_poll.h  **** 	T0MR0=1000000;
+ 913              	.LM125:
+ 914 0490 28209FE5 		ldr	r2, .L108+12
+ 915 0494 28309FE5 		ldr	r3, .L108+16
+ 916 0498 002083E5 		str	r2, [r3, #0]
+   8:timer_poll.h  **** 	T0MCR=0x3;//0X3 generate interrupt on match & reset the TC to 00
+ 918              	.LM126:
+ 919 049c 24309FE5 		ldr	r3, .L108+20
+ 920 04a0 0320A0E3 		mov	r2, #3
+ 921 04a4 002083E5 		str	r2, [r3, #0]
+   9:timer_poll.h  **** 	T0TCR=0x1;// start the timer.
+ 923              	.LM127:
+ 924 04a8 0130A0E3 		mov	r3, #1
+ 926              	.LM128:
+ 927              		@ lr needed for prologue
+ 929              	.LM129:
+ 930 04ac 003081E5 		str	r3, [r1, #0]
+ 931 04b0 0EF0A0E1 		mov	pc, lr
+ 932              	.L109:
+ 933              		.align	2
+ 934              	.L108:
+ 935 04b4 044000E0 		.word	-536854524
+ 936 04b8 704000E0 		.word	-536854416
+ 937 04bc 0C4000E0 		.word	-536854516
+ 938 04c0 40420F00 		.word	1000000
+ 939 04c4 184000E0 		.word	-536854504
+ 940 04c8 144000E0 		.word	-536854508
+ 942              		.align	2
+ 944              		.global	sec_delay
+ 946              	sec_delay:
+  10:timer_poll.h  **** }
+  11:timer_poll.h  **** 
+  12:timer_poll.h  **** void sec_delay()
+  13:timer_poll.h  **** {
+ 948              	.LM130:
+ 949              		@ args = 0, pretend = 0, frame = 0
+ 950              		@ frame_needed = 0, uses_anonymous_args = 0
+ 951              		@ link register save eliminated.
+ 952              		@ lr needed for prologue
+  14:timer_poll.h  **** 	while(!(T0IR&(1<<0)));
+ 954              	.LM131:
+ 955              	.L111:
+ 956 04cc 18209FE5 		ldr	r2, .L115
+ 957 04d0 003092E5 		ldr	r3, [r2, #0]
+ 958 04d4 010013E3 		tst	r3, #1
+ 959 04d8 00309215 		ldrne	r3, [r2, #0]
+ 960 04dc 01308313 		orrne	r3, r3, #1
+ 961 04e0 00308215 		strne	r3, [r2, #0]
+ 962 04e4 0EF0A011 		movne	pc, lr
+ 963 04e8 310100EA 		b	.L111
+ 964              	.L116:
+ 965              		.align	2
+ 966              	.L115:
+ 967 04ec 004000E0 		.word	-536854528
+  15:timer_poll.h  **** 	T0IR|=(1<<0);// CLEAR FLAG 
+ 969              	.LM132:
+ 971              		.align	2
+ 973              		.global	timer_interrupt_init
+ 975              	timer_interrupt_init:
+  16:timer_poll.h  **** }
+  17:timer_poll.h  **** 
+  18:timer_poll.h  **** void timer_interrupt_init(void)
+  19:timer_poll.h  **** {
+ 977              	.LM133:
+ 978              		@ args = 0, pretend = 0, frame = 0
+ 979              		@ frame_needed = 0, uses_anonymous_args = 0
+ 980              		@ link register save eliminated.
+  20:timer_poll.h  **** T0TCR|=(1<<1);               //reset TC an PC
+ 982              	.LM134:
+ 983 04f0 4C109FE5 		ldr	r1, .L118
+ 984 04f4 003091E5 		ldr	r3, [r1, #0]
+ 985 04f8 023083E3 		orr	r3, r3, #2
+ 986 04fc 003081E5 		str	r3, [r1, #0]
+  21:timer_poll.h  **** T0CTCR=0X00;                 //select timer mode
+ 988              	.LM135:
+ 989 0500 40309FE5 		ldr	r3, .L118+4
+ 990 0504 0020A0E3 		mov	r2, #0
+ 991 0508 002083E5 		str	r2, [r3, #0]
+  22:timer_poll.h  **** T0PR=60;                     //set prescale value to 60 (not fixed just used for simplification)
+ 993              	.LM136:
+ 994 050c 38309FE5 		ldr	r3, .L118+8
+ 995 0510 3C20A0E3 		mov	r2, #60
+ 996 0514 002083E5 		str	r2, [r3, #0]
+  23:timer_poll.h  **** T0MR0=1000000;               //60Mhz/60=1Mhz , 1/1Mhz=1usec,for 1 sec delay 1sec/1usec=10000 clock 
+ 998              	.LM137:
+ 999 0518 30209FE5 		ldr	r2, .L118+12
+ 1000 051c 30309FE5 		ldr	r3, .L118+16
+ 1001 0520 002083E5 		str	r2, [r3, #0]
+  24:timer_poll.h  **** T0MCR=0X3;                   //generate an interrupt on match & TC tO 00
+ 1003              	.LM138:
+ 1004 0524 2C309FE5 		ldr	r3, .L118+20
+ 1005 0528 0320A0E3 		mov	r2, #3
+ 1006 052c 002083E5 		str	r2, [r3, #0]
+  25:timer_poll.h  **** T0TCR=0X1;                   //start the timer
+  26:timer_poll.h  **** T0IR=0x1;
+ 1008              	.LM139:
+ 1009 0530 24309FE5 		ldr	r3, .L118+24
+ 1011              	.LM140:
+ 1012 0534 0100A0E3 		mov	r0, #1
+ 1013 0538 000081E5 		str	r0, [r1, #0]
+ 1015              	.LM141:
+ 1016              		@ lr needed for prologue
+ 1018              	.LM142:
+ 1019 053c 000083E5 		str	r0, [r3, #0]
+ 1020 0540 0EF0A0E1 		mov	pc, lr
+ 1021              	.L119:
+ 1022              		.align	2
+ 1023              	.L118:
+ 1024 0544 044000E0 		.word	-536854524
+ 1025 0548 704000E0 		.word	-536854416
+ 1026 054c 0C4000E0 		.word	-536854516
+ 1027 0550 40420F00 		.word	1000000
+ 1028 0554 184000E0 		.word	-536854504
+ 1029 0558 144000E0 		.word	-536854508
+ 1030 055c 004000E0 		.word	-536854528
+ 1035              		.global	secover_Intflag
+ 1036              		.bss
+ 1037              		.global	secover_Intflag
+ 1038              		.align	2
+ 1041              	secover_Intflag:
+ 1042 0000 00000000 		.space	4
+ 1043              		.global	days
+ 1044              		.data
+ 1047              	days:
+ 1048 001c 4D6F6E64 		.ascii	"Monday\000"
+ 1048      617900
+ 1049 0023 000000   		.space	3
+ 1050 0026 54756573 		.ascii	"Tuesday\000"
+ 1050      64617900 
+ 1051 002e 0000     		.space	2
+ 1052 0030 5765646E 		.ascii	"Wednesday\000"
+ 1052      65736461 
+ 1052      7900
+ 1053 003a 54687572 		.ascii	"Thursday\000"
+ 1053      73646179 
+ 1053      00
+ 1054 0043 00       		.space	1
+ 1055 0044 46726964 		.ascii	"Friday\000"
+ 1055      617900
+ 1056 004b 000000   		.space	3
+ 1057 004e 53617475 		.ascii	"Saturday\000"
+ 1057      72646179 
+ 1057      00
+ 1058 0057 00       		.space	1
+ 1059 0058 53756E64 		.ascii	"Sunday\000"
+ 1059      617900
+ 1060 005f 000000   		.space	3
+ 1061              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 1062              		.align	2
+ 1063              	.LC0:
+ 1064 0000 4461793A 		.ascii	"Day:%s Date:%02d/%02d/%02d Time: %02d:%02d:%02d\n\000"
+ 1064      25732044 
+ 1064      6174653A 
+ 1064      25303264 
+ 1064      2F253032 
+ 1065 0031 000000   		.text
+ 1066              		.align	2
+ 1068              		.global	main
+ 1070              	main:
+ 1072              	.Ltext4:
+   1:rtc_alarm.c   **** #include"startup.h"
+   2:rtc_alarm.c   **** #include"LPC214x.h"
+   3:rtc_alarm.c   **** #include"rtc_alarm.h"
+   4:rtc_alarm.c   **** #include"uart.h"
+   5:rtc_alarm.c   **** #include"timer_poll.h"
+   6:rtc_alarm.c   **** #include"VIClowlevel.h"
+   7:rtc_alarm.c   **** void Timer0_Isr(void)__attribute__((interrupt("IRQ")));
+   8:rtc_alarm.c   **** volatile unsigned int secover_Intflag = 0;
+   9:rtc_alarm.c   **** unsigned int sec_read,min_read,hour_read,dow_read,dom_read,month_read,year_read,mystr[50];
+  10:rtc_alarm.c   **** char days[7][10]={"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday",};
+  11:rtc_alarm.c   **** 
+  12:rtc_alarm.c   **** int main()
+  13:rtc_alarm.c   **** {	
+ 1074              	.LM143:
+ 1075              		@ args = 0, pretend = 0, frame = 0
+ 1076              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1077 0560 0DC0A0E1 		mov	ip, sp
+ 1078 0564 F0DF2DE9 		stmfd	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, ip, lr, pc}
+ 1079 0568 04B04CE2 		sub	fp, ip, #4
+ 1080 056c 14D04DE2 		sub	sp, sp, #20
+  14:rtc_alarm.c   **** 	sys_init();//for pll
+ 1082              	.LM144:
+ 1083 0570 FEFFFFEB 		bl	sys_init
+  15:rtc_alarm.c   **** 	uart0_init();
+ 1085              	.LM145:
+ 1086 0574 FEFFFFEB 		bl	uart0_init
+  16:rtc_alarm.c   **** 	timer_interrupt_init();
+ 1088              	.LM146:
+ 1089 0578 FEFFFFEB 		bl	timer_interrupt_init
+  17:rtc_alarm.c   **** 	VICVectAddr1 = (unsigned int)Timer0_Isr; 
+ 1091              	.LM147:
+ 1092 057c 54219FE5 		ldr	r2, .L129
+ 1093 0580 54319FE5 		ldr	r3, .L129+4
+ 1094 0584 002083E5 		str	r2, [r3, #0]
+  18:rtc_alarm.c   **** 	VICVectCntl1 |= 0x20 | 0x4; 
+ 1096              	.LM148:
+ 1097 0588 50219FE5 		ldr	r2, .L129+8
+ 1098 058c 003092E5 		ldr	r3, [r2, #0]
+ 1099 0590 243083E3 		orr	r3, r3, #36
+ 1100 0594 003082E5 		str	r3, [r2, #0]
+  19:rtc_alarm.c   **** 	VICIntEnable |= 0x00000010;
+ 1102              	.LM149:
+ 1103 0598 44219FE5 		ldr	r2, .L129+12
+ 1104 059c 003092E5 		ldr	r3, [r2, #0]
+ 1105 05a0 103083E3 		orr	r3, r3, #16
+ 1106 05a4 003082E5 		str	r3, [r2, #0]
+  20:rtc_alarm.c   **** 	rtc_write();
+ 1108              	.LM150:
+ 1109 05a8 FEFFFFEB 		bl	rtc_write
+  21:rtc_alarm.c   **** 	alarm_start();
+ 1111              	.LM151:
+ 1112 05ac FEFFFFEB 		bl	alarm_start
+  22:rtc_alarm.c   **** 	alarm_stop(3);
+ 1114              	.LM152:
+ 1115 05b0 0300A0E3 		mov	r0, #3
+ 1116 05b4 FEFFFFEB 		bl	alarm_stop
+  23:rtc_alarm.c   **** 	buzzer_init();
+ 1118              	.LM153:
+ 1119 05b8 FEFFFFEB 		bl	buzzer_init
+  24:rtc_alarm.c   **** 	
+  25:rtc_alarm.c   **** 	rtc_init();
+ 1121              	.LM154:
+ 1122 05bc FEFFFFEB 		bl	rtc_init
+  26:rtc_alarm.c   **** 	 enableIRQ();
+ 1124              	.LM155:
+ 1125 05c0 FEFFFFEB 		bl	enableIRQ
+ 1126              	.L128:
+  27:rtc_alarm.c   **** 	while(1)
+  28:rtc_alarm.c   **** 	{
+  29:rtc_alarm.c   **** 	sec_read=rtc_read_sec();
+ 1128              	.LM156:
+ 1129 05c4 FEFFFFEB 		bl	rtc_read_sec
+ 1130 05c8 18919FE5 		ldr	r9, .L129+16
+ 1131 05cc 000089E5 		str	r0, [r9, #0]
+  30:rtc_alarm.c   **** 	min_read=rtc_read_min();
+ 1133              	.LM157:
+ 1134 05d0 FEFFFFEB 		bl	rtc_read_min
+ 1135 05d4 10A19FE5 		ldr	sl, .L129+20
+ 1136 05d8 00008AE5 		str	r0, [sl, #0]
+  31:rtc_alarm.c   **** 	hour_read=rtc_read_hour();
+ 1138              	.LM158:
+ 1139 05dc FEFFFFEB 		bl	rtc_read_hour
+ 1140 05e0 08719FE5 		ldr	r7, .L129+24
+ 1141 05e4 000087E5 		str	r0, [r7, #0]
+  32:rtc_alarm.c   **** 	dow_read=rtc_read_dow();
+ 1143              	.LM159:
+ 1144 05e8 FEFFFFEB 		bl	rtc_read_dow
+ 1145 05ec 00619FE5 		ldr	r6, .L129+28
+ 1146 05f0 000086E5 		str	r0, [r6, #0]
+  33:rtc_alarm.c   **** 	dom_read=rtc_read_dom();
+ 1148              	.LM160:
+ 1149 05f4 FEFFFFEB 		bl	rtc_read_dom
+ 1150 05f8 F8509FE5 		ldr	r5, .L129+32
+ 1151 05fc 000085E5 		str	r0, [r5, #0]
+  34:rtc_alarm.c   **** 	month_read=rtc_read_month();
+ 1153              	.LM161:
+ 1154 0600 FEFFFFEB 		bl	rtc_read_month
+ 1155 0604 F0409FE5 		ldr	r4, .L129+36
+ 1156 0608 000084E5 		str	r0, [r4, #0]
+  35:rtc_alarm.c   **** 	year_read=rtc_read_year();
+ 1158              	.LM162:
+ 1159 060c FEFFFFEB 		bl	rtc_read_year
+  36:rtc_alarm.c   **** /*	
+  37:rtc_alarm.c   **** 	if (dow_read==0x00)
+  38:rtc_alarm.c   **** 		sprintf(mystr,"Day:Monday Date:%02d/%02d/%02d Time: %02d:%02d:%02d\n",dom_read,month_read,year_re
+  39:rtc_alarm.c   **** 
+  40:rtc_alarm.c   **** 	else if (dow_read==0x01)
+  41:rtc_alarm.c   **** 		sprintf(mystr,"Day:Tuesday Date:%02d/%02d/%02d Time: %02d:%02d:%02d\n",dom_read,month_read,year_r
+  42:rtc_alarm.c   **** 
+  43:rtc_alarm.c   **** 	else if (dow_read==0x02)
+  44:rtc_alarm.c   **** 		sprintf(mystr,"Day:Wednesday Date:%02d/%02d/%02d Time: %02d:%02d:%02d\n",dom_read,month_read,year
+  45:rtc_alarm.c   **** 
+  46:rtc_alarm.c   **** 	else if (dow_read==0x03)
+  47:rtc_alarm.c   **** 		sprintf(mystr,"Day:Thursday Date:%02d/%02d/%02d Time: %02d:%02d:%02d\n"dom_read,month_read,year_r
+  48:rtc_alarm.c   **** 
+  49:rtc_alarm.c   **** 	else if (dow_read==0x04)
+  50:rtc_alarm.c   **** 		sprintf(mystr,"Day:Friday Date:%02d/%02d/%02d Time: %02d:%02d:%02d\n"dom_read,month_read,year_rea
+  51:rtc_alarm.c   **** 	
+  52:rtc_alarm.c   **** 	else if (dow_read==0x05)
+  53:rtc_alarm.c   **** 		sprintf(mystr,"Day:Saturday Date:%02d/%02d/%02d Time: %02d:%02d:%02
+  54:rtc_alarm.c   **** d\n",dom_read,month_read,year_read,hour_read,min_read,sec_read);
+  55:rtc_alarm.c   **** 	
+  56:rtc_alarm.c   **** 	else if (dow_read==0x06)
+  57:rtc_alarm.c   **** 		sprintf(mystr,"Day:Sunday Date:%02d/%02d/%02d Time: %02d:%02d:%02d\n",dom_read,month_read,year_re
+  58:rtc_alarm.c   **** */
+  59:rtc_alarm.c   **** if(secover_Intflag)
+ 1161              	.LM163:
+ 1162 0610 E8809FE5 		ldr	r8, .L129+40
+ 1163 0614 003098E5 		ldr	r3, [r8, #0]
+ 1164 0618 000053E3 		cmp	r3, #0
+ 1166              	.LM164:
+ 1167 061c E0309FE5 		ldr	r3, .L129+44
+ 1168 0620 0020A0E1 		mov	r2, r0
+ 1170              	.LM165:
+ 1171 0624 DC109FE5 		ldr	r1, .L129+48
+ 1172 0628 DC009FE5 		ldr	r0, .L129+52
+ 1174              	.LM166:
+ 1175 062c 002083E5 		str	r2, [r3, #0]
+ 1177              	.LM167:
+ 1178 0630 9E01000A 		beq	.L124
+  60:rtc_alarm.c   **** {	
+  61:rtc_alarm.c   **** sprintf(mystr,"Day:%s Date:%02d/%02d/%02d Time: %02d:%02d:%02d\n",
+ 1180              	.LM168:
+ 1181 0634 00C096E5 		ldr	ip, [r6, #0]
+ 1182 0638 003095E5 		ldr	r3, [r5, #0]
+ 1183 063c 00E094E5 		ldr	lr, [r4, #0]
+ 1184 0640 04208DE5 		str	r2, [sp, #4]
+ 1185 0644 C4209FE5 		ldr	r2, .L129+56
+ 1186 0648 0CC18CE0 		add	ip, ip, ip, asl #2
+ 1187 064c 004097E5 		ldr	r4, [r7, #0]
+ 1188 0650 00509AE5 		ldr	r5, [sl, #0]
+ 1189 0654 006099E5 		ldr	r6, [r9, #0]
+ 1190 0658 8C2082E0 		add	r2, r2, ip, asl #1
+ 1191 065c 00E08DE5 		str	lr, [sp, #0]
+ 1192 0660 08408DE5 		str	r4, [sp, #8]
+ 1193 0664 0C508DE5 		str	r5, [sp, #12]
+ 1194 0668 10608DE5 		str	r6, [sp, #16]
+ 1195 066c FEFFFFEB 		bl	sprintf
+  62:rtc_alarm.c   **** days[dow_read],dom_read,month_read,year_read,hour_read,min_read,sec_read);
+  63:rtc_alarm.c   **** 	uart0_tx_str(mystr);
+ 1197              	.LM169:
+ 1198 0670 94009FE5 		ldr	r0, .L129+52
+ 1199 0674 FEFFFFEB 		bl	uart0_tx_str
+  64:rtc_alarm.c   **** 	secover_Intflag=0;
+ 1201              	.LM170:
+ 1202 0678 0030A0E3 		mov	r3, #0
+ 1203 067c 003088E5 		str	r3, [r8, #0]
+ 1204              	.L124:
+  65:rtc_alarm.c   **** }	
+  66:rtc_alarm.c   **** 	if(ILR &(1<<0))
+ 1206              	.LM171:
+ 1207 0680 8C209FE5 		ldr	r2, .L129+60
+ 1208 0684 003092E5 		ldr	r3, [r2, #0]
+ 1209 0688 010013E3 		tst	r3, #1
+ 1210 068c 84009FE5 		ldr	r0, .L129+64
+ 1211 0690 84109FE5 		ldr	r1, .L129+68
+ 1212 0694 AA01000A 		beq	.L125
+  67:rtc_alarm.c   **** 	{
+  68:rtc_alarm.c   **** 		ILR|=(1<<0);
+ 1214              	.LM172:
+ 1215 0698 003092E5 		ldr	r3, [r2, #0]
+ 1216 069c 013083E3 		orr	r3, r3, #1
+ 1217 06a0 003082E5 		str	r3, [r2, #0]
+  69:rtc_alarm.c   **** 		IOSET0|=(1<<11);
+ 1219              	.LM173:
+ 1220 06a4 003091E5 		ldr	r3, [r1, #0]
+ 1221 06a8 023B83E3 		orr	r3, r3, #2048
+ 1222 06ac 003081E5 		str	r3, [r1, #0]
+ 1223              	.L125:
+  70:rtc_alarm.c   **** 	}
+  71:rtc_alarm.c   **** 	if(ILR &(1<<1))
+ 1225              	.LM174:
+ 1226 06b0 003092E5 		ldr	r3, [r2, #0]
+ 1227 06b4 020013E3 		tst	r3, #2
+ 1228 06b8 6F01000A 		beq	.L128
+  72:rtc_alarm.c   **** 	{
+  73:rtc_alarm.c   **** 		ILR|=(1<<1);IOCLR0|=(1<<11);
+ 1230              	.LM175:
+ 1231 06bc 003092E5 		ldr	r3, [r2, #0]
+ 1232 06c0 023083E3 		orr	r3, r3, #2
+ 1233 06c4 003082E5 		str	r3, [r2, #0]
+ 1234 06c8 003090E5 		ldr	r3, [r0, #0]
+ 1235 06cc 023B83E3 		orr	r3, r3, #2048
+ 1236 06d0 003080E5 		str	r3, [r0, #0]
+ 1237 06d4 6F0100EA 		b	.L128
+ 1238              	.L130:
+ 1239              		.align	2
+ 1240              	.L129:
+ 1241 06d8 00000000 		.word	Timer0_Isr
+ 1242 06dc 04F1FFFF 		.word	-3836
+ 1243 06e0 04F2FFFF 		.word	-3580
+ 1244 06e4 10F0FFFF 		.word	-4080
+ 1245 06e8 00000000 		.word	sec_read
+ 1246 06ec 00000000 		.word	min_read
+ 1247 06f0 00000000 		.word	hour_read
+ 1248 06f4 00000000 		.word	dow_read
+ 1249 06f8 00000000 		.word	dom_read
+ 1250 06fc 00000000 		.word	month_read
+ 1251 0700 00000000 		.word	secover_Intflag
+ 1252 0704 00000000 		.word	year_read
+ 1253 0708 00000000 		.word	.LC0
+ 1254 070c 00000000 		.word	mystr
+ 1255 0710 00000000 		.word	days
+ 1256 0714 004002E0 		.word	-536723456
+ 1257 0718 0C8002E0 		.word	-536707060
+ 1258 071c 048002E0 		.word	-536707068
+  74:rtc_alarm.c   **** 		
+  75:rtc_alarm.c   **** 	}	
+  76:rtc_alarm.c   **** 	
+  77:rtc_alarm.c   **** 	}
+  78:rtc_alarm.c   **** }	
+ 1260              	.LM176:
+ 1262              		.data
+ 1263 0062 0000     		.align	2
+ 1266              	count.0:
+ 1267 0064 E7030000 		.word	999
+ 1268              		.text
+ 1269              		.align	2
+ 1271              		.global	Timer0_Isr
+ 1273              	Timer0_Isr:
+  79:rtc_alarm.c   **** 
+  80:rtc_alarm.c   **** void Timer0_Isr(void)
+  81:rtc_alarm.c   **** {
+ 1275              	.LM177:
+ 1276              		@ Interrupt Service Routine.
+ 1277              		@ args = 0, pretend = 0, frame = 0
+ 1278              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1279              		@ link register save eliminated.
+ 1280 0720 0E002DE9 		stmfd	sp!, {r1, r2, r3}
+  82:rtc_alarm.c   **** 
+  83:rtc_alarm.c   **** 	static unsigned int count = 999;
+  84:rtc_alarm.c   **** 	count--;
+ 1282              	.LM178:
+ 1283              	.LBB6:
+ 1284 0724 44209FE5 		ldr	r2, .L133
+ 1285 0728 003092E5 		ldr	r3, [r2, #0]
+ 1286 072c 013043E2 		sub	r3, r3, #1
+  85:rtc_alarm.c   **** 	if(count!=0)
+ 1288              	.LM179:
+ 1289 0730 000053E3 		cmp	r3, #0
+ 1291              	.LM180:
+ 1292 0734 003082E5 		str	r3, [r2, #0]
+  86:rtc_alarm.c   **** 	{
+  87:rtc_alarm.c   **** 		count = 999;
+ 1294              	.LM181:
+ 1295 0738 34309F15 		ldrne	r3, .L133+4
+ 1296 073c 00308215 		strne	r3, [r2, #0]
+  88:rtc_alarm.c   **** 		secover_Intflag = 1;
+ 1298              	.LM182:
+ 1299 0740 30309F15 		ldrne	r3, .L133+8
+ 1300 0744 0120A013 		movne	r2, #1
+ 1301 0748 00208315 		strne	r2, [r3, #0]
+ 1303              	.LM183:
+ 1304 074c 28109FE5 		ldr	r1, .L133+12
+  89:rtc_alarm.c   **** 	}
+  90:rtc_alarm.c   ****     	T0IR |= 1;		/* Clear interrupt flag */
+ 1306              	.LM184:
+ 1307 0750 003091E5 		ldr	r3, [r1, #0]
+ 1308 0754 013083E3 		orr	r3, r3, #1
+ 1309 0758 003081E5 		str	r3, [r1, #0]
+  91:rtc_alarm.c   **** 	VICVectAddr = 0;
+ 1311              	.LM185:
+ 1312 075c 1C309FE5 		ldr	r3, .L133+16
+ 1313 0760 0020A0E3 		mov	r2, #0
+ 1315              	.LM186:
+ 1316              		@ lr needed for prologue
+ 1318              	.LM187:
+ 1319 0764 002083E5 		str	r2, [r3, #0]
+ 1320 0768 0E00BDE8 		ldmfd	sp!, {r1, r2, r3}
+ 1321 076c 04F05EE2 		subs	pc, lr, #4
+ 1322              	.L134:
+ 1323              		.align	2
+ 1324              	.L133:
+ 1325 0770 64000000 		.word	count.0
+ 1326 0774 E7030000 		.word	999
+ 1327 0778 00000000 		.word	secover_Intflag
+ 1328 077c 004000E0 		.word	-536854528
+ 1329 0780 30F0FFFF 		.word	-4048
+ 1330              	.LBE6:
+ 1335              		.comm	sec_read, 4, 32
+ 1336              		.comm	min_read, 4, 32
+ 1337              		.comm	hour_read, 4, 32
+ 1338              		.comm	dow_read, 4, 32
+ 1339              		.comm	dom_read, 4, 32
+ 1340              		.comm	month_read, 4, 32
+ 1341              		.comm	year_read, 4, 32
+ 1342              		.comm	mystr, 200, 32
+ 1360              		.text
+ 1362              	.Letext:
+ 1363              		.ident	"GCC: (GNU) 3.3"
+DEFINED SYMBOLS
+                            *ABS*:00000000 rtc_alarm.c
+     /tmp/ccb4QQVk.s:37     .data:00000000 sec
+     /tmp/ccb4QQVk.s:43     .data:00000004 min
+     /tmp/ccb4QQVk.s:49     .data:00000008 hour
+     /tmp/ccb4QQVk.s:55     .data:0000000c dow
+     /tmp/ccb4QQVk.s:61     .data:00000010 dom
+     /tmp/ccb4QQVk.s:67     .data:00000014 month
+     /tmp/ccb4QQVk.s:73     .data:00000018 year
+     /tmp/ccb4QQVk.s:80     .text:00000000 rtc_init
+     /tmp/ccb4QQVk.s:108    .text:00000014 rtc_write
+     /tmp/ccb4QQVk.s:201    .text:000000e4 rtc_read_sec
+     /tmp/ccb4QQVk.s:227    .text:000000f8 rtc_read_min
+     /tmp/ccb4QQVk.s:254    .text:00000110 rtc_read_hour
+     /tmp/ccb4QQVk.s:281    .text:00000128 rtc_read_dow
+     /tmp/ccb4QQVk.s:308    .text:00000140 rtc_read_dom
+     /tmp/ccb4QQVk.s:334    .text:00000154 rtc_read_month
+     /tmp/ccb4QQVk.s:361    .text:0000016c rtc_read_year
+     /tmp/ccb4QQVk.s:391    .text:0000018c delay
+     /tmp/ccb4QQVk.s:457    .text:00000200 alarm_start
+     /tmp/ccb4QQVk.s:495    .text:00000230 alarm_stop
+     /tmp/ccb4QQVk.s:538    .text:00000268 buzzer_init
+     /tmp/ccb4QQVk.s:583    .text:000002a8 uart0_init
+     /tmp/ccb4QQVk.s:641    .text:00000308 uart0_tx_char
+     /tmp/ccb4QQVk.s:672    .text:00000330 uart0_tx_str
+     /tmp/ccb4QQVk.s:707    .text:00000364 uart0_tx_num
+     /tmp/ccb4QQVk.s:788    .text:000003e4 uart0_rx_char
+     /tmp/ccb4QQVk.s:819    .text:0000040c uart0_rx_str
+     /tmp/ccb4QQVk.s:861    .text:0000044c uart0_rx_num
+     /tmp/ccb4QQVk.s:888    .text:00000468 timer_init
+     /tmp/ccb4QQVk.s:946    .text:000004cc sec_delay
+     /tmp/ccb4QQVk.s:975    .text:000004f0 timer_interrupt_init
+     /tmp/ccb4QQVk.s:1041   .bss:00000000 secover_Intflag
+     /tmp/ccb4QQVk.s:1047   .data:0000001c days
+     /tmp/ccb4QQVk.s:1070   .text:00000560 main
+     /tmp/ccb4QQVk.s:1273   .text:00000720 Timer0_Isr
+                            *COM*:00000004 sec_read
+                            *COM*:00000004 min_read
+                            *COM*:00000004 hour_read
+                            *COM*:00000004 dow_read
+                            *COM*:00000004 dom_read
+                            *COM*:00000004 month_read
+                            *COM*:00000004 year_read
+                            *COM*:000000c8 mystr
+     /tmp/ccb4QQVk.s:1266   .data:00000064 count.0
+
+UNDEFINED SYMBOLS
+sys_init
+enableIRQ
+sprintf
