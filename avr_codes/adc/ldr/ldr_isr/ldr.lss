@@ -1,0 +1,605 @@
+
+ldr.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000012  00800100  000002c8  0000033c  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         000002c8  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .debug_aranges 00000020  00000000  00000000  0000034e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  3 .debug_pubnames 000000af  00000000  00000000  0000036e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_info   00000359  00000000  00000000  0000041d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_abbrev 000001e6  00000000  00000000  00000776  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_line   00000355  00000000  00000000  0000095c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_frame  000000b0  00000000  00000000  00000cb4  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_str    0000012b  00000000  00000000  00000d64  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_loc    000000f9  00000000  00000000  00000e8f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_ranges 00000018  00000000  00000000  00000f88  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 46 00 	jmp	0x8c	; 0x8c <__ctors_end>
+   4:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+   8:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+   c:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  10:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  14:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  18:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  1c:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  20:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  24:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  28:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  2c:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  30:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  34:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  38:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  3c:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  40:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  44:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  48:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  4c:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  50:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  54:	0c 94 05 01 	jmp	0x20a	; 0x20a <__vector_21>
+  58:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  5c:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  60:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  64:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  68:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  6c:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  70:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  74:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  78:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  7c:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  80:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  84:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+  88:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
+
+0000008c <__ctors_end>:
+  8c:	11 24       	eor	r1, r1
+  8e:	1f be       	out	0x3f, r1	; 63
+  90:	cf ef       	ldi	r28, 0xFF	; 255
+  92:	d0 e1       	ldi	r29, 0x10	; 16
+  94:	de bf       	out	0x3e, r29	; 62
+  96:	cd bf       	out	0x3d, r28	; 61
+
+00000098 <__do_copy_data>:
+  98:	11 e0       	ldi	r17, 0x01	; 1
+  9a:	a0 e0       	ldi	r26, 0x00	; 0
+  9c:	b1 e0       	ldi	r27, 0x01	; 1
+  9e:	e8 ec       	ldi	r30, 0xC8	; 200
+  a0:	f2 e0       	ldi	r31, 0x02	; 2
+  a2:	02 c0       	rjmp	.+4      	; 0xa8 <.do_copy_data_start>
+
+000000a4 <.do_copy_data_loop>:
+  a4:	05 90       	lpm	r0, Z+
+  a6:	0d 92       	st	X+, r0
+
+000000a8 <.do_copy_data_start>:
+  a8:	a2 31       	cpi	r26, 0x12	; 18
+  aa:	b1 07       	cpc	r27, r17
+  ac:	d9 f7       	brne	.-10     	; 0xa4 <.do_copy_data_loop>
+  ae:	0e 94 f6 00 	call	0x1ec	; 0x1ec <main>
+  b2:	0c 94 62 01 	jmp	0x2c4	; 0x2c4 <_exit>
+
+000000b6 <__bad_interrupt>:
+  b6:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+000000ba <uart1_init>:
+#include<avr/io.h>
+
+// uart1 initialization
+void uart1_init(void) 
+{
+	UBRR1H = 0;    // USART Baud Rate Registers: High & Low
+  ba:	10 92 98 00 	sts	0x0098, r1
+	UBRR1L = 103; //0X67; BAUDRATE = 9600
+  be:	87 e6       	ldi	r24, 0x67	; 103
+  c0:	80 93 99 00 	sts	0x0099, r24
+	
+	//UCSR : USART Control and Status Register A,B or C. 
+	UCSR1C |= (1<<UCSZ1) | (1<<UCSZ0);// frame : 8 bit data ,no parity ,1 stop bit
+  c4:	ed e9       	ldi	r30, 0x9D	; 157
+  c6:	f0 e0       	ldi	r31, 0x00	; 0
+  c8:	80 81       	ld	r24, Z
+  ca:	86 60       	ori	r24, 0x06	; 6
+  cc:	80 83       	st	Z, r24
+
+	UCSR1B |= (1<<RXEN) | (1<<TXEN);// ENABLE TRANSMITTER & RECEIVER
+  ce:	ea e9       	ldi	r30, 0x9A	; 154
+  d0:	f0 e0       	ldi	r31, 0x00	; 0
+  d2:	80 81       	ld	r24, Z
+  d4:	88 61       	ori	r24, 0x18	; 24
+  d6:	80 83       	st	Z, r24
+}
+  d8:	08 95       	ret
+
+000000da <uart1_tx_char>:
+
+// Trannitting Char
+void uart1_tx_char(unsigned char data)
+{
+  da:	98 2f       	mov	r25, r24
+	/*The UDREn(USART Data Register Empty) flag indicates if the transmit buffer (UDR) is ready to receive new data. 
+If UDREn is one, the buffer is empty, and therefore ready to be written*/
+
+	while(!(UCSR1A &(1<<UDRE)));//Hence poll UDRE flag till UDRE becomes 1
+  dc:	80 91 9b 00 	lds	r24, 0x009B
+  e0:	85 ff       	sbrs	r24, 5
+  e2:	fc cf       	rjmp	.-8      	; 0xdc <uart1_tx_char+0x2>
+	UDR1 = data;                //As soon as UDRE flag becomes 1,load value in data register.
+  e4:	90 93 9c 00 	sts	0x009C, r25
+}
+  e8:	08 95       	ret
+
+000000ea <uart1_tx_str>:
+
+//Transmitting string
+void uart1_tx_str(unsigned char *ptr) 
+{
+  ea:	fc 01       	movw	r30, r24
+  ec:	07 c0       	rjmp	.+14     	; 0xfc <uart1_tx_str+0x12>
+void uart1_tx_char(unsigned char data)
+{
+	/*The UDREn(USART Data Register Empty) flag indicates if the transmit buffer (UDR) is ready to receive new data. 
+If UDREn is one, the buffer is empty, and therefore ready to be written*/
+
+	while(!(UCSR1A &(1<<UDRE)));//Hence poll UDRE flag till UDRE becomes 1
+  ee:	80 91 9b 00 	lds	r24, 0x009B
+  f2:	85 ff       	sbrs	r24, 5
+  f4:	fc cf       	rjmp	.-8      	; 0xee <uart1_tx_str+0x4>
+	UDR1 = data;                //As soon as UDRE flag becomes 1,load value in data register.
+  f6:	90 93 9c 00 	sts	0x009C, r25
+void uart1_tx_str(unsigned char *ptr) 
+{
+    while(*ptr !='\0')
+	{
+	uart1_tx_char(*ptr);
+	ptr ++; // uart1_tx_char(*(ptr++));
+  fa:	31 96       	adiw	r30, 0x01	; 1
+}
+
+//Transmitting string
+void uart1_tx_str(unsigned char *ptr) 
+{
+    while(*ptr !='\0')
+  fc:	90 81       	ld	r25, Z
+  fe:	99 23       	and	r25, r25
+ 100:	b1 f7       	brne	.-20     	; 0xee <uart1_tx_str+0x4>
+	{
+	uart1_tx_char(*ptr);
+	ptr ++; // uart1_tx_char(*(ptr++));
+	}
+}
+ 102:	08 95       	ret
+
+00000104 <uart1_tx_num>:
+
+// Transmitting number
+void uart1_tx_num(unsigned int num ) 
+{
+ 104:	df 93       	push	r29
+ 106:	cf 93       	push	r28
+ 108:	00 d0       	rcall	.+0      	; 0x10a <uart1_tx_num+0x6>
+ 10a:	00 d0       	rcall	.+0      	; 0x10c <uart1_tx_num+0x8>
+ 10c:	0f 92       	push	r0
+ 10e:	cd b7       	in	r28, 0x3d	; 61
+ 110:	de b7       	in	r29, 0x3e	; 62
+ 112:	9c 01       	movw	r18, r24
+	unsigned char i,count[5];	
+	
+	for(i=1;i<=4;i++)
+	{
+	count[i] = num % 10;
+ 114:	6a e0       	ldi	r22, 0x0A	; 10
+ 116:	70 e0       	ldi	r23, 0x00	; 0
+ 118:	0e 94 4e 01 	call	0x29c	; 0x29c <__udivmodhi4>
+ 11c:	8a 83       	std	Y+2, r24	; 0x02
+	num = num / 10 ;
+ 11e:	c9 01       	movw	r24, r18
+ 120:	6a e0       	ldi	r22, 0x0A	; 10
+ 122:	70 e0       	ldi	r23, 0x00	; 0
+ 124:	0e 94 4e 01 	call	0x29c	; 0x29c <__udivmodhi4>
+ 128:	9b 01       	movw	r18, r22
+{
+	unsigned char i,count[5];	
+	
+	for(i=1;i<=4;i++)
+	{
+	count[i] = num % 10;
+ 12a:	cb 01       	movw	r24, r22
+ 12c:	6a e0       	ldi	r22, 0x0A	; 10
+ 12e:	70 e0       	ldi	r23, 0x00	; 0
+ 130:	0e 94 4e 01 	call	0x29c	; 0x29c <__udivmodhi4>
+ 134:	8b 83       	std	Y+3, r24	; 0x03
+	num = num / 10 ;
+ 136:	c9 01       	movw	r24, r18
+ 138:	6a e0       	ldi	r22, 0x0A	; 10
+ 13a:	70 e0       	ldi	r23, 0x00	; 0
+ 13c:	0e 94 4e 01 	call	0x29c	; 0x29c <__udivmodhi4>
+ 140:	9b 01       	movw	r18, r22
+{
+	unsigned char i,count[5];	
+	
+	for(i=1;i<=4;i++)
+	{
+	count[i] = num % 10;
+ 142:	cb 01       	movw	r24, r22
+ 144:	6a e0       	ldi	r22, 0x0A	; 10
+ 146:	70 e0       	ldi	r23, 0x00	; 0
+ 148:	0e 94 4e 01 	call	0x29c	; 0x29c <__udivmodhi4>
+ 14c:	8c 83       	std	Y+4, r24	; 0x04
+ 14e:	c9 01       	movw	r24, r18
+ 150:	6a e0       	ldi	r22, 0x0A	; 10
+ 152:	70 e0       	ldi	r23, 0x00	; 0
+ 154:	0e 94 4e 01 	call	0x29c	; 0x29c <__udivmodhi4>
+ 158:	cb 01       	movw	r24, r22
+ 15a:	6a e0       	ldi	r22, 0x0A	; 10
+ 15c:	70 e0       	ldi	r23, 0x00	; 0
+ 15e:	0e 94 4e 01 	call	0x29c	; 0x29c <__udivmodhi4>
+ 162:	8d 83       	std	Y+5, r24	; 0x05
+ 164:	fe 01       	movw	r30, r28
+ 166:	35 96       	adiw	r30, 0x05	; 5
+	num = num / 10 ;
+	}
+	i--;// At the time of exit from the 'for loop',its value is greater than 1 of max value,
+		// in this case it is 6 which is greater than 5;hence to decrease by 1 i--. 
+	while(i!=0)
+ 168:	9e 01       	movw	r18, r28
+ 16a:	2f 5f       	subi	r18, 0xFF	; 255
+ 16c:	3f 4f       	sbci	r19, 0xFF	; 255
+	{
+	uart1_tx_char(count[i] + 0x30);
+ 16e:	90 81       	ld	r25, Z
+void uart1_tx_char(unsigned char data)
+{
+	/*The UDREn(USART Data Register Empty) flag indicates if the transmit buffer (UDR) is ready to receive new data. 
+If UDREn is one, the buffer is empty, and therefore ready to be written*/
+
+	while(!(UCSR1A &(1<<UDRE)));//Hence poll UDRE flag till UDRE becomes 1
+ 170:	80 91 9b 00 	lds	r24, 0x009B
+ 174:	85 ff       	sbrs	r24, 5
+ 176:	fc cf       	rjmp	.-8      	; 0x170 <uart1_tx_num+0x6c>
+	}
+	i--;// At the time of exit from the 'for loop',its value is greater than 1 of max value,
+		// in this case it is 6 which is greater than 5;hence to decrease by 1 i--. 
+	while(i!=0)
+	{
+	uart1_tx_char(count[i] + 0x30);
+ 178:	90 5d       	subi	r25, 0xD0	; 208
+{
+	/*The UDREn(USART Data Register Empty) flag indicates if the transmit buffer (UDR) is ready to receive new data. 
+If UDREn is one, the buffer is empty, and therefore ready to be written*/
+
+	while(!(UCSR1A &(1<<UDRE)));//Hence poll UDRE flag till UDRE becomes 1
+	UDR1 = data;                //As soon as UDRE flag becomes 1,load value in data register.
+ 17a:	90 93 9c 00 	sts	0x009C, r25
+ 17e:	31 97       	sbiw	r30, 0x01	; 1
+	count[i] = num % 10;
+	num = num / 10 ;
+	}
+	i--;// At the time of exit from the 'for loop',its value is greater than 1 of max value,
+		// in this case it is 6 which is greater than 5;hence to decrease by 1 i--. 
+	while(i!=0)
+ 180:	2e 17       	cp	r18, r30
+ 182:	3f 07       	cpc	r19, r31
+ 184:	a1 f7       	brne	.-24     	; 0x16e <uart1_tx_num+0x6a>
+	{
+	uart1_tx_char(count[i] + 0x30);
+	i--;
+	}
+}
+ 186:	0f 90       	pop	r0
+ 188:	0f 90       	pop	r0
+ 18a:	0f 90       	pop	r0
+ 18c:	0f 90       	pop	r0
+ 18e:	0f 90       	pop	r0
+ 190:	cf 91       	pop	r28
+ 192:	df 91       	pop	r29
+ 194:	08 95       	ret
+
+00000196 <uart1_rx_char>:
+unsigned char uart1_rx_char(void) 
+{
+	/*RXC flag bit is set when there are unread(NEW) data in the receive buffer
+and cleared when the receive buffer is empty (i.e., does not contain any unread data).*/
+	
+	while(!(UCSR1A &(1<<RXC))); //Hence poll Rxc flag wait till RXC becomes 1
+ 196:	80 91 9b 00 	lds	r24, 0x009B
+ 19a:	87 ff       	sbrs	r24, 7
+ 19c:	fc cf       	rjmp	.-8      	; 0x196 <uart1_rx_char>
+	return UDR1;
+ 19e:	80 91 9c 00 	lds	r24, 0x009C
+}
+ 1a2:	08 95       	ret
+
+000001a4 <uart1_rx_str>:
+
+// Receiving string
+void uart1_rx_str(unsigned char *ptr)
+{     unsigned int i;
+ 1a4:	fc 01       	movw	r30, r24
+ 1a6:	20 e0       	ldi	r18, 0x00	; 0
+ 1a8:	30 e0       	ldi	r19, 0x00	; 0
+unsigned char uart1_rx_char(void) 
+{
+	/*RXC flag bit is set when there are unread(NEW) data in the receive buffer
+and cleared when the receive buffer is empty (i.e., does not contain any unread data).*/
+	
+	while(!(UCSR1A &(1<<RXC))); //Hence poll Rxc flag wait till RXC becomes 1
+ 1aa:	80 91 9b 00 	lds	r24, 0x009B
+ 1ae:	87 ff       	sbrs	r24, 7
+ 1b0:	fc cf       	rjmp	.-8      	; 0x1aa <uart1_rx_str+0x6>
+	return UDR1;
+ 1b2:	80 91 9c 00 	lds	r24, 0x009C
+// Receiving string
+void uart1_rx_str(unsigned char *ptr)
+{     unsigned int i;
+      for(i=0;i<100;i++)
+      {
+       *(ptr+i)=uart1_rx_char();
+ 1b6:	80 83       	st	Z, r24
+        if(*(ptr+i)=='\r')
+ 1b8:	8d 30       	cpi	r24, 0x0D	; 13
+ 1ba:	11 f4       	brne	.+4      	; 0x1c0 <uart1_rx_str+0x1c>
+        {
+        *(ptr+i)='\0';
+ 1bc:	10 82       	st	Z, r1
+ 1be:	08 95       	ret
+}
+
+// Receiving string
+void uart1_rx_str(unsigned char *ptr)
+{     unsigned int i;
+      for(i=0;i<100;i++)
+ 1c0:	2f 5f       	subi	r18, 0xFF	; 255
+ 1c2:	3f 4f       	sbci	r19, 0xFF	; 255
+ 1c4:	31 96       	adiw	r30, 0x01	; 1
+ 1c6:	24 36       	cpi	r18, 0x64	; 100
+ 1c8:	31 05       	cpc	r19, r1
+ 1ca:	79 f7       	brne	.-34     	; 0x1aa <uart1_rx_str+0x6>
+ 1cc:	08 95       	ret
+
+000001ce <uart1_rx_num>:
+unsigned char uart1_rx_char(void) 
+{
+	/*RXC flag bit is set when there are unread(NEW) data in the receive buffer
+and cleared when the receive buffer is empty (i.e., does not contain any unread data).*/
+	
+	while(!(UCSR1A &(1<<RXC))); //Hence poll Rxc flag wait till RXC becomes 1
+ 1ce:	80 91 9b 00 	lds	r24, 0x009B
+ 1d2:	87 ff       	sbrs	r24, 7
+ 1d4:	fc cf       	rjmp	.-8      	; 0x1ce <uart1_rx_num>
+	return UDR1;
+ 1d6:	80 91 9c 00 	lds	r24, 0x009C
+	{
+	num = uart1_rx_char();
+	num = num - 0x30;
+	return num;
+	}
+}
+ 1da:	80 53       	subi	r24, 0x30	; 48
+ 1dc:	08 95       	ret
+
+000001de <adc_init>:
+void adc_init(void)
+{
+	ADMUX |= (1<<REFS1)|(1<<REFS0)|(1<<ADLAR);// Internal 2.56V Voltage Reference,
+ 1de:	87 b1       	in	r24, 0x07	; 7
+ 1e0:	80 6e       	ori	r24, 0xE0	; 224
+ 1e2:	87 b9       	out	0x07, r24	; 7
+	//ADLAR=1- left alligned (8 bit resolutn),MUX4:0 = 00000 - Single Ended Input ADC0 CHANNEL 
+	
+	ADCSRA|=  (1<<ADEN)|(1<<ADSC)|(1<<ADIE)|(1<<ADPS2 )|(1<<ADPS1 )|(1<<ADPS0 );
+ 1e4:	86 b1       	in	r24, 0x06	; 6
+ 1e6:	8f 6c       	ori	r24, 0xCF	; 207
+ 1e8:	86 b9       	out	0x06, r24	; 6
+	/*ADC Enable,ADC Start Conversion,ADC Interrupt Enable,ADC Interrupt Enable,
+	  ADPS bits determine the division factor between the XTAL frequency and the input clock to the
+	ADC.ADC Prescaler=128*/
+
+}
+ 1ea:	08 95       	ret
+
+000001ec <main>:
+void adc_init(void)
+{
+	ADMUX |= (1<<REFS1)|(1<<REFS0)|(1<<ADLAR);// Internal 2.56V Voltage Reference,
+ 1ec:	87 b1       	in	r24, 0x07	; 7
+ 1ee:	80 6e       	ori	r24, 0xE0	; 224
+ 1f0:	87 b9       	out	0x07, r24	; 7
+	//ADLAR=1- left alligned (8 bit resolutn),MUX4:0 = 00000 - Single Ended Input ADC0 CHANNEL 
+	
+	ADCSRA|=  (1<<ADEN)|(1<<ADSC)|(1<<ADIE)|(1<<ADPS2 )|(1<<ADPS1 )|(1<<ADPS0 );
+ 1f2:	86 b1       	in	r24, 0x06	; 6
+ 1f4:	8f 6c       	ori	r24, 0xCF	; 207
+ 1f6:	86 b9       	out	0x06, r24	; 6
+#include"uart1.h"
+#include"ldr.h"
+int main(void)
+{
+	adc_init();
+	uart1_init();
+ 1f8:	0e 94 5d 00 	call	0xba	; 0xba <uart1_init>
+	uart1_tx_str("uart initialised\n");
+ 1fc:	80 e0       	ldi	r24, 0x00	; 0
+ 1fe:	91 e0       	ldi	r25, 0x01	; 1
+ 200:	0e 94 75 00 	call	0xea	; 0xea <uart1_tx_str>
+	sei();
+ 204:	78 94       	sei
+
+	DDRA |=(1<<3);            // buzzer as o/p
+ 206:	d3 9a       	sbi	0x1a, 3	; 26
+ 208:	ff cf       	rjmp	.-2      	; 0x208 <main+0x1c>
+
+0000020a <__vector_21>:
+	uart1_tx_char('\t');
+}
+*/
+
+ISR(ADC_vect)
+{
+ 20a:	1f 92       	push	r1
+ 20c:	0f 92       	push	r0
+ 20e:	0f b6       	in	r0, 0x3f	; 63
+ 210:	0f 92       	push	r0
+ 212:	11 24       	eor	r1, r1
+ 214:	1f 93       	push	r17
+ 216:	2f 93       	push	r18
+ 218:	3f 93       	push	r19
+ 21a:	4f 93       	push	r20
+ 21c:	5f 93       	push	r21
+ 21e:	6f 93       	push	r22
+ 220:	7f 93       	push	r23
+ 222:	8f 93       	push	r24
+ 224:	9f 93       	push	r25
+ 226:	af 93       	push	r26
+ 228:	bf 93       	push	r27
+ 22a:	ef 93       	push	r30
+ 22c:	ff 93       	push	r31
+	int a;
+	a = ADCH;
+ 22e:	15 b1       	in	r17, 0x05	; 5
+
+	uart1_tx_num(ADCH);
+ 230:	85 b1       	in	r24, 0x05	; 5
+ 232:	90 e0       	ldi	r25, 0x00	; 0
+ 234:	0e 94 82 00 	call	0x104	; 0x104 <uart1_tx_num>
+	ADCSRA|=  (1<<ADSC);// ALWAYS SET START CONV BIT FOR NORMAL MODE
+ 238:	36 9a       	sbi	0x06, 6	; 6
+void uart1_tx_char(unsigned char data)
+{
+	/*The UDREn(USART Data Register Empty) flag indicates if the transmit buffer (UDR) is ready to receive new data. 
+If UDREn is one, the buffer is empty, and therefore ready to be written*/
+
+	while(!(UCSR1A &(1<<UDRE)));//Hence poll UDRE flag till UDRE becomes 1
+ 23a:	80 91 9b 00 	lds	r24, 0x009B
+ 23e:	85 ff       	sbrs	r24, 5
+ 240:	fc cf       	rjmp	.-8      	; 0x23a <__vector_21+0x30>
+	UDR1 = data;                //As soon as UDRE flag becomes 1,load value in data register.
+ 242:	89 e0       	ldi	r24, 0x09	; 9
+ 244:	80 93 9c 00 	sts	0x009C, r24
+	uart1_tx_char('\t');
+	
+	if(a>50)
+ 248:	81 2f       	mov	r24, r17
+ 24a:	90 e0       	ldi	r25, 0x00	; 0
+ 24c:	c3 97       	sbiw	r24, 0x33	; 51
+ 24e:	a4 f0       	brlt	.+40     	; 0x278 <__vector_21+0x6e>
+	{
+	 
+	PORTA |=(1<<3);     //buzzer on..connected in active high fashion
+ 250:	db 9a       	sbi	0x1b, 3	; 27
+ 252:	80 e1       	ldi	r24, 0x10	; 16
+ 254:	97 e2       	ldi	r25, 0x27	; 39
+    milliseconds can be achieved.
+ */
+void
+_delay_loop_2(uint16_t __count)
+{
+	__asm__ volatile (
+ 256:	20 e9       	ldi	r18, 0x90	; 144
+ 258:	31 e0       	ldi	r19, 0x01	; 1
+ 25a:	f9 01       	movw	r30, r18
+ 25c:	31 97       	sbiw	r30, 0x01	; 1
+ 25e:	f1 f7       	brne	.-4      	; 0x25c <__vector_21+0x52>
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 260:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 262:	d9 f7       	brne	.-10     	; 0x25a <__vector_21+0x50>
+    _delay_ms(1000);
+    PORTA &=~(1<<3);	//buzzer off
+ 264:	db 98       	cbi	0x1b, 3	; 27
+ 266:	80 e1       	ldi	r24, 0x10	; 16
+ 268:	97 e2       	ldi	r25, 0x27	; 39
+ 26a:	20 e9       	ldi	r18, 0x90	; 144
+ 26c:	31 e0       	ldi	r19, 0x01	; 1
+ 26e:	f9 01       	movw	r30, r18
+ 270:	31 97       	sbiw	r30, 0x01	; 1
+ 272:	f1 f7       	brne	.-4      	; 0x270 <__vector_21+0x66>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 274:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 276:	d9 f7       	brne	.-10     	; 0x26e <__vector_21+0x64>
+	 _delay_ms(1000);
+	}
+
+}
+ 278:	ff 91       	pop	r31
+ 27a:	ef 91       	pop	r30
+ 27c:	bf 91       	pop	r27
+ 27e:	af 91       	pop	r26
+ 280:	9f 91       	pop	r25
+ 282:	8f 91       	pop	r24
+ 284:	7f 91       	pop	r23
+ 286:	6f 91       	pop	r22
+ 288:	5f 91       	pop	r21
+ 28a:	4f 91       	pop	r20
+ 28c:	3f 91       	pop	r19
+ 28e:	2f 91       	pop	r18
+ 290:	1f 91       	pop	r17
+ 292:	0f 90       	pop	r0
+ 294:	0f be       	out	0x3f, r0	; 63
+ 296:	0f 90       	pop	r0
+ 298:	1f 90       	pop	r1
+ 29a:	18 95       	reti
+
+0000029c <__udivmodhi4>:
+ 29c:	aa 1b       	sub	r26, r26
+ 29e:	bb 1b       	sub	r27, r27
+ 2a0:	51 e1       	ldi	r21, 0x11	; 17
+ 2a2:	07 c0       	rjmp	.+14     	; 0x2b2 <__udivmodhi4_ep>
+
+000002a4 <__udivmodhi4_loop>:
+ 2a4:	aa 1f       	adc	r26, r26
+ 2a6:	bb 1f       	adc	r27, r27
+ 2a8:	a6 17       	cp	r26, r22
+ 2aa:	b7 07       	cpc	r27, r23
+ 2ac:	10 f0       	brcs	.+4      	; 0x2b2 <__udivmodhi4_ep>
+ 2ae:	a6 1b       	sub	r26, r22
+ 2b0:	b7 0b       	sbc	r27, r23
+
+000002b2 <__udivmodhi4_ep>:
+ 2b2:	88 1f       	adc	r24, r24
+ 2b4:	99 1f       	adc	r25, r25
+ 2b6:	5a 95       	dec	r21
+ 2b8:	a9 f7       	brne	.-22     	; 0x2a4 <__udivmodhi4_loop>
+ 2ba:	80 95       	com	r24
+ 2bc:	90 95       	com	r25
+ 2be:	bc 01       	movw	r22, r24
+ 2c0:	cd 01       	movw	r24, r26
+ 2c2:	08 95       	ret
+
+000002c4 <_exit>:
+ 2c4:	f8 94       	cli
+
+000002c6 <__stop_program>:
+ 2c6:	ff cf       	rjmp	.-2      	; 0x2c6 <__stop_program>

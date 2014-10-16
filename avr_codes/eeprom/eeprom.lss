@@ -1,0 +1,526 @@
+
+eeprom.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000032  00800100  0000024e  000002c2  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         0000024e  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .stab         00000750  00000000  00000000  000002f4  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  3 .stabstr      00000054  00000000  00000000  00000a44  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_aranges 00000020  00000000  00000000  00000a98  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_pubnames 000000b3  00000000  00000000  00000ab8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_info   00000323  00000000  00000000  00000b6b  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_abbrev 000001d6  00000000  00000000  00000e8e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_line   000002ad  00000000  00000000  00001064  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_frame  000000b0  00000000  00000000  00001314  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    000000ff  00000000  00000000  000013c4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_loc    000000a1  00000000  00000000  000014c3  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_ranges 00000018  00000000  00000000  00001564  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 46 00 	jmp	0x8c	; 0x8c <__ctors_end>
+   4:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+   8:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+   c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  10:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  14:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  18:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  1c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  20:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  24:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  28:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  2c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  30:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  34:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  38:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  3c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  40:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  44:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  48:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  4c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  50:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  54:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  58:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  5c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  60:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  64:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  68:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  6c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  70:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  74:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  78:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  7c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  80:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  84:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  88:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+
+0000008c <__ctors_end>:
+  8c:	11 24       	eor	r1, r1
+  8e:	1f be       	out	0x3f, r1	; 63
+  90:	cf ef       	ldi	r28, 0xFF	; 255
+  92:	d0 e1       	ldi	r29, 0x10	; 16
+  94:	de bf       	out	0x3e, r29	; 62
+  96:	cd bf       	out	0x3d, r28	; 61
+
+00000098 <__do_copy_data>:
+  98:	11 e0       	ldi	r17, 0x01	; 1
+  9a:	a0 e0       	ldi	r26, 0x00	; 0
+  9c:	b1 e0       	ldi	r27, 0x01	; 1
+  9e:	ee e4       	ldi	r30, 0x4E	; 78
+  a0:	f2 e0       	ldi	r31, 0x02	; 2
+  a2:	00 e0       	ldi	r16, 0x00	; 0
+  a4:	0b bf       	out	0x3b, r16	; 59
+  a6:	02 c0       	rjmp	.+4      	; 0xac <__do_copy_data+0x14>
+  a8:	07 90       	elpm	r0, Z+
+  aa:	0d 92       	st	X+, r0
+  ac:	a2 33       	cpi	r26, 0x32	; 50
+  ae:	b1 07       	cpc	r27, r17
+  b0:	d9 f7       	brne	.-10     	; 0xa8 <__do_copy_data+0x10>
+
+000000b2 <__do_clear_bss>:
+  b2:	11 e0       	ldi	r17, 0x01	; 1
+  b4:	a2 e3       	ldi	r26, 0x32	; 50
+  b6:	b1 e0       	ldi	r27, 0x01	; 1
+  b8:	01 c0       	rjmp	.+2      	; 0xbc <.do_clear_bss_start>
+
+000000ba <.do_clear_bss_loop>:
+  ba:	1d 92       	st	X+, r1
+
+000000bc <.do_clear_bss_start>:
+  bc:	a2 33       	cpi	r26, 0x32	; 50
+  be:	b1 07       	cpc	r27, r17
+  c0:	e1 f7       	brne	.-8      	; 0xba <.do_clear_bss_loop>
+  c2:	0e 94 e4 00 	call	0x1c8	; 0x1c8 <main>
+  c6:	0c 94 25 01 	jmp	0x24a	; 0x24a <_exit>
+
+000000ca <__bad_interrupt>:
+  ca:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+000000ce <uart1_init>:
+#include<avr/io.h>
+
+// uart1 initialization
+void uart1_init(void) 
+{
+	UBRR1H = 0;
+  ce:	10 92 98 00 	sts	0x0098, r1
+	UBRR1L = 103; //0X67; BAUDRATE = 9600
+  d2:	87 e6       	ldi	r24, 0x67	; 103
+  d4:	80 93 99 00 	sts	0x0099, r24
+
+	UCSR1C |= (1<<UCSZ1) | (1<<UCSZ0); //UCSR1C = 0X06;// frame : 8 bit data , no parity ,1 stop bit
+  d8:	ed e9       	ldi	r30, 0x9D	; 157
+  da:	f0 e0       	ldi	r31, 0x00	; 0
+  dc:	80 81       	ld	r24, Z
+  de:	86 60       	ori	r24, 0x06	; 6
+  e0:	80 83       	st	Z, r24
+
+	UCSR1B |= (1<<RXEN) | (1<<TXEN);// ENABLE TRANSMITTER & RECEIVER
+  e2:	ea e9       	ldi	r30, 0x9A	; 154
+  e4:	f0 e0       	ldi	r31, 0x00	; 0
+  e6:	80 81       	ld	r24, Z
+  e8:	88 61       	ori	r24, 0x18	; 24
+  ea:	80 83       	st	Z, r24
+}
+  ec:	08 95       	ret
+
+000000ee <uart1_tx_char>:
+
+// TRANSMITTING CHAR
+void uart1_tx_char(unsigned char data)
+{
+  ee:	98 2f       	mov	r25, r24
+	while(!(UCSR1A &(1<<UDRE)));//poll UDRE flag till UDRE becomes 1
+  f0:	80 91 9b 00 	lds	r24, 0x009B
+  f4:	85 ff       	sbrs	r24, 5
+  f6:	fc cf       	rjmp	.-8      	; 0xf0 <uart1_tx_char+0x2>
+	UDR1 = data;                //load value in data register
+  f8:	90 93 9c 00 	sts	0x009C, r25
+}
+  fc:	08 95       	ret
+
+000000fe <uart1_tx_str>:
+
+//Transmitting string
+void uart1_tx_str(unsigned char *ptr) 
+{
+  fe:	fc 01       	movw	r30, r24
+ 100:	07 c0       	rjmp	.+14     	; 0x110 <uart1_tx_str+0x12>
+}
+
+// TRANSMITTING CHAR
+void uart1_tx_char(unsigned char data)
+{
+	while(!(UCSR1A &(1<<UDRE)));//poll UDRE flag till UDRE becomes 1
+ 102:	80 91 9b 00 	lds	r24, 0x009B
+ 106:	85 ff       	sbrs	r24, 5
+ 108:	fc cf       	rjmp	.-8      	; 0x102 <uart1_tx_str+0x4>
+	UDR1 = data;                //load value in data register
+ 10a:	90 93 9c 00 	sts	0x009C, r25
+void uart1_tx_str(unsigned char *ptr) 
+{
+    while(*ptr !='\0')
+	{
+	uart1_tx_char(*ptr);
+	ptr ++; // uart1_tx_char(*(ptr++));
+ 10e:	31 96       	adiw	r30, 0x01	; 1
+}
+
+//Transmitting string
+void uart1_tx_str(unsigned char *ptr) 
+{
+    while(*ptr !='\0')
+ 110:	90 81       	ld	r25, Z
+ 112:	99 23       	and	r25, r25
+ 114:	b1 f7       	brne	.-20     	; 0x102 <uart1_tx_str+0x4>
+	{
+	uart1_tx_char(*ptr);
+	ptr ++; // uart1_tx_char(*(ptr++));
+	}
+}
+ 116:	08 95       	ret
+
+00000118 <uart1_tx_num>:
+
+// Transmitting number
+void uart1_tx_num(unsigned int num ) 
+{
+ 118:	df 93       	push	r29
+ 11a:	cf 93       	push	r28
+ 11c:	00 d0       	rcall	.+0      	; 0x11e <uart1_tx_num+0x6>
+ 11e:	00 d0       	rcall	.+0      	; 0x120 <uart1_tx_num+0x8>
+ 120:	0f 92       	push	r0
+ 122:	cd b7       	in	r28, 0x3d	; 61
+ 124:	de b7       	in	r29, 0x3e	; 62
+	unsigned char i,count[5];	
+	
+	for(i=1;i<=1;i++)
+	{
+	count[i] = num % 10;
+ 126:	6a e0       	ldi	r22, 0x0A	; 10
+ 128:	70 e0       	ldi	r23, 0x00	; 0
+ 12a:	0e 94 11 01 	call	0x222	; 0x222 <__udivmodhi4>
+ 12e:	8a 83       	std	Y+2, r24	; 0x02
+ 130:	fe 01       	movw	r30, r28
+ 132:	32 96       	adiw	r30, 0x02	; 2
+	num = num / 10 ;
+	}
+	i--;// At the time of exit from the 'for loop',its value is greater than 1 of max value,
+		// in this case it is 6 which is greater than 5;hence to decrease by 1 i--. 
+	while(i!=0)
+ 134:	9e 01       	movw	r18, r28
+ 136:	2f 5f       	subi	r18, 0xFF	; 255
+ 138:	3f 4f       	sbci	r19, 0xFF	; 255
+	{
+	uart1_tx_char(count[i] + 0x30);
+ 13a:	90 81       	ld	r25, Z
+}
+
+// TRANSMITTING CHAR
+void uart1_tx_char(unsigned char data)
+{
+	while(!(UCSR1A &(1<<UDRE)));//poll UDRE flag till UDRE becomes 1
+ 13c:	80 91 9b 00 	lds	r24, 0x009B
+ 140:	85 ff       	sbrs	r24, 5
+ 142:	fc cf       	rjmp	.-8      	; 0x13c <uart1_tx_num+0x24>
+	}
+	i--;// At the time of exit from the 'for loop',its value is greater than 1 of max value,
+		// in this case it is 6 which is greater than 5;hence to decrease by 1 i--. 
+	while(i!=0)
+	{
+	uart1_tx_char(count[i] + 0x30);
+ 144:	90 5d       	subi	r25, 0xD0	; 208
+
+// TRANSMITTING CHAR
+void uart1_tx_char(unsigned char data)
+{
+	while(!(UCSR1A &(1<<UDRE)));//poll UDRE flag till UDRE becomes 1
+	UDR1 = data;                //load value in data register
+ 146:	90 93 9c 00 	sts	0x009C, r25
+ 14a:	31 97       	sbiw	r30, 0x01	; 1
+	count[i] = num % 10;
+	num = num / 10 ;
+	}
+	i--;// At the time of exit from the 'for loop',its value is greater than 1 of max value,
+		// in this case it is 6 which is greater than 5;hence to decrease by 1 i--. 
+	while(i!=0)
+ 14c:	2e 17       	cp	r18, r30
+ 14e:	3f 07       	cpc	r19, r31
+ 150:	a1 f7       	brne	.-24     	; 0x13a <uart1_tx_num+0x22>
+	{
+	uart1_tx_char(count[i] + 0x30);
+	i--;
+	}
+}
+ 152:	0f 90       	pop	r0
+ 154:	0f 90       	pop	r0
+ 156:	0f 90       	pop	r0
+ 158:	0f 90       	pop	r0
+ 15a:	0f 90       	pop	r0
+ 15c:	cf 91       	pop	r28
+ 15e:	df 91       	pop	r29
+ 160:	08 95       	ret
+
+00000162 <uart1_rx_char>:
+
+// Recieving char
+unsigned char uart1_rx_char(void) 
+{
+	while(!(UCSR1A &(1<<RXC))); //poll Rxc flag wait till RXC becomes 1
+ 162:	80 91 9b 00 	lds	r24, 0x009B
+ 166:	87 ff       	sbrs	r24, 7
+ 168:	fc cf       	rjmp	.-8      	; 0x162 <uart1_rx_char>
+	return UDR1;
+ 16a:	80 91 9c 00 	lds	r24, 0x009C
+}
+ 16e:	08 95       	ret
+
+00000170 <uart1_rx_str>:
+
+// Recieving string
+void uart1_rx_str(unsigned char *ptr)
+{     unsigned int i;
+ 170:	fc 01       	movw	r30, r24
+ 172:	20 e0       	ldi	r18, 0x00	; 0
+ 174:	30 e0       	ldi	r19, 0x00	; 0
+}
+
+// Recieving char
+unsigned char uart1_rx_char(void) 
+{
+	while(!(UCSR1A &(1<<RXC))); //poll Rxc flag wait till RXC becomes 1
+ 176:	80 91 9b 00 	lds	r24, 0x009B
+ 17a:	87 ff       	sbrs	r24, 7
+ 17c:	fc cf       	rjmp	.-8      	; 0x176 <uart1_rx_str+0x6>
+	return UDR1;
+ 17e:	80 91 9c 00 	lds	r24, 0x009C
+// Recieving string
+void uart1_rx_str(unsigned char *ptr)
+{     unsigned int i;
+      for(i=0;i<100;i++)
+      {
+       *(ptr+i)=uart1_rx_char();
+ 182:	80 83       	st	Z, r24
+        if(*(ptr+i)=='\r')
+ 184:	8d 30       	cpi	r24, 0x0D	; 13
+ 186:	11 f4       	brne	.+4      	; 0x18c <uart1_rx_str+0x1c>
+        {
+        *(ptr+i)='\0';
+ 188:	10 82       	st	Z, r1
+ 18a:	08 95       	ret
+}
+
+// Recieving string
+void uart1_rx_str(unsigned char *ptr)
+{     unsigned int i;
+      for(i=0;i<100;i++)
+ 18c:	2f 5f       	subi	r18, 0xFF	; 255
+ 18e:	3f 4f       	sbci	r19, 0xFF	; 255
+ 190:	31 96       	adiw	r30, 0x01	; 1
+ 192:	24 36       	cpi	r18, 0x64	; 100
+ 194:	31 05       	cpc	r19, r1
+ 196:	79 f7       	brne	.-34     	; 0x176 <uart1_rx_str+0x6>
+ 198:	08 95       	ret
+
+0000019a <uart1_rx_num>:
+}
+
+// Recieving char
+unsigned char uart1_rx_char(void) 
+{
+	while(!(UCSR1A &(1<<RXC))); //poll Rxc flag wait till RXC becomes 1
+ 19a:	80 91 9b 00 	lds	r24, 0x009B
+ 19e:	87 ff       	sbrs	r24, 7
+ 1a0:	fc cf       	rjmp	.-8      	; 0x19a <uart1_rx_num>
+	return UDR1;
+ 1a2:	80 91 9c 00 	lds	r24, 0x009C
+	
+	/*num = uart1_rx_char();
+	num = ((num1 * 10 ) + (num - 0x30));*/
+	return num;
+	}
+}
+ 1a6:	80 53       	subi	r24, 0x30	; 48
+ 1a8:	08 95       	ret
+
+000001aa <eeprom_write>:
+#include<avr/io.h>
+
+void eeprom_write(unsigned int addr,unsigned char data)
+{
+	while(EECR &(1<<EEWE));// When the write access time has elapsed, the EEWE bit is cleared by hardware.
+ 1aa:	e1 99       	sbic	0x1c, 1	; 28
+ 1ac:	fe cf       	rjmp	.-4      	; 0x1aa <eeprom_write>
+                           //The user software can poll this bit and wait for a zero before writing the next byte.		
+	
+	EEAR = addr; // load the address of eeprom to write
+ 1ae:	9f bb       	out	0x1f, r25	; 31
+ 1b0:	8e bb       	out	0x1e, r24	; 30
+	EEDR = data; // load the data
+ 1b2:	6d bb       	out	0x1d, r22	; 29
+When EEMWE is written to one, writing EEWE to one within four clock cycles will write data to
+the EEPROM at the selected address. If EEMWE is zero, writing EEWE to one will have no
+effect. When EEMWE has been written to one by software, hardware clears the bit to zero after
+four clock cycles. Hence it is necessary to make EEWE bit one  within next 4 clks (security feature).*/
+
+	EECR |= (1<<EEMWE);// set master enable bit 
+ 1b4:	e2 9a       	sbi	0x1c, 2	; 28
+	EECR |=(1<<EEWE);// set write enable bit within next 4 clks for write strobe
+ 1b6:	e1 9a       	sbi	0x1c, 1	; 28
+}
+ 1b8:	08 95       	ret
+
+000001ba <eeprom_read>:
+unsigned char eeprom_read(unsigned int addr)// returning data
+{
+/*The user should poll the EEWE bit before starting the read operation. If a write operation is in
+progress, it is neither possible to read the EEPROM, nor to change the EEAR Register.*/
+	
+	while(EECR &(1<<EEWE));// WAIT TILL EEWE BIT BECOME '0'	
+ 1ba:	e1 99       	sbic	0x1c, 1	; 28
+ 1bc:	fe cf       	rjmp	.-4      	; 0x1ba <eeprom_read>
+	EEAR = addr; // load the address of eeprom to write
+ 1be:	9f bb       	out	0x1f, r25	; 31
+ 1c0:	8e bb       	out	0x1e, r24	; 30
+	EECR |=(1<<EERE);// Start eeprom read by writing EERE to '1'.
+ 1c2:	e0 9a       	sbi	0x1c, 0	; 28
+	return EEDR;
+ 1c4:	8d b3       	in	r24, 0x1d	; 29
+} 
+ 1c6:	08 95       	ret
+
+000001c8 <main>:
+#include<avr/io.h>
+
+// uart1 initialization
+void uart1_init(void) 
+{
+	UBRR1H = 0;
+ 1c8:	10 92 98 00 	sts	0x0098, r1
+	UBRR1L = 103; //0X67; BAUDRATE = 9600
+ 1cc:	87 e6       	ldi	r24, 0x67	; 103
+ 1ce:	80 93 99 00 	sts	0x0099, r24
+
+	UCSR1C |= (1<<UCSZ1) | (1<<UCSZ0); //UCSR1C = 0X06;// frame : 8 bit data , no parity ,1 stop bit
+ 1d2:	80 91 9d 00 	lds	r24, 0x009D
+ 1d6:	86 60       	ori	r24, 0x06	; 6
+ 1d8:	80 93 9d 00 	sts	0x009D, r24
+
+	UCSR1B |= (1<<RXEN) | (1<<TXEN);// ENABLE TRANSMITTER & RECEIVER
+ 1dc:	80 91 9a 00 	lds	r24, 0x009A
+ 1e0:	88 61       	ori	r24, 0x18	; 24
+ 1e2:	80 93 9a 00 	sts	0x009A, r24
+ 1e6:	e0 e0       	ldi	r30, 0x00	; 0
+ 1e8:	f1 e0       	ldi	r31, 0x01	; 1
+ 1ea:	07 c0       	rjmp	.+14     	; 0x1fa <main+0x32>
+}
+
+// TRANSMITTING CHAR
+void uart1_tx_char(unsigned char data)
+{
+	while(!(UCSR1A &(1<<UDRE)));//poll UDRE flag till UDRE becomes 1
+ 1ec:	80 91 9b 00 	lds	r24, 0x009B
+ 1f0:	85 ff       	sbrs	r24, 5
+ 1f2:	fc cf       	rjmp	.-8      	; 0x1ec <main+0x24>
+	UDR1 = data;                //load value in data register
+ 1f4:	90 93 9c 00 	sts	0x009C, r25
+void uart1_tx_str(unsigned char *ptr) 
+{
+    while(*ptr !='\0')
+	{
+	uart1_tx_char(*ptr);
+	ptr ++; // uart1_tx_char(*(ptr++));
+ 1f8:	31 96       	adiw	r30, 0x01	; 1
+}
+
+//Transmitting string
+void uart1_tx_str(unsigned char *ptr) 
+{
+    while(*ptr !='\0')
+ 1fa:	90 81       	ld	r25, Z
+ 1fc:	99 23       	and	r25, r25
+ 1fe:	b1 f7       	brne	.-20     	; 0x1ec <main+0x24>
+unsigned char eeprom_read(unsigned int addr)// returning data
+{
+/*The user should poll the EEWE bit before starting the read operation. If a write operation is in
+progress, it is neither possible to read the EEPROM, nor to change the EEAR Register.*/
+	
+	while(EECR &(1<<EEWE));// WAIT TILL EEWE BIT BECOME '0'	
+ 200:	e1 99       	sbic	0x1c, 1	; 28
+ 202:	fe cf       	rjmp	.-4      	; 0x200 <main+0x38>
+	EEAR = addr; // load the address of eeprom to write
+ 204:	80 e0       	ldi	r24, 0x00	; 0
+ 206:	92 e0       	ldi	r25, 0x02	; 2
+ 208:	9f bb       	out	0x1f, r25	; 31
+ 20a:	8e bb       	out	0x1e, r24	; 30
+	EECR |=(1<<EERE);// Start eeprom read by writing EERE to '1'.
+ 20c:	e0 9a       	sbi	0x1c, 0	; 28
+	return EEDR;
+ 20e:	9d b3       	in	r25, 0x1d	; 29
+}
+
+// TRANSMITTING CHAR
+void uart1_tx_char(unsigned char data)
+{
+	while(!(UCSR1A &(1<<UDRE)));//poll UDRE flag till UDRE becomes 1
+ 210:	80 91 9b 00 	lds	r24, 0x009B
+ 214:	85 ff       	sbrs	r24, 5
+ 216:	fc cf       	rjmp	.-8      	; 0x210 <main+0x48>
+	UDR1 = data;                //load value in data register
+ 218:	90 93 9c 00 	sts	0x009C, r25
+	//{	
+		
+	ch=eeprom_read(0x200);
+		uart1_tx_char(ch);
+	//}
+}	
+ 21c:	80 e0       	ldi	r24, 0x00	; 0
+ 21e:	90 e0       	ldi	r25, 0x00	; 0
+ 220:	08 95       	ret
+
+00000222 <__udivmodhi4>:
+ 222:	aa 1b       	sub	r26, r26
+ 224:	bb 1b       	sub	r27, r27
+ 226:	51 e1       	ldi	r21, 0x11	; 17
+ 228:	07 c0       	rjmp	.+14     	; 0x238 <__udivmodhi4_ep>
+
+0000022a <__udivmodhi4_loop>:
+ 22a:	aa 1f       	adc	r26, r26
+ 22c:	bb 1f       	adc	r27, r27
+ 22e:	a6 17       	cp	r26, r22
+ 230:	b7 07       	cpc	r27, r23
+ 232:	10 f0       	brcs	.+4      	; 0x238 <__udivmodhi4_ep>
+ 234:	a6 1b       	sub	r26, r22
+ 236:	b7 0b       	sbc	r27, r23
+
+00000238 <__udivmodhi4_ep>:
+ 238:	88 1f       	adc	r24, r24
+ 23a:	99 1f       	adc	r25, r25
+ 23c:	5a 95       	dec	r21
+ 23e:	a9 f7       	brne	.-22     	; 0x22a <__udivmodhi4_loop>
+ 240:	80 95       	com	r24
+ 242:	90 95       	com	r25
+ 244:	bc 01       	movw	r22, r24
+ 246:	cd 01       	movw	r24, r26
+ 248:	08 95       	ret
+
+0000024a <_exit>:
+ 24a:	f8 94       	cli
+
+0000024c <__stop_program>:
+ 24c:	ff cf       	rjmp	.-2      	; 0x24c <__stop_program>

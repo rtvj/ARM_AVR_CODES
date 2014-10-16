@@ -1,0 +1,183 @@
+
+mainBUZZ.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000114  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .stab         00000750  00000000  00000000  00000168  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  2 .stabstr      00000054  00000000  00000000  000008b8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  3 .debug_aranges 00000020  00000000  00000000  0000090c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_pubnames 0000002b  00000000  00000000  0000092c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   000000ca  00000000  00000000  00000957  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 00000086  00000000  00000000  00000a21  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   0000009f  00000000  00000000  00000aa7  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000030  00000000  00000000  00000b48  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    0000009c  00000000  00000000  00000b78  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 46 00 	jmp	0x8c	; 0x8c <__ctors_end>
+   4:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+   8:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+   c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  10:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  14:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  18:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  1c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  20:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  24:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  28:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  2c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  30:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  34:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  38:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  3c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  40:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  44:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  48:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  4c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  50:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  54:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  58:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  5c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  60:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  64:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  68:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  6c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  70:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  74:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  78:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  7c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  80:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  84:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  88:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+
+0000008c <__ctors_end>:
+  8c:	11 24       	eor	r1, r1
+  8e:	1f be       	out	0x3f, r1	; 63
+  90:	cf ef       	ldi	r28, 0xFF	; 255
+  92:	d0 e1       	ldi	r29, 0x10	; 16
+  94:	de bf       	out	0x3e, r29	; 62
+  96:	cd bf       	out	0x3d, r28	; 61
+
+00000098 <__do_copy_data>:
+  98:	11 e0       	ldi	r17, 0x01	; 1
+  9a:	a0 e0       	ldi	r26, 0x00	; 0
+  9c:	b1 e0       	ldi	r27, 0x01	; 1
+  9e:	e4 e1       	ldi	r30, 0x14	; 20
+  a0:	f1 e0       	ldi	r31, 0x01	; 1
+  a2:	00 e0       	ldi	r16, 0x00	; 0
+  a4:	0b bf       	out	0x3b, r16	; 59
+  a6:	02 c0       	rjmp	.+4      	; 0xac <__do_copy_data+0x14>
+  a8:	07 90       	elpm	r0, Z+
+  aa:	0d 92       	st	X+, r0
+  ac:	a0 30       	cpi	r26, 0x00	; 0
+  ae:	b1 07       	cpc	r27, r17
+  b0:	d9 f7       	brne	.-10     	; 0xa8 <__do_copy_data+0x10>
+
+000000b2 <__do_clear_bss>:
+  b2:	11 e0       	ldi	r17, 0x01	; 1
+  b4:	a0 e0       	ldi	r26, 0x00	; 0
+  b6:	b1 e0       	ldi	r27, 0x01	; 1
+  b8:	01 c0       	rjmp	.+2      	; 0xbc <.do_clear_bss_start>
+
+000000ba <.do_clear_bss_loop>:
+  ba:	1d 92       	st	X+, r1
+
+000000bc <.do_clear_bss_start>:
+  bc:	a0 30       	cpi	r26, 0x00	; 0
+  be:	b1 07       	cpc	r27, r17
+  c0:	e1 f7       	brne	.-8      	; 0xba <.do_clear_bss_loop>
+  c2:	0e 94 69 00 	call	0xd2	; 0xd2 <main>
+  c6:	0c 94 88 00 	jmp	0x110	; 0x110 <_exit>
+
+000000ca <__bad_interrupt>:
+  ca:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+000000ce <Buzzer_Init>:
+#define BUZZER_ON		PORTA |= 0x08
+#define BUZZER_OFF		PORTA &= 0xF7
+
+void Buzzer_Init(void)
+{
+	BUZZER_PA3_DIR;	/* Initializes PA3 as an output pin */
+  ce:	d3 9a       	sbi	0x1a, 3	; 26
+}
+  d0:	08 95       	ret
+
+000000d2 <main>:
+
+int main(void)
+{
+  d2:	df 93       	push	r29
+  d4:	cf 93       	push	r28
+  d6:	00 d0       	rcall	.+0      	; 0xd8 <main+0x6>
+  d8:	0f 92       	push	r0
+  da:	cd b7       	in	r28, 0x3d	; 61
+  dc:	de b7       	in	r29, 0x3e	; 62
+#define BUZZER_ON		PORTA |= 0x08
+#define BUZZER_OFF		PORTA &= 0xF7
+
+void Buzzer_Init(void)
+{
+	BUZZER_PA3_DIR;	/* Initializes PA3 as an output pin */
+  de:	d3 9a       	sbi	0x1a, 3	; 26
+	volatile unsigned char idelay;
+	volatile unsigned int jdelay;
+
+	Buzzer_Init();	/* Buzzer pin as an output */
+
+	BUZZER_ON;
+  e0:	db 9a       	sbi	0x1b, 3	; 27
+
+	for(idelay=0;idelay<10;idelay++)	/* Software Delay */
+  e2:	19 82       	std	Y+1, r1	; 0x01
+  e4:	10 c0       	rjmp	.+32     	; 0x106 <main+0x34>
+		for(jdelay=0;jdelay<50000;jdelay++);
+  e6:	1b 82       	std	Y+3, r1	; 0x03
+  e8:	1a 82       	std	Y+2, r1	; 0x02
+  ea:	05 c0       	rjmp	.+10     	; 0xf6 <main+0x24>
+  ec:	8a 81       	ldd	r24, Y+2	; 0x02
+  ee:	9b 81       	ldd	r25, Y+3	; 0x03
+  f0:	01 96       	adiw	r24, 0x01	; 1
+  f2:	9b 83       	std	Y+3, r25	; 0x03
+  f4:	8a 83       	std	Y+2, r24	; 0x02
+  f6:	8a 81       	ldd	r24, Y+2	; 0x02
+  f8:	9b 81       	ldd	r25, Y+3	; 0x03
+  fa:	80 55       	subi	r24, 0x50	; 80
+  fc:	93 4c       	sbci	r25, 0xC3	; 195
+  fe:	b0 f3       	brcs	.-20     	; 0xec <main+0x1a>
+
+	Buzzer_Init();	/* Buzzer pin as an output */
+
+	BUZZER_ON;
+
+	for(idelay=0;idelay<10;idelay++)	/* Software Delay */
+ 100:	89 81       	ldd	r24, Y+1	; 0x01
+ 102:	8f 5f       	subi	r24, 0xFF	; 255
+ 104:	89 83       	std	Y+1, r24	; 0x01
+ 106:	89 81       	ldd	r24, Y+1	; 0x01
+ 108:	8a 30       	cpi	r24, 0x0A	; 10
+ 10a:	68 f3       	brcs	.-38     	; 0xe6 <main+0x14>
+		for(jdelay=0;jdelay<50000;jdelay++);
+
+	BUZZER_OFF;
+ 10c:	db 98       	cbi	0x1b, 3	; 27
+ 10e:	ff cf       	rjmp	.-2      	; 0x10e <main+0x3c>
+
+00000110 <_exit>:
+ 110:	f8 94       	cli
+
+00000112 <__stop_program>:
+ 112:	ff cf       	rjmp	.-2      	; 0x112 <__stop_program>

@@ -1,0 +1,260 @@
+
+switch.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000016e  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .stab         000006cc  00000000  00000000  000001c4  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  2 .stabstr      00000054  00000000  00000000  00000890  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  3 .debug_aranges 00000020  00000000  00000000  000008e4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_pubnames 0000002b  00000000  00000000  00000904  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   0000023e  00000000  00000000  0000092f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 000000f7  00000000  00000000  00000b6d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   000001bd  00000000  00000000  00000c64  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000030  00000000  00000000  00000e24  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    000000f0  00000000  00000000  00000e54  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    00000180  00000000  00000000  00000f44  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_pubtypes 00000038  00000000  00000000  000010c4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 46 00 	jmp	0x8c	; 0x8c <__ctors_end>
+   4:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+   8:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+   c:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  10:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  14:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  18:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  1c:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  20:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  24:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  28:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  2c:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  30:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  34:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  38:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  3c:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  40:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  44:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  48:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  4c:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  50:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  54:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  58:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  5c:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  60:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  64:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  68:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  6c:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  70:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  74:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  78:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  7c:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  80:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  84:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  88:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+
+0000008c <__ctors_end>:
+  8c:	11 24       	eor	r1, r1
+  8e:	1f be       	out	0x3f, r1	; 63
+  90:	cf ef       	ldi	r28, 0xFF	; 255
+  92:	d0 e1       	ldi	r29, 0x10	; 16
+  94:	de bf       	out	0x3e, r29	; 62
+  96:	cd bf       	out	0x3d, r28	; 61
+  98:	0e 94 5c 00 	call	0xb8	; 0xb8 <main>
+  9c:	0c 94 b5 00 	jmp	0x16a	; 0x16a <_exit>
+
+000000a0 <__bad_interrupt>:
+  a0:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+000000a4 <switch_init>:
+
+void switch_init(void)
+{
+      
+
+     DDRD &= ~((1<<6)|(1<<7));   //pin 6 and pin 7 as i/p..switchs are connected
+  a4:	81 b3       	in	r24, 0x11	; 17
+  a6:	8f 73       	andi	r24, 0x3F	; 63
+  a8:	81 bb       	out	0x11, r24	; 17
+     PORTD |=((1<<6)|(1<<7));	//enable the pull up resistor i.e make switch open (unpressed)
+  aa:	82 b3       	in	r24, 0x12	; 18
+  ac:	80 6c       	ori	r24, 0xC0	; 192
+  ae:	82 bb       	out	0x12, r24	; 18
+     
+     DDRA |=(1<<3);            	// buzzer as o/p
+  b0:	d3 9a       	sbi	0x1a, 3	; 26
+     
+     DDRC=0xff;               	// led's as o/p
+  b2:	8f ef       	ldi	r24, 0xFF	; 255
+  b4:	84 bb       	out	0x14, r24	; 20
+}
+  b6:	08 95       	ret
+
+000000b8 <main>:
+
+int main (void)
+{
+   int i;
+   switch_init();
+  b8:	0e 94 52 00 	call	0xa4	; 0xa4 <switch_init>
+   else               			//both switches are not pressed
+   {
+	PORTC = 0x00; 			// all leds are on
+	_delay_ms(500);
+
+	PORTC = 0xff;			// all leds are off
+  bc:	ef ef       	ldi	r30, 0xFF	; 255
+   else if((PIND &(1<<7))==0)      //switch 2 is pressed
+   {
+        for(i=0;i<=6;i++)
+         {
+		  PORTC = 0xff;     	// all leds are off
+		  PORTC &=~(1<<i);
+  be:	21 e0       	ldi	r18, 0x01	; 1
+  c0:	30 e0       	ldi	r19, 0x00	; 0
+{
+   int i;
+   switch_init();
+   while(1)
+  {
+   if((PIND &(1<<6))==0)         //switch 1 is pressed
+  c2:	86 99       	sbic	0x10, 6	; 16
+  c4:	13 c0       	rjmp	.+38     	; 0xec <main+0x34>
+   {
+    PORTA |=(1<<3);         	//buzzer on..connected in active high fashion
+  c6:	db 9a       	sbi	0x1b, 3	; 27
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  c8:	4f ef       	ldi	r20, 0xFF	; 255
+  ca:	53 ed       	ldi	r21, 0xD3	; 211
+  cc:	60 e3       	ldi	r22, 0x30	; 48
+  ce:	41 50       	subi	r20, 0x01	; 1
+  d0:	50 40       	sbci	r21, 0x00	; 0
+  d2:	60 40       	sbci	r22, 0x00	; 0
+  d4:	e1 f7       	brne	.-8      	; 0xce <main+0x16>
+  d6:	00 c0       	rjmp	.+0      	; 0xd8 <main+0x20>
+  d8:	00 00       	nop
+    _delay_ms(1000);
+    PORTA &=~(1<<3);		//buzzer off
+  da:	db 98       	cbi	0x1b, 3	; 27
+  dc:	6f ef       	ldi	r22, 0xFF	; 255
+  de:	73 ed       	ldi	r23, 0xD3	; 211
+  e0:	80 e3       	ldi	r24, 0x30	; 48
+  e2:	61 50       	subi	r22, 0x01	; 1
+  e4:	70 40       	sbci	r23, 0x00	; 0
+  e6:	80 40       	sbci	r24, 0x00	; 0
+  e8:	e1 f7       	brne	.-8      	; 0xe2 <main+0x2a>
+  ea:	3c c0       	rjmp	.+120    	; 0x164 <main+0xac>
+	 _delay_ms(1000);
+    }
+   else if((PIND &(1<<7))==0)      //switch 2 is pressed
+  ec:	87 99       	sbic	0x10, 7	; 16
+  ee:	28 c0       	rjmp	.+80     	; 0x140 <main+0x88>
+  f0:	80 e0       	ldi	r24, 0x00	; 0
+  f2:	90 e0       	ldi	r25, 0x00	; 0
+   {
+        for(i=0;i<=6;i++)
+         {
+		  PORTC = 0xff;     	// all leds are off
+  f4:	e5 bb       	out	0x15, r30	; 21
+		  PORTC &=~(1<<i);
+  f6:	75 b3       	in	r23, 0x15	; 21
+  f8:	a9 01       	movw	r20, r18
+  fa:	08 2e       	mov	r0, r24
+  fc:	02 c0       	rjmp	.+4      	; 0x102 <main+0x4a>
+  fe:	44 0f       	add	r20, r20
+ 100:	55 1f       	adc	r21, r21
+ 102:	0a 94       	dec	r0
+ 104:	e2 f7       	brpl	.-8      	; 0xfe <main+0x46>
+ 106:	40 95       	com	r20
+ 108:	47 23       	and	r20, r23
+ 10a:	45 bb       	out	0x15, r20	; 21
+          PORTC &=~(1<<(i+1));  	//led pattern
+ 10c:	75 b3       	in	r23, 0x15	; 21
+ 10e:	01 96       	adiw	r24, 0x01	; 1
+ 110:	a9 01       	movw	r20, r18
+ 112:	08 2e       	mov	r0, r24
+ 114:	02 c0       	rjmp	.+4      	; 0x11a <main+0x62>
+ 116:	44 0f       	add	r20, r20
+ 118:	55 1f       	adc	r21, r21
+ 11a:	0a 94       	dec	r0
+ 11c:	e2 f7       	brpl	.-8      	; 0x116 <main+0x5e>
+ 11e:	40 95       	com	r20
+ 120:	47 23       	and	r20, r23
+ 122:	45 bb       	out	0x15, r20	; 21
+ 124:	4f ef       	ldi	r20, 0xFF	; 255
+ 126:	53 ed       	ldi	r21, 0xD3	; 211
+ 128:	60 e3       	ldi	r22, 0x30	; 48
+ 12a:	41 50       	subi	r20, 0x01	; 1
+ 12c:	50 40       	sbci	r21, 0x00	; 0
+ 12e:	60 40       	sbci	r22, 0x00	; 0
+ 130:	e1 f7       	brne	.-8      	; 0x12a <main+0x72>
+ 132:	00 c0       	rjmp	.+0      	; 0x134 <main+0x7c>
+ 134:	00 00       	nop
+         _delay_ms(1000);
+          PORTC=0xff;			// all leds off
+ 136:	e5 bb       	out	0x15, r30	; 21
+    PORTA &=~(1<<3);		//buzzer off
+	 _delay_ms(1000);
+    }
+   else if((PIND &(1<<7))==0)      //switch 2 is pressed
+   {
+        for(i=0;i<=6;i++)
+ 138:	87 30       	cpi	r24, 0x07	; 7
+ 13a:	91 05       	cpc	r25, r1
+ 13c:	d9 f6       	brne	.-74     	; 0xf4 <main+0x3c>
+ 13e:	c1 cf       	rjmp	.-126    	; 0xc2 <main+0xa>
+          PORTC=0xff;			// all leds off
+         }
+    }
+   else               			//both switches are not pressed
+   {
+	PORTC = 0x00; 			// all leds are on
+ 140:	15 ba       	out	0x15, r1	; 21
+ 142:	6f ef       	ldi	r22, 0xFF	; 255
+ 144:	79 e6       	ldi	r23, 0x69	; 105
+ 146:	88 e1       	ldi	r24, 0x18	; 24
+ 148:	61 50       	subi	r22, 0x01	; 1
+ 14a:	70 40       	sbci	r23, 0x00	; 0
+ 14c:	80 40       	sbci	r24, 0x00	; 0
+ 14e:	e1 f7       	brne	.-8      	; 0x148 <main+0x90>
+ 150:	00 c0       	rjmp	.+0      	; 0x152 <main+0x9a>
+ 152:	00 00       	nop
+	_delay_ms(500);
+
+	PORTC = 0xff;			// all leds are off
+ 154:	e5 bb       	out	0x15, r30	; 21
+ 156:	8f ef       	ldi	r24, 0xFF	; 255
+ 158:	99 e6       	ldi	r25, 0x69	; 105
+ 15a:	a8 e1       	ldi	r26, 0x18	; 24
+ 15c:	81 50       	subi	r24, 0x01	; 1
+ 15e:	90 40       	sbci	r25, 0x00	; 0
+ 160:	a0 40       	sbci	r26, 0x00	; 0
+ 162:	e1 f7       	brne	.-8      	; 0x15c <main+0xa4>
+ 164:	00 c0       	rjmp	.+0      	; 0x166 <main+0xae>
+ 166:	00 00       	nop
+ 168:	ac cf       	rjmp	.-168    	; 0xc2 <main+0xa>
+
+0000016a <_exit>:
+ 16a:	f8 94       	cli
+
+0000016c <__stop_program>:
+ 16c:	ff cf       	rjmp	.-2      	; 0x16c <__stop_program>

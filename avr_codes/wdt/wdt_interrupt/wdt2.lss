@@ -1,0 +1,730 @@
+
+wdt2.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000040  00800100  00000304  00000378  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         00000304  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .stab         000006b4  00000000  00000000  000003b8  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  3 .stabstr      00000054  00000000  00000000  00000a6c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_aranges 00000020  00000000  00000000  00000ac0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_pubnames 000000d7  00000000  00000000  00000ae0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_info   00000471  00000000  00000000  00000bb7  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_abbrev 00000217  00000000  00000000  00001028  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_line   0000044f  00000000  00000000  0000123f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_frame  000000e0  00000000  00000000  00001690  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    0000014a  00000000  00000000  00001770  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_loc    00000117  00000000  00000000  000018ba  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_ranges 00000018  00000000  00000000  000019d1  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 46 00 	jmp	0x8c	; 0x8c <__ctors_end>
+   4:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+   8:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+   c:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  10:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  14:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  18:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  1c:	0c 94 ed 00 	jmp	0x1da	; 0x1da <__vector_7>
+  20:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  24:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  28:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  2c:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  30:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  34:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  38:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  3c:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  40:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  44:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  48:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  4c:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  50:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  54:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  58:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  5c:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  60:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  64:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  68:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  6c:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  70:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  74:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  78:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  7c:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  80:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  84:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+  88:	0c 94 63 00 	jmp	0xc6	; 0xc6 <__bad_interrupt>
+
+0000008c <__ctors_end>:
+  8c:	11 24       	eor	r1, r1
+  8e:	1f be       	out	0x3f, r1	; 63
+  90:	cf ef       	ldi	r28, 0xFF	; 255
+  92:	d0 e1       	ldi	r29, 0x10	; 16
+  94:	de bf       	out	0x3e, r29	; 62
+  96:	cd bf       	out	0x3d, r28	; 61
+
+00000098 <__do_copy_data>:
+  98:	11 e0       	ldi	r17, 0x01	; 1
+  9a:	a0 e0       	ldi	r26, 0x00	; 0
+  9c:	b1 e0       	ldi	r27, 0x01	; 1
+  9e:	e4 e0       	ldi	r30, 0x04	; 4
+  a0:	f3 e0       	ldi	r31, 0x03	; 3
+  a2:	02 c0       	rjmp	.+4      	; 0xa8 <.do_copy_data_start>
+
+000000a4 <.do_copy_data_loop>:
+  a4:	05 90       	lpm	r0, Z+
+  a6:	0d 92       	st	X+, r0
+
+000000a8 <.do_copy_data_start>:
+  a8:	a0 34       	cpi	r26, 0x40	; 64
+  aa:	b1 07       	cpc	r27, r17
+  ac:	d9 f7       	brne	.-10     	; 0xa4 <.do_copy_data_loop>
+
+000000ae <__do_clear_bss>:
+  ae:	11 e0       	ldi	r17, 0x01	; 1
+  b0:	a0 e4       	ldi	r26, 0x40	; 64
+  b2:	b1 e0       	ldi	r27, 0x01	; 1
+  b4:	01 c0       	rjmp	.+2      	; 0xb8 <.do_clear_bss_start>
+
+000000b6 <.do_clear_bss_loop>:
+  b6:	1d 92       	st	X+, r1
+
+000000b8 <.do_clear_bss_start>:
+  b8:	a0 34       	cpi	r26, 0x40	; 64
+  ba:	b1 07       	cpc	r27, r17
+  bc:	e1 f7       	brne	.-8      	; 0xb6 <.do_clear_bss_loop>
+  be:	0e 94 23 01 	call	0x246	; 0x246 <main>
+  c2:	0c 94 80 01 	jmp	0x300	; 0x300 <_exit>
+
+000000c6 <__bad_interrupt>:
+  c6:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+000000ca <uart1_init>:
+#include<avr/io.h>
+
+// uart1 initialization
+void uart1_init(void) 
+{
+	UBRR1H = 0;
+  ca:	10 92 98 00 	sts	0x0098, r1
+	UBRR1L = 103; //0X67; BAUDRATE = 9600
+  ce:	87 e6       	ldi	r24, 0x67	; 103
+  d0:	80 93 99 00 	sts	0x0099, r24
+
+	UCSR1C |= (1<<UCSZ1) | (1<<UCSZ0); //UCSR1C = 0X06;// frame : 8 bit data , no parity ,1 stop bit
+  d4:	ed e9       	ldi	r30, 0x9D	; 157
+  d6:	f0 e0       	ldi	r31, 0x00	; 0
+  d8:	80 81       	ld	r24, Z
+  da:	86 60       	ori	r24, 0x06	; 6
+  dc:	80 83       	st	Z, r24
+
+	UCSR1B |= (1<<RXEN) | (1<<TXEN);// ENABLE TRANSMITTER & RECEIVER
+  de:	ea e9       	ldi	r30, 0x9A	; 154
+  e0:	f0 e0       	ldi	r31, 0x00	; 0
+  e2:	80 81       	ld	r24, Z
+  e4:	88 61       	ori	r24, 0x18	; 24
+  e6:	80 83       	st	Z, r24
+}
+  e8:	08 95       	ret
+
+000000ea <uart1_tx_char>:
+
+// TRANSMITTING CHAR
+void uart1_tx_char(unsigned char data)
+{
+  ea:	98 2f       	mov	r25, r24
+	while(!(UCSR1A &(1<<UDRE)));//poll UDRE flag till UDRE becomes 1
+  ec:	80 91 9b 00 	lds	r24, 0x009B
+  f0:	85 ff       	sbrs	r24, 5
+  f2:	fc cf       	rjmp	.-8      	; 0xec <uart1_tx_char+0x2>
+	UDR1 = data;                //load value in data register
+  f4:	90 93 9c 00 	sts	0x009C, r25
+}
+  f8:	08 95       	ret
+
+000000fa <uart1_tx_str>:
+
+//Transmitting string
+void uart1_tx_str(unsigned char *ptr) 
+{
+  fa:	fc 01       	movw	r30, r24
+  fc:	07 c0       	rjmp	.+14     	; 0x10c <uart1_tx_str+0x12>
+}
+
+// TRANSMITTING CHAR
+void uart1_tx_char(unsigned char data)
+{
+	while(!(UCSR1A &(1<<UDRE)));//poll UDRE flag till UDRE becomes 1
+  fe:	80 91 9b 00 	lds	r24, 0x009B
+ 102:	85 ff       	sbrs	r24, 5
+ 104:	fc cf       	rjmp	.-8      	; 0xfe <uart1_tx_str+0x4>
+	UDR1 = data;                //load value in data register
+ 106:	90 93 9c 00 	sts	0x009C, r25
+void uart1_tx_str(unsigned char *ptr) 
+{
+    while(*ptr !='\0')
+	{
+	uart1_tx_char(*ptr);
+	ptr ++; // uart1_tx_char(*(ptr++));
+ 10a:	31 96       	adiw	r30, 0x01	; 1
+}
+
+//Transmitting string
+void uart1_tx_str(unsigned char *ptr) 
+{
+    while(*ptr !='\0')
+ 10c:	90 81       	ld	r25, Z
+ 10e:	99 23       	and	r25, r25
+ 110:	b1 f7       	brne	.-20     	; 0xfe <uart1_tx_str+0x4>
+	{
+	uart1_tx_char(*ptr);
+	ptr ++; // uart1_tx_char(*(ptr++));
+	}
+}
+ 112:	08 95       	ret
+
+00000114 <uart1_tx_num>:
+
+// Transmitting number
+void uart1_tx_num(unsigned int num ) 
+{
+ 114:	df 93       	push	r29
+ 116:	cf 93       	push	r28
+ 118:	00 d0       	rcall	.+0      	; 0x11a <uart1_tx_num+0x6>
+ 11a:	00 d0       	rcall	.+0      	; 0x11c <uart1_tx_num+0x8>
+ 11c:	0f 92       	push	r0
+ 11e:	cd b7       	in	r28, 0x3d	; 61
+ 120:	de b7       	in	r29, 0x3e	; 62
+	unsigned char i,count[5];	
+	
+	for(i=1;i<=1;i++)
+	{
+	count[i] = num % 10;
+ 122:	6a e0       	ldi	r22, 0x0A	; 10
+ 124:	70 e0       	ldi	r23, 0x00	; 0
+ 126:	0e 94 6c 01 	call	0x2d8	; 0x2d8 <__udivmodhi4>
+ 12a:	8a 83       	std	Y+2, r24	; 0x02
+ 12c:	fe 01       	movw	r30, r28
+ 12e:	32 96       	adiw	r30, 0x02	; 2
+	num = num / 10 ;
+	}
+	i--;// At the time of exit from the 'for loop',its value is greater than 1 of max value,
+		// in this case it is 6 which is greater than 5;hence to decrease by 1 i--. 
+	while(i!=0)
+ 130:	9e 01       	movw	r18, r28
+ 132:	2f 5f       	subi	r18, 0xFF	; 255
+ 134:	3f 4f       	sbci	r19, 0xFF	; 255
+	{
+	uart1_tx_char(count[i] + 0x30);
+ 136:	90 81       	ld	r25, Z
+}
+
+// TRANSMITTING CHAR
+void uart1_tx_char(unsigned char data)
+{
+	while(!(UCSR1A &(1<<UDRE)));//poll UDRE flag till UDRE becomes 1
+ 138:	80 91 9b 00 	lds	r24, 0x009B
+ 13c:	85 ff       	sbrs	r24, 5
+ 13e:	fc cf       	rjmp	.-8      	; 0x138 <uart1_tx_num+0x24>
+	}
+	i--;// At the time of exit from the 'for loop',its value is greater than 1 of max value,
+		// in this case it is 6 which is greater than 5;hence to decrease by 1 i--. 
+	while(i!=0)
+	{
+	uart1_tx_char(count[i] + 0x30);
+ 140:	90 5d       	subi	r25, 0xD0	; 208
+
+// TRANSMITTING CHAR
+void uart1_tx_char(unsigned char data)
+{
+	while(!(UCSR1A &(1<<UDRE)));//poll UDRE flag till UDRE becomes 1
+	UDR1 = data;                //load value in data register
+ 142:	90 93 9c 00 	sts	0x009C, r25
+ 146:	31 97       	sbiw	r30, 0x01	; 1
+	count[i] = num % 10;
+	num = num / 10 ;
+	}
+	i--;// At the time of exit from the 'for loop',its value is greater than 1 of max value,
+		// in this case it is 6 which is greater than 5;hence to decrease by 1 i--. 
+	while(i!=0)
+ 148:	2e 17       	cp	r18, r30
+ 14a:	3f 07       	cpc	r19, r31
+ 14c:	a1 f7       	brne	.-24     	; 0x136 <uart1_tx_num+0x22>
+	{
+	uart1_tx_char(count[i] + 0x30);
+	i--;
+	}
+}
+ 14e:	0f 90       	pop	r0
+ 150:	0f 90       	pop	r0
+ 152:	0f 90       	pop	r0
+ 154:	0f 90       	pop	r0
+ 156:	0f 90       	pop	r0
+ 158:	cf 91       	pop	r28
+ 15a:	df 91       	pop	r29
+ 15c:	08 95       	ret
+
+0000015e <uart1_rx_char>:
+
+// Recieving char
+unsigned char uart1_rx_char(void) 
+{
+	while(!(UCSR1A &(1<<RXC))); //poll Rxc flag wait till RXC becomes 1
+ 15e:	80 91 9b 00 	lds	r24, 0x009B
+ 162:	87 ff       	sbrs	r24, 7
+ 164:	fc cf       	rjmp	.-8      	; 0x15e <uart1_rx_char>
+	return UDR1;
+ 166:	80 91 9c 00 	lds	r24, 0x009C
+}
+ 16a:	08 95       	ret
+
+0000016c <uart1_rx_str>:
+
+// Recieving string
+void uart1_rx_str(unsigned char *ptr)
+{     unsigned int i;
+ 16c:	fc 01       	movw	r30, r24
+ 16e:	20 e0       	ldi	r18, 0x00	; 0
+ 170:	30 e0       	ldi	r19, 0x00	; 0
+}
+
+// Recieving char
+unsigned char uart1_rx_char(void) 
+{
+	while(!(UCSR1A &(1<<RXC))); //poll Rxc flag wait till RXC becomes 1
+ 172:	80 91 9b 00 	lds	r24, 0x009B
+ 176:	87 ff       	sbrs	r24, 7
+ 178:	fc cf       	rjmp	.-8      	; 0x172 <uart1_rx_str+0x6>
+	return UDR1;
+ 17a:	80 91 9c 00 	lds	r24, 0x009C
+// Recieving string
+void uart1_rx_str(unsigned char *ptr)
+{     unsigned int i;
+      for(i=0;i<100;i++)
+      {
+       *(ptr+i)=uart1_rx_char();
+ 17e:	80 83       	st	Z, r24
+        if(*(ptr+i)=='\r')
+ 180:	8d 30       	cpi	r24, 0x0D	; 13
+ 182:	11 f4       	brne	.+4      	; 0x188 <uart1_rx_str+0x1c>
+        {
+        *(ptr+i)='\0';
+ 184:	10 82       	st	Z, r1
+ 186:	08 95       	ret
+}
+
+// Recieving string
+void uart1_rx_str(unsigned char *ptr)
+{     unsigned int i;
+      for(i=0;i<100;i++)
+ 188:	2f 5f       	subi	r18, 0xFF	; 255
+ 18a:	3f 4f       	sbci	r19, 0xFF	; 255
+ 18c:	31 96       	adiw	r30, 0x01	; 1
+ 18e:	24 36       	cpi	r18, 0x64	; 100
+ 190:	31 05       	cpc	r19, r1
+ 192:	79 f7       	brne	.-34     	; 0x172 <uart1_rx_str+0x6>
+ 194:	08 95       	ret
+
+00000196 <uart1_rx_num>:
+}
+
+// Recieving char
+unsigned char uart1_rx_char(void) 
+{
+	while(!(UCSR1A &(1<<RXC))); //poll Rxc flag wait till RXC becomes 1
+ 196:	80 91 9b 00 	lds	r24, 0x009B
+ 19a:	87 ff       	sbrs	r24, 7
+ 19c:	fc cf       	rjmp	.-8      	; 0x196 <uart1_rx_num>
+	return UDR1;
+ 19e:	80 91 9c 00 	lds	r24, 0x009C
+	
+	/*num = uart1_rx_char();
+	num = ((num1 * 10 ) + (num - 0x30));*/
+	return num;
+	}
+}
+ 1a2:	80 53       	subi	r24, 0x30	; 48
+ 1a4:	08 95       	ret
+
+000001a6 <timer_init>:
+#include<avr/io.h>
+
+void timer_init()
+{
+	TCCR0 = 0X0F;// CTC MODE & FOC/1024 PRESCALAR
+ 1a6:	8f e0       	ldi	r24, 0x0F	; 15
+ 1a8:	83 bf       	out	0x33, r24	; 51
+	OCR0 = 156;// TO COUNT 156 STEPS (DELAY OF 10 MSEC)
+ 1aa:	8c e9       	ldi	r24, 0x9C	; 156
+ 1ac:	81 bf       	out	0x31, r24	; 49
+}
+ 1ae:	08 95       	ret
+
+000001b0 <sec_delay>:
+
+void sec_delay()
+{	
+ 1b0:	94 e6       	ldi	r25, 0x64	; 100
+	for(unsigned char count=100;count>0;count--)
+	{
+	while(!(TIFR&(1<<OCF0)));// POLL TIMER OVERFLOW FLAG TO SET TO 1 (10 MSEC HAS ELAPSED)
+ 1b2:	06 b6       	in	r0, 0x36	; 54
+ 1b4:	01 fe       	sbrs	r0, 1
+ 1b6:	fd cf       	rjmp	.-6      	; 0x1b2 <sec_delay+0x2>
+	TIFR|=(1<<OCF0);// CLEAR FLAG BY WRITING 1 TO IT
+ 1b8:	86 b7       	in	r24, 0x36	; 54
+ 1ba:	82 60       	ori	r24, 0x02	; 2
+ 1bc:	86 bf       	out	0x36, r24	; 54
+	OCR0 = 156;// TO COUNT 156 STEPS (DELAY OF 10 MSEC)
+}
+
+void sec_delay()
+{	
+	for(unsigned char count=100;count>0;count--)
+ 1be:	91 50       	subi	r25, 0x01	; 1
+ 1c0:	c1 f7       	brne	.-16     	; 0x1b2 <sec_delay+0x2>
+	{
+	while(!(TIFR&(1<<OCF0)));// POLL TIMER OVERFLOW FLAG TO SET TO 1 (10 MSEC HAS ELAPSED)
+	TIFR|=(1<<OCF0);// CLEAR FLAG BY WRITING 1 TO IT
+	
+	} 
+}
+ 1c2:	08 95       	ret
+
+000001c4 <eint_init>:
+
+void eint_init(void)
+{
+	DDRE&=(1<<6);//configure as i/p
+ 1c4:	82 b1       	in	r24, 0x02	; 2
+ 1c6:	80 74       	andi	r24, 0x40	; 64
+ 1c8:	82 b9       	out	0x02, r24	; 2
+	PORTE|=(1<<6);//ENABLE PULL-UP
+ 1ca:	1e 9a       	sbi	0x03, 6	; 3
+	EICRB|=(1<<5)&(~(1<<4));
+ 1cc:	8a b7       	in	r24, 0x3a	; 58
+ 1ce:	80 62       	ori	r24, 0x20	; 32
+ 1d0:	8a bf       	out	0x3a, r24	; 58
+	EIMSK|=(1<<INT6);
+ 1d2:	89 b7       	in	r24, 0x39	; 57
+ 1d4:	80 64       	ori	r24, 0x40	; 64
+ 1d6:	89 bf       	out	0x39, r24	; 57
+}
+ 1d8:	08 95       	ret
+
+000001da <__vector_7>:
+#include<util/delay.h>
+#include<avr/interrupt.h>
+#include"timer.h"
+#include"ext_interrupt.h"
+ISR(INT6_vect)
+{
+ 1da:	1f 92       	push	r1
+ 1dc:	0f 92       	push	r0
+ 1de:	0f b6       	in	r0, 0x3f	; 63
+ 1e0:	0f 92       	push	r0
+ 1e2:	11 24       	eor	r1, r1
+ 1e4:	2f 93       	push	r18
+ 1e6:	3f 93       	push	r19
+ 1e8:	8f 93       	push	r24
+ 1ea:	9f 93       	push	r25
+ 1ec:	ef 93       	push	r30
+ 1ee:	ff 93       	push	r31
+ 1f0:	e0 e0       	ldi	r30, 0x00	; 0
+ 1f2:	f1 e0       	ldi	r31, 0x01	; 1
+ 1f4:	07 c0       	rjmp	.+14     	; 0x204 <__vector_7+0x2a>
+}
+
+// TRANSMITTING CHAR
+void uart1_tx_char(unsigned char data)
+{
+	while(!(UCSR1A &(1<<UDRE)));//poll UDRE flag till UDRE becomes 1
+ 1f6:	80 91 9b 00 	lds	r24, 0x009B
+ 1fa:	85 ff       	sbrs	r24, 5
+ 1fc:	fc cf       	rjmp	.-8      	; 0x1f6 <__vector_7+0x1c>
+	UDR1 = data;                //load value in data register
+ 1fe:	90 93 9c 00 	sts	0x009C, r25
+void uart1_tx_str(unsigned char *ptr) 
+{
+    while(*ptr !='\0')
+	{
+	uart1_tx_char(*ptr);
+	ptr ++; // uart1_tx_char(*(ptr++));
+ 202:	31 96       	adiw	r30, 0x01	; 1
+}
+
+//Transmitting string
+void uart1_tx_str(unsigned char *ptr) 
+{
+    while(*ptr !='\0')
+ 204:	90 81       	ld	r25, Z
+ 206:	99 23       	and	r25, r25
+ 208:	b1 f7       	brne	.-20     	; 0x1f6 <__vector_7+0x1c>
+	uart1_tx_str("\n controller is reset..\n");
+	DDRC= 0XFF;
+ 20a:	8f ef       	ldi	r24, 0xFF	; 255
+ 20c:	84 bb       	out	0x14, r24	; 20
+	PORTC = 0XFF;
+ 20e:	85 bb       	out	0x15, r24	; 21
+ 210:	88 e9       	ldi	r24, 0x98	; 152
+ 212:	9a e3       	ldi	r25, 0x3A	; 58
+    milliseconds can be achieved.
+ */
+void
+_delay_loop_2(uint16_t __count)
+{
+	__asm__ volatile (
+ 214:	20 e9       	ldi	r18, 0x90	; 144
+ 216:	31 e0       	ldi	r19, 0x01	; 1
+ 218:	f9 01       	movw	r30, r18
+ 21a:	31 97       	sbiw	r30, 0x01	; 1
+ 21c:	f1 f7       	brne	.-4      	; 0x21a <__vector_7+0x40>
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 21e:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 220:	d9 f7       	brne	.-10     	; 0x218 <__vector_7+0x3e>
+	_delay_ms(1500);
+}
+ 222:	ff 91       	pop	r31
+ 224:	ef 91       	pop	r30
+ 226:	9f 91       	pop	r25
+ 228:	8f 91       	pop	r24
+ 22a:	3f 91       	pop	r19
+ 22c:	2f 91       	pop	r18
+ 22e:	0f 90       	pop	r0
+ 230:	0f be       	out	0x3f, r0	; 63
+ 232:	0f 90       	pop	r0
+ 234:	1f 90       	pop	r1
+ 236:	18 95       	reti
+
+00000238 <enable>:
+
+void enable()
+{
+// follow the safety level 2... WDTON=programmed , M103C = unprogrammed
+	WDTCR|=(1<<WDCE)|(1<<WDE);
+ 238:	81 b5       	in	r24, 0x21	; 33
+ 23a:	88 61       	ori	r24, 0x18	; 24
+ 23c:	81 bd       	out	0x21, r24	; 33
+	WDTCR|=(1<<WDP2)|(1<<WDP1)|(1<<WDP0)&(~(1<<WDCE));
+ 23e:	81 b5       	in	r24, 0x21	; 33
+ 240:	87 60       	ori	r24, 0x07	; 7
+ 242:	81 bd       	out	0x21, r24	; 33
+
+}
+ 244:	08 95       	ret
+
+00000246 <main>:
+#include<avr/io.h>
+
+// uart1 initialization
+void uart1_init(void) 
+{
+	UBRR1H = 0;
+ 246:	10 92 98 00 	sts	0x0098, r1
+	UBRR1L = 103; //0X67; BAUDRATE = 9600
+ 24a:	87 e6       	ldi	r24, 0x67	; 103
+ 24c:	80 93 99 00 	sts	0x0099, r24
+
+	UCSR1C |= (1<<UCSZ1) | (1<<UCSZ0); //UCSR1C = 0X06;// frame : 8 bit data , no parity ,1 stop bit
+ 250:	80 91 9d 00 	lds	r24, 0x009D
+ 254:	86 60       	ori	r24, 0x06	; 6
+ 256:	80 93 9d 00 	sts	0x009D, r24
+
+	UCSR1B |= (1<<RXEN) | (1<<TXEN);// ENABLE TRANSMITTER & RECEIVER
+ 25a:	80 91 9a 00 	lds	r24, 0x009A
+ 25e:	88 61       	ori	r24, 0x18	; 24
+ 260:	80 93 9a 00 	sts	0x009A, r24
+#include<avr/io.h>
+
+void timer_init()
+{
+	TCCR0 = 0X0F;// CTC MODE & FOC/1024 PRESCALAR
+ 264:	8f e0       	ldi	r24, 0x0F	; 15
+ 266:	83 bf       	out	0x33, r24	; 51
+	OCR0 = 156;// TO COUNT 156 STEPS (DELAY OF 10 MSEC)
+ 268:	8c e9       	ldi	r24, 0x9C	; 156
+ 26a:	81 bf       	out	0x31, r24	; 49
+
+void eint_init(void)
+{
+	DDRE&=(1<<6);//configure as i/p
+ 26c:	82 b1       	in	r24, 0x02	; 2
+ 26e:	80 74       	andi	r24, 0x40	; 64
+ 270:	82 b9       	out	0x02, r24	; 2
+	PORTE|=(1<<6);//ENABLE PULL-UP
+ 272:	1e 9a       	sbi	0x03, 6	; 3
+	EICRB|=(1<<5)&(~(1<<4));
+ 274:	8a b7       	in	r24, 0x3a	; 58
+ 276:	80 62       	ori	r24, 0x20	; 32
+ 278:	8a bf       	out	0x3a, r24	; 58
+	EIMSK|=(1<<INT6);
+ 27a:	89 b7       	in	r24, 0x39	; 57
+ 27c:	80 64       	ori	r24, 0x40	; 64
+ 27e:	89 bf       	out	0x39, r24	; 57
+}
+
+void enable()
+{
+// follow the safety level 2... WDTON=programmed , M103C = unprogrammed
+	WDTCR|=(1<<WDCE)|(1<<WDE);
+ 280:	81 b5       	in	r24, 0x21	; 33
+ 282:	88 61       	ori	r24, 0x18	; 24
+ 284:	81 bd       	out	0x21, r24	; 33
+	WDTCR|=(1<<WDP2)|(1<<WDP1)|(1<<WDP0)&(~(1<<WDCE));
+ 286:	81 b5       	in	r24, 0x21	; 33
+ 288:	87 60       	ori	r24, 0x07	; 7
+ 28a:	81 bd       	out	0x21, r24	; 33
+	uart1_init();
+	timer_init();
+	eint_init();
+	
+	enable();
+	sei();
+ 28c:	78 94       	sei
+ 28e:	e9 e1       	ldi	r30, 0x19	; 25
+ 290:	f1 e0       	ldi	r31, 0x01	; 1
+ 292:	07 c0       	rjmp	.+14     	; 0x2a2 <main+0x5c>
+}
+
+// TRANSMITTING CHAR
+void uart1_tx_char(unsigned char data)
+{
+	while(!(UCSR1A &(1<<UDRE)));//poll UDRE flag till UDRE becomes 1
+ 294:	80 91 9b 00 	lds	r24, 0x009B
+ 298:	85 ff       	sbrs	r24, 5
+ 29a:	fc cf       	rjmp	.-8      	; 0x294 <main+0x4e>
+	UDR1 = data;                //load value in data register
+ 29c:	90 93 9c 00 	sts	0x009C, r25
+void uart1_tx_str(unsigned char *ptr) 
+{
+    while(*ptr !='\0')
+	{
+	uart1_tx_char(*ptr);
+	ptr ++; // uart1_tx_char(*(ptr++));
+ 2a0:	31 96       	adiw	r30, 0x01	; 1
+}
+
+//Transmitting string
+void uart1_tx_str(unsigned char *ptr) 
+{
+    while(*ptr !='\0')
+ 2a2:	90 81       	ld	r25, Z
+ 2a4:	99 23       	and	r25, r25
+ 2a6:	b1 f7       	brne	.-20     	; 0x294 <main+0x4e>
+ 2a8:	14 c0       	rjmp	.+40     	; 0x2d2 <main+0x8c>
+}
+
+// TRANSMITTING CHAR
+void uart1_tx_char(unsigned char data)
+{
+	while(!(UCSR1A &(1<<UDRE)));//poll UDRE flag till UDRE becomes 1
+ 2aa:	80 91 9b 00 	lds	r24, 0x009B
+ 2ae:	85 ff       	sbrs	r24, 5
+ 2b0:	fc cf       	rjmp	.-8      	; 0x2aa <main+0x64>
+	UDR1 = data;                //load value in data register
+ 2b2:	90 93 9c 00 	sts	0x009C, r25
+void uart1_tx_str(unsigned char *ptr) 
+{
+    while(*ptr !='\0')
+	{
+	uart1_tx_char(*ptr);
+	ptr ++; // uart1_tx_char(*(ptr++));
+ 2b6:	31 96       	adiw	r30, 0x01	; 1
+}
+
+//Transmitting string
+void uart1_tx_str(unsigned char *ptr) 
+{
+    while(*ptr !='\0')
+ 2b8:	90 81       	ld	r25, Z
+ 2ba:	99 23       	and	r25, r25
+ 2bc:	b1 f7       	brne	.-20     	; 0x2aa <main+0x64>
+ 2be:	94 e6       	ldi	r25, 0x64	; 100
+
+void sec_delay()
+{	
+	for(unsigned char count=100;count>0;count--)
+	{
+	while(!(TIFR&(1<<OCF0)));// POLL TIMER OVERFLOW FLAG TO SET TO 1 (10 MSEC HAS ELAPSED)
+ 2c0:	06 b6       	in	r0, 0x36	; 54
+ 2c2:	01 fe       	sbrs	r0, 1
+ 2c4:	fd cf       	rjmp	.-6      	; 0x2c0 <main+0x7a>
+	TIFR|=(1<<OCF0);// CLEAR FLAG BY WRITING 1 TO IT
+ 2c6:	86 b7       	in	r24, 0x36	; 54
+ 2c8:	82 60       	ori	r24, 0x02	; 2
+ 2ca:	86 bf       	out	0x36, r24	; 54
+	OCR0 = 156;// TO COUNT 156 STEPS (DELAY OF 10 MSEC)
+}
+
+void sec_delay()
+{	
+	for(unsigned char count=100;count>0;count--)
+ 2cc:	91 50       	subi	r25, 0x01	; 1
+ 2ce:	c1 f7       	brne	.-16     	; 0x2c0 <main+0x7a>
+	{
+		uart1_tx_str("\nin while loop");
+		sec_delay();
+		//_delay_ms(3500);
+		//wdt_reset(); // watchdog timer reset using wdt.h
+		__asm__ __volatile__ ("wdr");// watchdog timer reset 
+ 2d0:	a8 95       	wdr
+ 2d2:	e1 e3       	ldi	r30, 0x31	; 49
+ 2d4:	f1 e0       	ldi	r31, 0x01	; 1
+ 2d6:	f0 cf       	rjmp	.-32     	; 0x2b8 <main+0x72>
+
+000002d8 <__udivmodhi4>:
+ 2d8:	aa 1b       	sub	r26, r26
+ 2da:	bb 1b       	sub	r27, r27
+ 2dc:	51 e1       	ldi	r21, 0x11	; 17
+ 2de:	07 c0       	rjmp	.+14     	; 0x2ee <__udivmodhi4_ep>
+
+000002e0 <__udivmodhi4_loop>:
+ 2e0:	aa 1f       	adc	r26, r26
+ 2e2:	bb 1f       	adc	r27, r27
+ 2e4:	a6 17       	cp	r26, r22
+ 2e6:	b7 07       	cpc	r27, r23
+ 2e8:	10 f0       	brcs	.+4      	; 0x2ee <__udivmodhi4_ep>
+ 2ea:	a6 1b       	sub	r26, r22
+ 2ec:	b7 0b       	sbc	r27, r23
+
+000002ee <__udivmodhi4_ep>:
+ 2ee:	88 1f       	adc	r24, r24
+ 2f0:	99 1f       	adc	r25, r25
+ 2f2:	5a 95       	dec	r21
+ 2f4:	a9 f7       	brne	.-22     	; 0x2e0 <__udivmodhi4_loop>
+ 2f6:	80 95       	com	r24
+ 2f8:	90 95       	com	r25
+ 2fa:	bc 01       	movw	r22, r24
+ 2fc:	cd 01       	movw	r24, r26
+ 2fe:	08 95       	ret
+
+00000300 <_exit>:
+ 300:	f8 94       	cli
+
+00000302 <__stop_program>:
+ 302:	ff cf       	rjmp	.-2      	; 0x302 <__stop_program>

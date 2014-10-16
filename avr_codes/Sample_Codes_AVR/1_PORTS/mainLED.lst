@@ -1,0 +1,98 @@
+   1               		.file	"mainLED.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  15               	.Ltext0:
+  16               	.global	LED_Init
+  18               	LED_Init:
+  19               	.LFB2:
+  20               	.LM1:
+  21               	/* prologue: function */
+  22               	/* frame size = 0 */
+  23               	.LM2:
+  24 0000 8FEF      		ldi r24,lo8(-1)
+  25 0002 84BB      		out 52-32,r24
+  26               	.LM3:
+  27 0004 85BB      		out 53-32,r24
+  28               	/* epilogue start */
+  29               	.LM4:
+  30 0006 0895      		ret
+  31               	.LFE2:
+  33               	.global	main
+  35               	main:
+  36               	.LFB3:
+  37               	.LM5:
+  38 0008 DF93      		push r29
+  39 000a CF93      		push r28
+  40 000c 00D0      		rcall .
+  41 000e 0F92      		push __tmp_reg__
+  42 0010 CDB7      		in r28,__SP_L__
+  43 0012 DEB7      		in r29,__SP_H__
+  44               	/* prologue: function */
+  45               	/* frame size = 3 */
+  46               	.LBB4:
+  47               	.LBB5:
+  48               	.LM6:
+  49 0014 8FEF      		ldi r24,lo8(-1)
+  50 0016 84BB      		out 52-32,r24
+  51               	.LVL0:
+  52               	.L10:
+  53               	.LM7:
+  54 0018 85BB      		out 53-32,r24
+  55               	.LBE5:
+  56               	.LBE4:
+  57               	.LM8:
+  58 001a 1982      		std Y+1,__zero_reg__
+  59               	.LVL1:
+  60 001c 00C0      		rjmp .L4
+  61               	.L7:
+  62               	.LM9:
+  63 001e 1B82      		std Y+3,__zero_reg__
+  64 0020 1A82      		std Y+2,__zero_reg__
+  65               	.LVL2:
+  66 0022 00C0      		rjmp .L5
+  67               	.L6:
+  68 0024 8A81      		ldd r24,Y+2
+  69 0026 9B81      		ldd r25,Y+3
+  70 0028 0196      		adiw r24,1
+  71 002a 9B83      		std Y+3,r25
+  72 002c 8A83      		std Y+2,r24
+  73               	.LVL3:
+  74               	.L5:
+  75 002e 8A81      		ldd r24,Y+2
+  76 0030 9B81      		ldd r25,Y+3
+  77 0032 8056      		subi r24,lo8(-5536)
+  78 0034 9A4E      		sbci r25,hi8(-5536)
+  79 0036 00F0      		brlo .L6
+  80               	.LM10:
+  81 0038 8981      		ldd r24,Y+1
+  82 003a 8F5F      		subi r24,lo8(-(1))
+  83 003c 8983      		std Y+1,r24
+  84               	.LVL4:
+  85               	.L4:
+  86 003e 8981      		ldd r24,Y+1
+  87 0040 8A30      		cpi r24,lo8(10)
+  88 0042 00F0      		brlo .L7
+  89               	.LM11:
+  90 0044 FA9A      		sbi 63-32,2
+  91               	.LM12:
+  92 0046 85B3      		in r24,53-32
+  93 0048 8095      		com r24
+  94 004a 00C0      		rjmp .L10
+  95               	.LFE3:
+ 129               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 mainLED.c
+C:\Users\Nikhil\AppData\Local\Temp/ccu6aghx.s:2      *ABS*:0000003f __SREG__
+C:\Users\Nikhil\AppData\Local\Temp/ccu6aghx.s:3      *ABS*:0000003e __SP_H__
+C:\Users\Nikhil\AppData\Local\Temp/ccu6aghx.s:4      *ABS*:0000003d __SP_L__
+C:\Users\Nikhil\AppData\Local\Temp/ccu6aghx.s:5      *ABS*:00000034 __CCP__
+C:\Users\Nikhil\AppData\Local\Temp/ccu6aghx.s:6      *ABS*:00000000 __tmp_reg__
+C:\Users\Nikhil\AppData\Local\Temp/ccu6aghx.s:7      *ABS*:00000001 __zero_reg__
+C:\Users\Nikhil\AppData\Local\Temp/ccu6aghx.s:18     .text:00000000 LED_Init
+C:\Users\Nikhil\AppData\Local\Temp/ccu6aghx.s:35     .text:00000008 main
+
+NO UNDEFINED SYMBOLS

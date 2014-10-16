@@ -1,0 +1,1 @@
+This directory contains the sample codes without using RTOS on uNiBoard. For details on what these codes do refer the user manual.

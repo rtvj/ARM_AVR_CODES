@@ -1,0 +1,33 @@
+void ldr_init(void)
+{
+ADMUX|=(1<<REFS1)|(1<<REFS0);//Internal 2.56V Voltage Reference,
+//ADLAR=0- Right alligned (10 bit resolutn), MUX 4:0 = 00000 - Single Ended Input ADC0 CHANNEL. 
+//LDR sensor is connected to channel 0 of the Atmega64 microcontroller.
+
+ADCSRA|=(1<<ADEN)|(1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0);
+/*ADC Enable; ADPS bits determine the division factor between the XTAL frequency 
+and the input clock to the ADC,ADC Prescaler=128 selected*/
+}
+
+void ldr_read(void)
+{
+unsigned char b=0;
+unsigned int a=0;// Declaring as int for storing 10 bit data
+
+ADCSRA|=(1<<ADSC);// ALWAYS SET START CONV BIT FOR NORMAL MODE
+while(!(ADCSRA&(1<<ADIF)));//ADIF bit is set when an ADC conversion completes 
+//and the data registers are updated ,hence wait till ADIF BECOMES 1
+
+b=ADCL;//Read Lower Result Data Reg
+a=ADCH;//Read higher Result Data Reg
+a=(b|(a<<8));//combine two result (Refer notebook )
+
+uart1_tx_num(a);
+uart1_tx_char('\t');
+_delay_ms(500);
+/*
+lcd_showvalue(a);
+_delay_ms(500);
+*/
+}
+

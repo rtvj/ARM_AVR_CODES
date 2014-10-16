@@ -1,0 +1,189 @@
+   1               		.file	"uart_isr_udrie.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  15               	.Ltext0:
+  16               	.global	uart1_init
+  18               	uart1_init:
+  19               	.LFB2:
+  20               	.LM1:
+  21               	/* prologue: function */
+  22               	/* frame size = 0 */
+  23               	.LM2:
+  24 0000 1092 9800 		sts 152,__zero_reg__
+  25               	.LM3:
+  26 0004 87E6      		ldi r24,lo8(103)
+  27 0006 8093 9900 		sts 153,r24
+  28               	.LM4:
+  29 000a EDE9      		ldi r30,lo8(157)
+  30 000c F0E0      		ldi r31,hi8(157)
+  31 000e 8081      		ld r24,Z
+  32 0010 8660      		ori r24,lo8(6)
+  33 0012 8083      		st Z,r24
+  34               	.LM5:
+  35 0014 EAE9      		ldi r30,lo8(154)
+  36 0016 F0E0      		ldi r31,hi8(154)
+  37 0018 8081      		ld r24,Z
+  38 001a 8863      		ori r24,lo8(56)
+  39 001c 8083      		st Z,r24
+  40               	/* epilogue start */
+  41               	.LM6:
+  42 001e 0895      		ret
+  43               	.LFE2:
+  45               	.global	uart0_init
+  47               	uart0_init:
+  48               	.LFB3:
+  49               	.LM7:
+  50               	/* prologue: function */
+  51               	/* frame size = 0 */
+  52               	.LM8:
+  53 0020 1092 9000 		sts 144,__zero_reg__
+  54               	.LM9:
+  55 0024 87E6      		ldi r24,lo8(103)
+  56 0026 89B9      		out 41-32,r24
+  57               	.LM10:
+  58 0028 E5E9      		ldi r30,lo8(149)
+  59 002a F0E0      		ldi r31,hi8(149)
+  60 002c 8081      		ld r24,Z
+  61 002e 8660      		ori r24,lo8(6)
+  62 0030 8083      		st Z,r24
+  63               	.LM11:
+  64 0032 8AB1      		in r24,42-32
+  65 0034 8869      		ori r24,lo8(-104)
+  66 0036 8AB9      		out 42-32,r24
+  67               	/* epilogue start */
+  68               	.LM12:
+  69 0038 0895      		ret
+  70               	.LFE3:
+  72               	.global	__vector_31
+  74               	__vector_31:
+  75               	.LFB8:
+  76               	.LM13:
+  77 003a 1F92      		push __zero_reg__
+  78 003c 0F92      		push r0
+  79 003e 0FB6      		in r0,__SREG__
+  80 0040 0F92      		push r0
+  81 0042 1124      		clr __zero_reg__
+  82 0044 8F93      		push r24
+  83               	/* prologue: Signal */
+  84               	/* frame size = 0 */
+  85               	.LM14:
+  86 0046 8AE5      		ldi r24,lo8(90)
+  87 0048 8093 9C00 		sts 156,r24
+  88               	/* epilogue start */
+  89               	.LM15:
+  90 004c 8F91      		pop r24
+  91 004e 0F90      		pop r0
+  92 0050 0FBE      		out __SREG__,r0
+  93 0052 0F90      		pop r0
+  94 0054 1F90      		pop __zero_reg__
+  95 0056 1895      		reti
+  96               	.LFE8:
+  98               	.global	main
+ 100               	main:
+ 101               	.LFB9:
+ 102               	.LM16:
+ 103               	/* prologue: function */
+ 104               	/* frame size = 0 */
+ 105               	.LM17:
+ 106               	/* #APP */
+ 107               	 ;  21 "uart_isr_udrie.c" 1
+ 108 0058 7894      		sei
+ 109               	 ;  0 "" 2
+ 110               	.LM18:
+ 111               	/* #NOAPP */
+ 112 005a 0E94 0000 		call uart1_init
+ 113               	.LM19:
+ 114 005e 8FEF      		ldi r24,lo8(-1)
+ 115 0060 84BB      		out 52-32,r24
+ 116               	.LM20:
+ 117 0062 85BB      		out 53-32,r24
+ 118               	.LBB18:
+ 119               	.LBB19:
+ 120               	.LBB20:
+ 121               	.LBB21:
+ 122               	.LM21:
+ 123 0064 20E9      		ldi r18,lo8(400)
+ 124 0066 31E0      		ldi r19,hi8(400)
+ 125               	.LBE21:
+ 126               	.LBE20:
+ 127               	.LBE19:
+ 128               	.LBE18:
+ 129               	.LM22:
+ 130 0068 4FEF      		ldi r20,lo8(-1)
+ 131               	.LVL0:
+ 132               	.L10:
+ 133               	.LM23:
+ 134 006a 15BA      		out 53-32,__zero_reg__
+ 135 006c 88E8      		ldi r24,lo8(5000)
+ 136 006e 93E1      		ldi r25,hi8(5000)
+ 137               	.LVL1:
+ 138               	.L8:
+ 139               	.LBB25:
+ 140               	.LBB24:
+ 141               	.LBB23:
+ 142               	.LBB22:
+ 143               	.LM24:
+ 144 0070 F901      		movw r30,r18
+ 145               	.LVL2:
+ 146               	/* #APP */
+ 147               	 ;  105 "c:/winavr-20100110/lib/gcc/../../avr/include/util/delay_basic.h" 1
+ 148 0072 3197      		1: sbiw r30,1
+ 149 0074 01F4      		brne 1b
+ 150               	 ;  0 "" 2
+ 151               	/* #NOAPP */
+ 152               	.LBE22:
+ 153               	.LBE23:
+ 154               	.LM25:
+ 155 0076 0197      		sbiw r24,1
+ 156               	.LM26:
+ 157 0078 01F4      		brne .L8
+ 158               	.LBE24:
+ 159               	.LBE25:
+ 160               	.LM27:
+ 161 007a 45BB      		out 53-32,r20
+ 162 007c 88E8      		ldi r24,lo8(5000)
+ 163 007e 93E1      		ldi r25,hi8(5000)
+ 164               	.LVL3:
+ 165               	.L9:
+ 166               	.LBB26:
+ 167               	.LBB27:
+ 168               	.LBB28:
+ 169               	.LBB29:
+ 170               	.LM28:
+ 171 0080 F901      		movw r30,r18
+ 172               	.LVL4:
+ 173               	/* #APP */
+ 174               	 ;  105 "c:/winavr-20100110/lib/gcc/../../avr/include/util/delay_basic.h" 1
+ 175 0082 3197      		1: sbiw r30,1
+ 176 0084 01F4      		brne 1b
+ 177               	 ;  0 "" 2
+ 178               	/* #NOAPP */
+ 179               	.LBE29:
+ 180               	.LBE28:
+ 181               	.LM29:
+ 182 0086 0197      		sbiw r24,1
+ 183               	.LM30:
+ 184 0088 01F4      		brne .L9
+ 185 008a 00C0      		rjmp .L10
+ 186               	.LBE27:
+ 187               	.LBE26:
+ 188               	.LFE9:
+ 238               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 uart_isr_udrie.c
+C:\Users\nikhil\AppData\Local\Temp/cckkGghJ.s:2      *ABS*:0000003f __SREG__
+C:\Users\nikhil\AppData\Local\Temp/cckkGghJ.s:3      *ABS*:0000003e __SP_H__
+C:\Users\nikhil\AppData\Local\Temp/cckkGghJ.s:4      *ABS*:0000003d __SP_L__
+C:\Users\nikhil\AppData\Local\Temp/cckkGghJ.s:5      *ABS*:00000034 __CCP__
+C:\Users\nikhil\AppData\Local\Temp/cckkGghJ.s:6      *ABS*:00000000 __tmp_reg__
+C:\Users\nikhil\AppData\Local\Temp/cckkGghJ.s:7      *ABS*:00000001 __zero_reg__
+C:\Users\nikhil\AppData\Local\Temp/cckkGghJ.s:18     .text:00000000 uart1_init
+C:\Users\nikhil\AppData\Local\Temp/cckkGghJ.s:47     .text:00000020 uart0_init
+C:\Users\nikhil\AppData\Local\Temp/cckkGghJ.s:74     .text:0000003a __vector_31
+C:\Users\nikhil\AppData\Local\Temp/cckkGghJ.s:100    .text:00000058 main
+
+NO UNDEFINED SYMBOLS

@@ -1,0 +1,152 @@
+   1               		.file	"led2.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  17               	.Ltext0:
+  18               	.global	main
+  20               	main:
+  21               	.LFB6:
+  22               	.LM1:
+  23               	/* prologue: function */
+  24               	/* frame size = 0 */
+  25               	.LM2:
+  26 0000 8FEF      		ldi r24,lo8(-1)
+  27 0002 84BB      		out 52-32,r24
+  28 0004 40E0      		ldi r20,lo8(0)
+  29 0006 50E0      		ldi r21,hi8(0)
+  30               	.LVL0:
+  31               	.LM3:
+  32 0008 3FEF      		ldi r19,lo8(-1)
+  33               	.LM4:
+  34 000a A1E0      		ldi r26,lo8(1)
+  35 000c B0E0      		ldi r27,hi8(1)
+  36               	.LBB18:
+  37               	.LBB19:
+  38               	.LBB20:
+  39               	.LBB21:
+  40               	.LM5:
+  41 000e 60E9      		ldi r22,lo8(400)
+  42 0010 71E0      		ldi r23,hi8(400)
+  43 0012 00C0      		rjmp .L11
+  44               	.LVL1:
+  45               	.L4:
+  46               	.LBE21:
+  47               	.LBE20:
+  48               	.LBE19:
+  49               	.LBE18:
+  50               	.LM6:
+  51 0014 35BB      		out 53-32,r19
+  52               	.LM7:
+  53 0016 25B3      		in r18,53-32
+  54 0018 CD01      		movw r24,r26
+  55               	.LVL2:
+  56 001a 042E      		mov r0,r20
+  57 001c 00C0      		rjmp 2f
+  58 001e 880F      	1:	lsl r24
+  59 0020 991F      		rol r25
+  60 0022 0A94      	2:	dec r0
+  61 0024 02F4      		brpl 1b
+  62 0026 8095      		com r24
+  63 0028 8223      		and r24,r18
+  64 002a 85BB      		out 53-32,r24
+  65 002c 80E1      		ldi r24,lo8(10000)
+  66 002e 97E2      		ldi r25,hi8(10000)
+  67               	.LVL3:
+  68               	.L3:
+  69               	.LBB25:
+  70               	.LBB24:
+  71               	.LBB23:
+  72               	.LBB22:
+  73               	.LM8:
+  74 0030 FB01      		movw r30,r22
+  75               	.LVL4:
+  76               	/* #APP */
+  77               	 ;  105 "/usr/lib/gcc/avr/4.3.4/../../../avr/include/util/delay_basic.h" 1
+  78 0032 3197      		1: sbiw r30,1
+  79 0034 01F4      		brne 1b
+  80               	 ;  0 "" 2
+  81               	/* #NOAPP */
+  82               	.LBE22:
+  83               	.LBE23:
+  84               	.LM9:
+  85 0036 0197      		sbiw r24,1
+  86               	.LM10:
+  87 0038 01F4      		brne .L3
+  88               	.LBE24:
+  89               	.LBE25:
+  90               	.LM11:
+  91 003a 4F5F      		subi r20,lo8(-(1))
+  92 003c 5F4F      		sbci r21,hi8(-(1))
+  93               	.LVL5:
+  94               	.L11:
+  95 003e 4830      		cpi r20,8
+  96 0040 5105      		cpc r21,__zero_reg__
+  97 0042 04F0      		brlt .L4
+  98 0044 46E0      		ldi r20,lo8(6)
+  99 0046 50E0      		ldi r21,hi8(6)
+ 100               	.L6:
+ 101               	.LM12:
+ 102 0048 35BB      		out 53-32,r19
+ 103               	.LM13:
+ 104 004a 25B3      		in r18,53-32
+ 105 004c CD01      		movw r24,r26
+ 106               	.LVL6:
+ 107 004e 042E      		mov r0,r20
+ 108 0050 00C0      		rjmp 2f
+ 109 0052 880F      	1:	lsl r24
+ 110 0054 991F      		rol r25
+ 111 0056 0A94      	2:	dec r0
+ 112 0058 02F4      		brpl 1b
+ 113 005a 8095      		com r24
+ 114 005c 8223      		and r24,r18
+ 115 005e 85BB      		out 53-32,r24
+ 116 0060 80E1      		ldi r24,lo8(10000)
+ 117 0062 97E2      		ldi r25,hi8(10000)
+ 118               	.LVL7:
+ 119               	.L5:
+ 120               	.LBB26:
+ 121               	.LBB27:
+ 122               	.LBB28:
+ 123               	.LBB29:
+ 124               	.LM14:
+ 125 0064 FB01      		movw r30,r22
+ 126               	.LVL8:
+ 127               	/* #APP */
+ 128               	 ;  105 "/usr/lib/gcc/avr/4.3.4/../../../avr/include/util/delay_basic.h" 1
+ 129 0066 3197      		1: sbiw r30,1
+ 130 0068 01F4      		brne 1b
+ 131               	 ;  0 "" 2
+ 132               	/* #NOAPP */
+ 133               	.LBE29:
+ 134               	.LBE28:
+ 135               	.LM15:
+ 136 006a 0197      		sbiw r24,1
+ 137               	.LM16:
+ 138 006c 01F4      		brne .L5
+ 139               	.LBE27:
+ 140               	.LBE26:
+ 141               	.LM17:
+ 142 006e 4150      		subi r20,lo8(-(-1))
+ 143 0070 5040      		sbci r21,hi8(-(-1))
+ 144 0072 01F4      		brne .L6
+ 145 0074 00C0      		rjmp .L11
+ 146               	.LFE6:
+ 172               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 led2.c
+     /tmp/cclBPb5E.s:2      *ABS*:0000003f __SREG__
+     /tmp/cclBPb5E.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cclBPb5E.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cclBPb5E.s:5      *ABS*:00000034 __CCP__
+     /tmp/cclBPb5E.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cclBPb5E.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cclBPb5E.s:20     .text:00000000 main
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

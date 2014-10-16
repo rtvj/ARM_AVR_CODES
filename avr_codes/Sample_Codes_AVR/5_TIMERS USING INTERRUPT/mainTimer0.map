@@ -1,0 +1,600 @@
+Archive member included because of file (symbol)
+
+c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodqi4.o)
+                              mainTimer0.o (__udivmodqi4)
+c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodhi4.o)
+                              mainTimer0.o (__divmodhi4)
+c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+                              c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o (exit)
+c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+                              mainTimer0.o (__do_copy_data)
+c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+                              mainTimer0.o (__do_clear_bss)
+c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodhi4.o)
+                              c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodhi4.o) (__udivmodhi4)
+c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(sprintf.o)
+                              mainTimer0.o (sprintf)
+c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(vfprintf_std.o)
+                              c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(sprintf.o) (vfprintf)
+c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(strnlen_P.o)
+                              c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(vfprintf_std.o) (strnlen_P)
+c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(strnlen.o)
+                              c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(vfprintf_std.o) (strnlen)
+c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(fputc.o)
+                              c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(vfprintf_std.o) (fputc)
+c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(ultoa_invert.o)
+                              c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(vfprintf_std.o) (__ultoa_invert)
+c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_prologue.o)
+                              c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(sprintf.o) (__prologue_saves__)
+c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_epilogue.o)
+                              c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(sprintf.o) (__epilogue_restores__)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+text             0x00000000         0x00020000         xr
+data             0x00800060         0x0000ffa0         rw !x
+eeprom           0x00810000         0x00010000         rw !x
+fuse             0x00820000         0x00000400         rw !x
+lock             0x00830000         0x00000400         rw !x
+signature        0x00840000         0x00000400         rw !x
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+Address of section .data set to 0x800100
+LOAD c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+LOAD mainTimer0.o
+LOAD c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libm.a
+LOAD c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
+LOAD c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a
+LOAD c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
+
+.hash
+ *(.hash)
+
+.dynsym
+ *(.dynsym)
+
+.dynstr
+ *(.dynstr)
+
+.gnu.version
+ *(.gnu.version)
+
+.gnu.version_d
+ *(.gnu.version_d)
+
+.gnu.version_r
+ *(.gnu.version_r)
+
+.rel.init
+ *(.rel.init)
+
+.rela.init
+ *(.rela.init)
+
+.rel.text
+ *(.rel.text)
+ *(.rel.text.*)
+ *(.rel.gnu.linkonce.t*)
+
+.rela.text
+ *(.rela.text)
+ *(.rela.text.*)
+ *(.rela.gnu.linkonce.t*)
+
+.rel.fini
+ *(.rel.fini)
+
+.rela.fini
+ *(.rela.fini)
+
+.rel.rodata
+ *(.rel.rodata)
+ *(.rel.rodata.*)
+ *(.rel.gnu.linkonce.r*)
+
+.rela.rodata
+ *(.rela.rodata)
+ *(.rela.rodata.*)
+ *(.rela.gnu.linkonce.r*)
+
+.rel.data
+ *(.rel.data)
+ *(.rel.data.*)
+ *(.rel.gnu.linkonce.d*)
+
+.rela.data
+ *(.rela.data)
+ *(.rela.data.*)
+ *(.rela.gnu.linkonce.d*)
+
+.rel.ctors
+ *(.rel.ctors)
+
+.rela.ctors
+ *(.rela.ctors)
+
+.rel.dtors
+ *(.rel.dtors)
+
+.rela.dtors
+ *(.rela.dtors)
+
+.rel.got
+ *(.rel.got)
+
+.rela.got
+ *(.rela.got)
+
+.rel.bss
+ *(.rel.bss)
+
+.rela.bss
+ *(.rela.bss)
+
+.rel.plt
+ *(.rel.plt)
+
+.rela.plt
+ *(.rela.plt)
+
+.text           0x00000000      0xab6
+ *(.vectors)
+ .vectors       0x00000000       0x8c c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+                0x00000000                __vectors
+                0x00000000                __vector_default
+ *(.vectors)
+ *(.progmem.gcc*)
+ *(.progmem*)
+                0x0000008c                . = ALIGN (0x2)
+                0x0000008c                __trampolines_start = .
+ *(.trampolines)
+ .trampolines   0x0000008c        0x0 linker stubs
+ *(.trampolines*)
+                0x0000008c                __trampolines_end = .
+ *(.jumptables)
+ *(.jumptables*)
+ *(.lowtext)
+ *(.lowtext*)
+                0x0000008c                __ctors_start = .
+ *(.ctors)
+                0x0000008c                __ctors_end = .
+                0x0000008c                __dtors_start = .
+ *(.dtors)
+                0x0000008c                __dtors_end = .
+ SORT(*)(.ctors)
+ SORT(*)(.dtors)
+ *(.init0)
+ .init0         0x0000008c        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+                0x0000008c                __init
+ *(.init0)
+ *(.init1)
+ *(.init1)
+ *(.init2)
+ .init2         0x0000008c        0xc c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+ *(.init2)
+ *(.init3)
+ *(.init3)
+ *(.init4)
+ .init4         0x00000098       0x16 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+                0x00000098                __do_copy_data
+ .init4         0x000000ae       0x10 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+                0x000000ae                __do_clear_bss
+ *(.init4)
+ *(.init5)
+ *(.init5)
+ *(.init6)
+ *(.init6)
+ *(.init7)
+ *(.init7)
+ *(.init8)
+ *(.init8)
+ *(.init9)
+ .init9         0x000000be        0x8 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+ *(.init9)
+ *(.text)
+ .text          0x000000c6        0x4 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+                0x000000c6                __vector_22
+                0x000000c6                __vector_28
+                0x000000c6                __vector_1
+                0x000000c6                __vector_32
+                0x000000c6                __vector_34
+                0x000000c6                __vector_24
+                0x000000c6                __vector_12
+                0x000000c6                __bad_interrupt
+                0x000000c6                __vector_6
+                0x000000c6                __vector_31
+                0x000000c6                __vector_3
+                0x000000c6                __vector_23
+                0x000000c6                __vector_30
+                0x000000c6                __vector_25
+                0x000000c6                __vector_11
+                0x000000c6                __vector_13
+                0x000000c6                __vector_17
+                0x000000c6                __vector_19
+                0x000000c6                __vector_7
+                0x000000c6                __vector_27
+                0x000000c6                __vector_5
+                0x000000c6                __vector_33
+                0x000000c6                __vector_4
+                0x000000c6                __vector_9
+                0x000000c6                __vector_2
+                0x000000c6                __vector_21
+                0x000000c6                __vector_15
+                0x000000c6                __vector_29
+                0x000000c6                __vector_8
+                0x000000c6                __vector_26
+                0x000000c6                __vector_14
+                0x000000c6                __vector_10
+                0x000000c6                __vector_18
+                0x000000c6                __vector_20
+ .text          0x000000ca      0x3d2 mainTimer0.o
+                0x0000025e                lcd_showvalue
+                0x0000022e                lcd_gotoxy1
+                0x0000023e                lcd_char
+                0x000002ce                WaitMs
+                0x00000236                lcd_gotoxy2
+                0x000000f6                USART_Init
+                0x0000011a                USART_Transmit
+                0x000001d2                lcd_string
+                0x00000144                delay_us
+                0x000002c6                lcd_exit
+                0x000002ea                lcd_init
+                0x000003c6                main
+                0x00000166                toggleE
+                0x000000de                Serial_Init
+                0x0000012a                print_string
+                0x000001a6                lcd_putchar
+                0x0000010c                USART_Receive
+                0x0000017c                lcd_cmd
+                0x000000d8                Timer0_LoadCount
+                0x0000033c                __vector_16
+                0x000000ca                Timer0_Init
+ .text          0x0000049c        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodqi4.o)
+ .text          0x0000049c        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodhi4.o)
+ .text          0x0000049c        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .text          0x0000049c        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+ .text          0x0000049c        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+ .text          0x0000049c        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodhi4.o)
+ .text          0x0000049c        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(sprintf.o)
+ .text          0x0000049c        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(vfprintf_std.o)
+ .text          0x0000049c        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(strnlen_P.o)
+ .text          0x0000049c        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(strnlen.o)
+ .text          0x0000049c        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(fputc.o)
+ .text          0x0000049c        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(ultoa_invert.o)
+ .text          0x0000049c        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_prologue.o)
+ .text          0x0000049c        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_epilogue.o)
+                0x0000049c                . = ALIGN (0x2)
+ *(.text.*)
+ .text.libgcc   0x0000049c       0x18 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodqi4.o)
+                0x0000049c                __udivmodqi4
+ .text.libgcc   0x000004b4       0x26 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodhi4.o)
+                0x000004b4                __divmodhi4
+                0x000004b4                _div
+ .text.libgcc   0x000004da        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .text.libgcc   0x000004da        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+ .text.libgcc   0x000004da        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+ .text.libgcc   0x000004da       0x28 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodhi4.o)
+                0x000004da                __udivmodhi4
+ .text.avr-libc
+                0x00000502       0x48 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(sprintf.o)
+                0x00000502                sprintf
+ .text.avr-libc
+                0x0000054a      0x3ba c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(vfprintf_std.o)
+                0x0000054a                vfprintf
+ .text.avr-libc
+                0x00000904       0x16 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(strnlen_P.o)
+                0x00000904                strnlen_P
+ .text.avr-libc
+                0x0000091a       0x16 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(strnlen.o)
+                0x0000091a                strnlen
+ .text.avr-libc
+                0x00000930       0x58 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(fputc.o)
+                0x00000930                fputc
+ .text.avr-libc
+                0x00000988       0xbc c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(ultoa_invert.o)
+                0x00000988                __ultoa_invert
+ .text.libgcc   0x00000a44       0x38 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_prologue.o)
+                0x00000a44                __prologue_saves__
+ .text.libgcc   0x00000a7c       0x36 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_epilogue.o)
+                0x00000a7c                __epilogue_restores__
+                0x00000ab2                . = ALIGN (0x2)
+ *(.fini9)
+ .fini9         0x00000ab2        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+                0x00000ab2                exit
+                0x00000ab2                _exit
+ *(.fini9)
+ *(.fini8)
+ *(.fini8)
+ *(.fini7)
+ *(.fini7)
+ *(.fini6)
+ *(.fini6)
+ *(.fini5)
+ *(.fini5)
+ *(.fini4)
+ *(.fini4)
+ *(.fini3)
+ *(.fini3)
+ *(.fini2)
+ *(.fini2)
+ *(.fini1)
+ *(.fini1)
+ *(.fini0)
+ .fini0         0x00000ab2        0x4 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ *(.fini0)
+                0x00000ab6                _etext = .
+
+.data           0x00800100       0x2e load address 0x00000ab6
+                0x00800100                PROVIDE (__data_start, .)
+ *(.data)
+ .data          0x00800100        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+ .data          0x00800100       0x2e mainTimer0.o
+                0x00800129                MSEC_var
+                0x0080012c                MIN_var
+                0x0080012b                SEC_var
+                0x0080012d                HRS_var
+ .data          0x0080012e        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodqi4.o)
+ .data          0x0080012e        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodhi4.o)
+ .data          0x0080012e        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .data          0x0080012e        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+ .data          0x0080012e        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+ .data          0x0080012e        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodhi4.o)
+ .data          0x0080012e        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(sprintf.o)
+ .data          0x0080012e        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(vfprintf_std.o)
+ .data          0x0080012e        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(strnlen_P.o)
+ .data          0x0080012e        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(strnlen.o)
+ .data          0x0080012e        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(fputc.o)
+ .data          0x0080012e        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(ultoa_invert.o)
+ .data          0x0080012e        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_prologue.o)
+ .data          0x0080012e        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_epilogue.o)
+ *(.data*)
+ *(.rodata)
+ *(.rodata*)
+ *(.gnu.linkonce.d*)
+                0x0080012e                . = ALIGN (0x2)
+                0x0080012e                _edata = .
+                0x0080012e                PROVIDE (__data_end, .)
+
+.bss            0x0080012e        0x4
+                0x0080012e                PROVIDE (__bss_start, .)
+ *(.bss)
+ .bss           0x0080012e        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+ .bss           0x0080012e        0x4 mainTimer0.o
+                0x0080012f                j
+                0x0080012e                k
+                0x00800130                save
+                0x00800131                Update_flag
+ .bss           0x00800132        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodqi4.o)
+ .bss           0x00800132        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodhi4.o)
+ .bss           0x00800132        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .bss           0x00800132        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+ .bss           0x00800132        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+ .bss           0x00800132        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodhi4.o)
+ .bss           0x00800132        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(sprintf.o)
+ .bss           0x00800132        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(vfprintf_std.o)
+ .bss           0x00800132        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(strnlen_P.o)
+ .bss           0x00800132        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(strnlen.o)
+ .bss           0x00800132        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(fputc.o)
+ .bss           0x00800132        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(ultoa_invert.o)
+ .bss           0x00800132        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_prologue.o)
+ .bss           0x00800132        0x0 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_epilogue.o)
+ *(.bss*)
+ *(COMMON)
+                0x00800132                PROVIDE (__bss_end, .)
+                0x00000ab6                __data_load_start = LOADADDR (.data)
+                0x00000ae4                __data_load_end = (__data_load_start + SIZEOF (.data))
+
+.noinit         0x00800132        0x0
+                0x00800132                PROVIDE (__noinit_start, .)
+ *(.noinit*)
+                0x00800132                PROVIDE (__noinit_end, .)
+                0x00800132                _end = .
+                0x00800132                PROVIDE (__heap_start, .)
+
+.eeprom         0x00810000        0x0
+ *(.eeprom*)
+                0x00810000                __eeprom_end = .
+
+.fuse
+ *(.fuse)
+ *(.lfuse)
+ *(.hfuse)
+ *(.efuse)
+
+.lock
+ *(.lock*)
+
+.signature
+ *(.signature*)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment
+ *(.comment)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges  0x00000000       0x20
+ *(.debug_aranges)
+ .debug_aranges
+                0x00000000       0x20 mainTimer0.o
+
+.debug_pubnames
+                0x00000000      0x1a3
+ *(.debug_pubnames)
+ .debug_pubnames
+                0x00000000      0x1a3 mainTimer0.o
+
+.debug_info     0x00000000      0x4d8
+ *(.debug_info)
+ .debug_info    0x00000000      0x4d8 mainTimer0.o
+ *(.gnu.linkonce.wi.*)
+
+.debug_abbrev   0x00000000      0x1d6
+ *(.debug_abbrev)
+ .debug_abbrev  0x00000000      0x1d6 mainTimer0.o
+
+.debug_line     0x00000000      0x55a
+ *(.debug_line)
+ .debug_line    0x00000000      0x55a mainTimer0.o
+
+.debug_frame    0x00000000      0x160
+ *(.debug_frame)
+ .debug_frame   0x00000000      0x160 mainTimer0.o
+
+.debug_str      0x00000000      0x1d8
+ *(.debug_str)
+ .debug_str     0x00000000      0x1d8 mainTimer0.o
+                                0x214 (size before relaxing)
+
+.debug_loc      0x00000000      0x18d
+ *(.debug_loc)
+ .debug_loc     0x00000000      0x18d mainTimer0.o
+
+.debug_macinfo
+ *(.debug_macinfo)
+OUTPUT(mainTimer0.elf elf32-avr)
+LOAD linker stubs
+
+.debug_ranges   0x00000000       0x18
+ .debug_ranges  0x00000000       0x18 mainTimer0.o
+
+Cross Reference Table
+
+Symbol                                            File
+HRS_var                                           mainTimer0.o
+MIN_var                                           mainTimer0.o
+MSEC_var                                          mainTimer0.o
+SEC_var                                           mainTimer0.o
+Serial_Init                                       mainTimer0.o
+Timer0_Init                                       mainTimer0.o
+Timer0_LoadCount                                  mainTimer0.o
+USART_Init                                        mainTimer0.o
+USART_Receive                                     mainTimer0.o
+USART_Transmit                                    mainTimer0.o
+Update_flag                                       mainTimer0.o
+WaitMs                                            mainTimer0.o
+__bad_interrupt                                   c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__bss_end                                         c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+__bss_start                                       c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+__data_end                                        c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+__data_load_start                                 c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+__data_start                                      c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+__divmodhi4                                       c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodhi4.o)
+                                                  mainTimer0.o
+__do_clear_bss                                    c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+                                                  mainTimer0.o
+__do_copy_data                                    c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+                                                  mainTimer0.o
+__epilogue_restores__                             c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_epilogue.o)
+                                                  c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(vfprintf_std.o)
+                                                  c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(sprintf.o)
+__heap_end                                        c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__init                                            c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__prologue_saves__                                c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_prologue.o)
+                                                  c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(vfprintf_std.o)
+                                                  c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(sprintf.o)
+__stack                                           c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__udivmodhi4                                      c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodhi4.o)
+                                                  c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodhi4.o)
+__udivmodqi4                                      c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodqi4.o)
+                                                  mainTimer0.o
+__ultoa_invert                                    c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(ultoa_invert.o)
+                                                  c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(vfprintf_std.o)
+__vector_1                                        c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_10                                       c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_11                                       c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_12                                       c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_13                                       c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_14                                       c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_15                                       c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_16                                       mainTimer0.o
+                                                  c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_17                                       c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_18                                       c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_19                                       c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_2                                        c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_20                                       c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_21                                       c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_22                                       c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_23                                       c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_24                                       c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_25                                       c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_26                                       c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_27                                       c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_28                                       c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_29                                       c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_3                                        c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_30                                       c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_31                                       c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_32                                       c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_33                                       c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_34                                       c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_4                                        c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_5                                        c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_6                                        c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_7                                        c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_8                                        c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_9                                        c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vector_default                                  c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+__vectors                                         c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+_div                                              c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodhi4.o)
+_exit                                             c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+delay_us                                          mainTimer0.o
+exit                                              c:/program files/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+                                                  c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+fputc                                             c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(fputc.o)
+                                                  c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(vfprintf_std.o)
+j                                                 mainTimer0.o
+k                                                 mainTimer0.o
+lcd_char                                          mainTimer0.o
+lcd_cmd                                           mainTimer0.o
+lcd_exit                                          mainTimer0.o
+lcd_gotoxy1                                       mainTimer0.o
+lcd_gotoxy2                                       mainTimer0.o
+lcd_init                                          mainTimer0.o
+lcd_putchar                                       mainTimer0.o
+lcd_showvalue                                     mainTimer0.o
+lcd_string                                        mainTimer0.o
+main                                              mainTimer0.o
+                                                  c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm64.o
+print_string                                      mainTimer0.o
+save                                              mainTimer0.o
+sprintf                                           c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(sprintf.o)
+                                                  mainTimer0.o
+strnlen                                           c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(strnlen.o)
+                                                  c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(vfprintf_std.o)
+strnlen_P                                         c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(strnlen_P.o)
+                                                  c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(vfprintf_std.o)
+toggleE                                           mainTimer0.o
+vfprintf                                          c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(vfprintf_std.o)
+                                                  c:/program files/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(sprintf.o)

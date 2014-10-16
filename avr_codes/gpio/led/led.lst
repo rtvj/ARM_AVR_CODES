@@ -1,0 +1,68 @@
+   1               		.file	"led.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__ = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  15               	.Ltext0:
+  16               	.global	main
+  18               	main:
+  19               	.LFB6:
+  20               	.LM1:
+  21               	/* prologue: function */
+  22               	/* frame size = 0 */
+  23               	/* stack size = 0 */
+  24               	.L__stack_usage = 0
+  25               	.LM2:
+  26 0000 8FEF      		ldi r24,lo8(-1)
+  27 0002 84BB      		out 52-32,r24
+  28               	.L2:
+  29               	.LM3:
+  30 0004 15BA      		out 53-32,__zero_reg__
+  31               	.LVL0:
+  32               	.LBB6:
+  33               	.LBB7:
+  34               	.LM4:
+  35 0006 2FEF      		 ldi r18,lo8(3199999)
+  36 0008 33ED      	    ldi r19,hi8(3199999)
+  37 000a 40E3      	    ldi r20,hlo8(3199999)
+  38 000c 2150      	    1:subi r18,1
+  39 000e 3040      	    sbci r19,0
+  40 0010 4040      	    sbci r20,0
+  41 0012 01F4      	    brne 1b
+  42 0014 00C0      		rjmp .
+  43 0016 0000      		nop
+  44               	.LBE7:
+  45               	.LBE6:
+  46               	.LM5:
+  47 0018 85BB      		out 53-32,r24
+  48               	.LVL1:
+  49               	.LBB8:
+  50               	.LBB9:
+  51               	.LM6:
+  52 001a 2FEF      		 ldi r18,lo8(3199999)
+  53 001c 33ED      	    ldi r19,hi8(3199999)
+  54 001e 40E3      	    ldi r20,hlo8(3199999)
+  55 0020 2150      	    1:subi r18,1
+  56 0022 3040      	    sbci r19,0
+  57 0024 4040      	    sbci r20,0
+  58 0026 01F4      	    brne 1b
+  59 0028 00C0      		rjmp .
+  60 002a 0000      		nop
+  61 002c 00C0      		rjmp .L2
+  62               	.LBE9:
+  63               	.LBE8:
+  64               	.LFE6:
+  90               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 led.c
+     /tmp/ccLYn8r2.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccLYn8r2.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccLYn8r2.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccLYn8r2.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccLYn8r2.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccLYn8r2.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccLYn8r2.s:18     .text:00000000 main
+
+NO UNDEFINED SYMBOLS

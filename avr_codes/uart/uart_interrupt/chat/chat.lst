@@ -1,0 +1,228 @@
+   1               		.file	"chat.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  15               	.Ltext0:
+  16               	.global	uart1_init
+  18               	uart1_init:
+  19               	.LFB2:
+  20               	.LM1:
+  21               	/* prologue: function */
+  22               	/* frame size = 0 */
+  23               	.LM2:
+  24 0000 1092 9800 		sts 152,__zero_reg__
+  25               	.LM3:
+  26 0004 87E6      		ldi r24,lo8(103)
+  27 0006 8093 9900 		sts 153,r24
+  28               	.LM4:
+  29 000a EDE9      		ldi r30,lo8(157)
+  30 000c F0E0      		ldi r31,hi8(157)
+  31 000e 8081      		ld r24,Z
+  32 0010 8660      		ori r24,lo8(6)
+  33 0012 8083      		st Z,r24
+  34               	.LM5:
+  35 0014 EAE9      		ldi r30,lo8(154)
+  36 0016 F0E0      		ldi r31,hi8(154)
+  37 0018 8081      		ld r24,Z
+  38 001a 8869      		ori r24,lo8(-104)
+  39 001c 8083      		st Z,r24
+  40               	/* epilogue start */
+  41               	.LM6:
+  42 001e 0895      		ret
+  43               	.LFE2:
+  45               	.global	uart0_init
+  47               	uart0_init:
+  48               	.LFB3:
+  49               	.LM7:
+  50               	/* prologue: function */
+  51               	/* frame size = 0 */
+  52               	.LM8:
+  53 0020 1092 9000 		sts 144,__zero_reg__
+  54               	.LM9:
+  55 0024 87E6      		ldi r24,lo8(103)
+  56 0026 89B9      		out 41-32,r24
+  57               	.LM10:
+  58 0028 E5E9      		ldi r30,lo8(149)
+  59 002a F0E0      		ldi r31,hi8(149)
+  60 002c 8081      		ld r24,Z
+  61 002e 8660      		ori r24,lo8(6)
+  62 0030 8083      		st Z,r24
+  63               	.LM11:
+  64 0032 8AB1      		in r24,42-32
+  65 0034 8869      		ori r24,lo8(-104)
+  66 0036 8AB9      		out 42-32,r24
+  67               	/* epilogue start */
+  68               	.LM12:
+  69 0038 0895      		ret
+  70               	.LFE3:
+  72               	.global	__vector_30
+  74               	__vector_30:
+  75               	.LFB8:
+  76               	.LM13:
+  77 003a 1F92      		push __zero_reg__
+  78 003c 0F92      		push r0
+  79 003e 0FB6      		in r0,__SREG__
+  80 0040 0F92      		push r0
+  81 0042 1124      		clr __zero_reg__
+  82 0044 8F93      		push r24
+  83 0046 EF93      		push r30
+  84 0048 FF93      		push r31
+  85               	/* prologue: Signal */
+  86               	/* frame size = 0 */
+  87               	.LM14:
+  88 004a ECE9      		ldi r30,lo8(156)
+  89 004c F0E0      		ldi r31,hi8(156)
+  90 004e 8081      		ld r24,Z
+  91               	.LVL0:
+  92               	.LM15:
+  93 0050 8083      		st Z,r24
+  94               	.LM16:
+  95 0052 8CB9      		out 44-32,r24
+  96               	/* epilogue start */
+  97               	.LM17:
+  98 0054 FF91      		pop r31
+  99 0056 EF91      		pop r30
+ 100 0058 8F91      		pop r24
+ 101               	.LVL1:
+ 102 005a 0F90      		pop r0
+ 103 005c 0FBE      		out __SREG__,r0
+ 104 005e 0F90      		pop r0
+ 105 0060 1F90      		pop __zero_reg__
+ 106 0062 1895      		reti
+ 107               	.LFE8:
+ 109               	.global	__vector_18
+ 111               	__vector_18:
+ 112               	.LFB9:
+ 113               	.LM18:
+ 114 0064 1F92      		push __zero_reg__
+ 115 0066 0F92      		push r0
+ 116 0068 0FB6      		in r0,__SREG__
+ 117 006a 0F92      		push r0
+ 118 006c 1124      		clr __zero_reg__
+ 119 006e 8F93      		push r24
+ 120               	/* prologue: Signal */
+ 121               	/* frame size = 0 */
+ 122               	.LM19:
+ 123 0070 8CB1      		in r24,44-32
+ 124               	.LVL2:
+ 125               	.LM20:
+ 126 0072 8093 9C00 		sts 156,r24
+ 127               	/* epilogue start */
+ 128               	.LM21:
+ 129 0076 8F91      		pop r24
+ 130               	.LVL3:
+ 131 0078 0F90      		pop r0
+ 132 007a 0FBE      		out __SREG__,r0
+ 133 007c 0F90      		pop r0
+ 134 007e 1F90      		pop __zero_reg__
+ 135 0080 1895      		reti
+ 136               	.LFE9:
+ 138               	.global	main
+ 140               	main:
+ 141               	.LFB10:
+ 142               	.LM22:
+ 143               	/* prologue: function */
+ 144               	/* frame size = 0 */
+ 145               	.LM23:
+ 146               	/* #APP */
+ 147               	 ;  24 "chat.c" 1
+ 148 0082 7894      		sei
+ 149               	 ;  0 "" 2
+ 150               	.LM24:
+ 151               	/* #NOAPP */
+ 152 0084 0E94 0000 		call uart1_init
+ 153               	.LM25:
+ 154 0088 0E94 0000 		call uart0_init
+ 155               	.LM26:
+ 156 008c 8FEF      		ldi r24,lo8(-1)
+ 157 008e 84BB      		out 52-32,r24
+ 158               	.LBB18:
+ 159               	.LBB19:
+ 160               	.LBB20:
+ 161               	.LBB21:
+ 162               	.LM27:
+ 163 0090 20E9      		ldi r18,lo8(400)
+ 164 0092 31E0      		ldi r19,hi8(400)
+ 165               	.LBE21:
+ 166               	.LBE20:
+ 167               	.LBE19:
+ 168               	.LBE18:
+ 169               	.LM28:
+ 170 0094 4FEF      		ldi r20,lo8(-1)
+ 171               	.LVL4:
+ 172               	.L12:
+ 173               	.LM29:
+ 174 0096 15BA      		out 53-32,__zero_reg__
+ 175 0098 80E1      		ldi r24,lo8(10000)
+ 176 009a 97E2      		ldi r25,hi8(10000)
+ 177               	.LVL5:
+ 178               	.L10:
+ 179               	.LBB25:
+ 180               	.LBB24:
+ 181               	.LBB23:
+ 182               	.LBB22:
+ 183               	.LM30:
+ 184 009c F901      		movw r30,r18
+ 185               	.LVL6:
+ 186               	/* #APP */
+ 187               	 ;  105 "c:/winavr-20100110/lib/gcc/../../avr/include/util/delay_basic.h" 1
+ 188 009e 3197      		1: sbiw r30,1
+ 189 00a0 01F4      		brne 1b
+ 190               	 ;  0 "" 2
+ 191               	/* #NOAPP */
+ 192               	.LBE22:
+ 193               	.LBE23:
+ 194               	.LM31:
+ 195 00a2 0197      		sbiw r24,1
+ 196               	.LM32:
+ 197 00a4 01F4      		brne .L10
+ 198               	.LBE24:
+ 199               	.LBE25:
+ 200               	.LM33:
+ 201 00a6 45BB      		out 53-32,r20
+ 202 00a8 80E1      		ldi r24,lo8(10000)
+ 203 00aa 97E2      		ldi r25,hi8(10000)
+ 204               	.LVL7:
+ 205               	.L11:
+ 206               	.LBB26:
+ 207               	.LBB27:
+ 208               	.LBB28:
+ 209               	.LBB29:
+ 210               	.LM34:
+ 211 00ac F901      		movw r30,r18
+ 212               	.LVL8:
+ 213               	/* #APP */
+ 214               	 ;  105 "c:/winavr-20100110/lib/gcc/../../avr/include/util/delay_basic.h" 1
+ 215 00ae 3197      		1: sbiw r30,1
+ 216 00b0 01F4      		brne 1b
+ 217               	 ;  0 "" 2
+ 218               	/* #NOAPP */
+ 219               	.LBE29:
+ 220               	.LBE28:
+ 221               	.LM35:
+ 222 00b2 0197      		sbiw r24,1
+ 223               	.LM36:
+ 224 00b4 01F4      		brne .L11
+ 225 00b6 00C0      		rjmp .L12
+ 226               	.LBE27:
+ 227               	.LBE26:
+ 228               	.LFE10:
+ 286               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 chat.c
+C:\Users\nikhil\AppData\Local\Temp/ccqwshq9.s:2      *ABS*:0000003f __SREG__
+C:\Users\nikhil\AppData\Local\Temp/ccqwshq9.s:3      *ABS*:0000003e __SP_H__
+C:\Users\nikhil\AppData\Local\Temp/ccqwshq9.s:4      *ABS*:0000003d __SP_L__
+C:\Users\nikhil\AppData\Local\Temp/ccqwshq9.s:5      *ABS*:00000034 __CCP__
+C:\Users\nikhil\AppData\Local\Temp/ccqwshq9.s:6      *ABS*:00000000 __tmp_reg__
+C:\Users\nikhil\AppData\Local\Temp/ccqwshq9.s:7      *ABS*:00000001 __zero_reg__
+C:\Users\nikhil\AppData\Local\Temp/ccqwshq9.s:18     .text:00000000 uart1_init
+C:\Users\nikhil\AppData\Local\Temp/ccqwshq9.s:47     .text:00000020 uart0_init
+C:\Users\nikhil\AppData\Local\Temp/ccqwshq9.s:74     .text:0000003a __vector_30
+C:\Users\nikhil\AppData\Local\Temp/ccqwshq9.s:111    .text:00000064 __vector_18
+C:\Users\nikhil\AppData\Local\Temp/ccqwshq9.s:140    .text:00000082 main
+
+NO UNDEFINED SYMBOLS

@@ -1,0 +1,270 @@
+
+uart_isr_txcie.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000160  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .debug_aranges 00000020  00000000  00000000  000001b4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  2 .debug_pubnames 00000049  00000000  00000000  000001d4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  3 .debug_info   000001de  00000000  00000000  0000021d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_abbrev 00000105  00000000  00000000  000003fb  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_line   0000021e  00000000  00000000  00000500  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_frame  00000050  00000000  00000000  00000720  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_str    000000ec  00000000  00000000  00000770  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_loc    000000b0  00000000  00000000  0000085c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_ranges 00000048  00000000  00000000  0000090c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 46 00 	jmp	0x8c	; 0x8c <__ctors_end>
+   4:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+   8:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+   c:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  10:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  14:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  18:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  1c:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  20:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  24:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  28:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  2c:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  30:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  34:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  38:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  3c:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  40:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  44:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  48:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  4c:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  50:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  54:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  58:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  5c:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  60:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  64:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  68:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  6c:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  70:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  74:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  78:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  7c:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  80:	0c 94 6f 00 	jmp	0xde	; 0xde <__vector_32>
+  84:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+  88:	0c 94 50 00 	jmp	0xa0	; 0xa0 <__bad_interrupt>
+
+0000008c <__ctors_end>:
+  8c:	11 24       	eor	r1, r1
+  8e:	1f be       	out	0x3f, r1	; 63
+  90:	cf ef       	ldi	r28, 0xFF	; 255
+  92:	d0 e1       	ldi	r29, 0x10	; 16
+  94:	de bf       	out	0x3e, r29	; 62
+  96:	cd bf       	out	0x3d, r28	; 61
+  98:	0e 94 91 00 	call	0x122	; 0x122 <main>
+  9c:	0c 94 ae 00 	jmp	0x15c	; 0x15c <_exit>
+
+000000a0 <__bad_interrupt>:
+  a0:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+000000a4 <uart1_init>:
+#include<avr/io.h>
+
+void uart1_init(void) // INITIALIZATION FUNCTION
+{
+	UBRR1H = 0;
+  a4:	10 92 98 00 	sts	0x0098, r1
+	UBRR1L = 103; //0X67; BAUDRATE = 9600
+  a8:	87 e6       	ldi	r24, 0x67	; 103
+  aa:	80 93 99 00 	sts	0x0099, r24
+
+	//UCSR1C = 0X06;// frame : 8 bit data , no parity , stop bit
+	UCSR1C |= (1<<UCSZ1) | (1<<UCSZ0);
+  ae:	ed e9       	ldi	r30, 0x9D	; 157
+  b0:	f0 e0       	ldi	r31, 0x00	; 0
+  b2:	80 81       	ld	r24, Z
+  b4:	86 60       	ori	r24, 0x06	; 6
+  b6:	80 83       	st	Z, r24
+
+	UCSR1B |= (1<<TXCIE) | (1<<RXEN) | (1<<TXEN);// ENABLE Transmit ENABLE INTRRRUPT & TRANSMITTER & RECEIVER 
+  b8:	ea e9       	ldi	r30, 0x9A	; 154
+  ba:	f0 e0       	ldi	r31, 0x00	; 0
+  bc:	80 81       	ld	r24, Z
+  be:	88 65       	ori	r24, 0x58	; 88
+  c0:	80 83       	st	Z, r24
+}
+  c2:	08 95       	ret
+
+000000c4 <uart0_init>:
+
+void uart0_init(void) // INITIALIZATION FUNCTION
+{
+	UBRR0H = 0;
+  c4:	10 92 90 00 	sts	0x0090, r1
+	UBRR0L = 103; //0X67; BAUDRATE = 9600
+  c8:	87 e6       	ldi	r24, 0x67	; 103
+  ca:	89 b9       	out	0x09, r24	; 9
+
+	//UCSR0C = 0X06;// frame : 8 bit data , no parity , stop bit
+	UCSR0C |= (1<<UCSZ1) | (1<<UCSZ0);
+  cc:	e5 e9       	ldi	r30, 0x95	; 149
+  ce:	f0 e0       	ldi	r31, 0x00	; 0
+  d0:	80 81       	ld	r24, Z
+  d2:	86 60       	ori	r24, 0x06	; 6
+  d4:	80 83       	st	Z, r24
+
+	UCSR0B |= (1<<TXCIE) | (1<<RXEN) | (1<<TXEN);// ENABLE Transmit ENABLE INTRRRUPT & TRANSMITTER & RECEIVER 
+  d6:	8a b1       	in	r24, 0x0a	; 10
+  d8:	88 65       	ori	r24, 0x58	; 88
+  da:	8a b9       	out	0x0a, r24	; 10
+  dc:	08 95       	ret
+
+000000de <__vector_32>:
+
+TXC flag bit is set when the entire frame in the Transmit Shift Register has been shifted out 
+and there are no new data currently present in the transmit buffer (UDR).*/
+
+ISR(USART1_TX_vect) //ISR while using TXC flag
+{
+  de:	1f 92       	push	r1
+  e0:	0f 92       	push	r0
+  e2:	0f b6       	in	r0, 0x3f	; 63
+  e4:	0f 92       	push	r0
+  e6:	11 24       	eor	r1, r1
+  e8:	2f 93       	push	r18
+  ea:	3f 93       	push	r19
+  ec:	8f 93       	push	r24
+  ee:	9f 93       	push	r25
+  f0:	ef 93       	push	r30
+  f2:	ff 93       	push	r31
+	UDR1='Z';
+  f4:	8a e5       	ldi	r24, 0x5A	; 90
+  f6:	80 93 9c 00 	sts	0x009C, r24
+  fa:	88 e8       	ldi	r24, 0x88	; 136
+  fc:	93 e1       	ldi	r25, 0x13	; 19
+    milliseconds can be achieved.
+ */
+void
+_delay_loop_2(uint16_t __count)
+{
+	__asm__ volatile (
+  fe:	20 e9       	ldi	r18, 0x90	; 144
+ 100:	31 e0       	ldi	r19, 0x01	; 1
+ 102:	f9 01       	movw	r30, r18
+ 104:	31 97       	sbiw	r30, 0x01	; 1
+ 106:	f1 f7       	brne	.-4      	; 0x104 <__vector_32+0x26>
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 108:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 10a:	d9 f7       	brne	.-10     	; 0x102 <__vector_32+0x24>
+	_delay_ms(500);
+}
+ 10c:	ff 91       	pop	r31
+ 10e:	ef 91       	pop	r30
+ 110:	9f 91       	pop	r25
+ 112:	8f 91       	pop	r24
+ 114:	3f 91       	pop	r19
+ 116:	2f 91       	pop	r18
+ 118:	0f 90       	pop	r0
+ 11a:	0f be       	out	0x3f, r0	; 63
+ 11c:	0f 90       	pop	r0
+ 11e:	1f 90       	pop	r1
+ 120:	18 95       	reti
+
+00000122 <main>:
+
+int main(void)
+{
+	sei();
+ 122:	78 94       	sei
+	uart1_init() ;
+ 124:	0e 94 52 00 	call	0xa4	; 0xa4 <uart1_init>
+	//uart0_init();
+	UDR1='Z';// TO initiate transmission & hence to set TXC flag bit.Then ISR will be generated. 
+ 128:	8a e5       	ldi	r24, 0x5A	; 90
+ 12a:	80 93 9c 00 	sts	0x009C, r24
+	DDRC = 0XFF;// PORTC AS O/P PORT
+ 12e:	8f ef       	ldi	r24, 0xFF	; 255
+ 130:	84 bb       	out	0x14, r24	; 20
+	PORTC = 0xff;// all leds are off
+ 132:	85 bb       	out	0x15, r24	; 21
+ 134:	20 e9       	ldi	r18, 0x90	; 144
+ 136:	31 e0       	ldi	r19, 0x01	; 1
+	while(1)
+	{
+	PORTC = 0x00; // all leds are on
+	_delay_ms(500);
+	
+	PORTC = 0xff;// all leds are off
+ 138:	4f ef       	ldi	r20, 0xFF	; 255
+	UDR1='Z';// TO initiate transmission & hence to set TXC flag bit.Then ISR will be generated. 
+	DDRC = 0XFF;// PORTC AS O/P PORT
+	PORTC = 0xff;// all leds are off
+	while(1)
+	{
+	PORTC = 0x00; // all leds are on
+ 13a:	15 ba       	out	0x15, r1	; 21
+ 13c:	88 e8       	ldi	r24, 0x88	; 136
+ 13e:	93 e1       	ldi	r25, 0x13	; 19
+ 140:	f9 01       	movw	r30, r18
+ 142:	31 97       	sbiw	r30, 0x01	; 1
+ 144:	f1 f7       	brne	.-4      	; 0x142 <main+0x20>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 146:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 148:	d9 f7       	brne	.-10     	; 0x140 <main+0x1e>
+	_delay_ms(500);
+	
+	PORTC = 0xff;// all leds are off
+ 14a:	45 bb       	out	0x15, r20	; 21
+ 14c:	88 e8       	ldi	r24, 0x88	; 136
+ 14e:	93 e1       	ldi	r25, 0x13	; 19
+ 150:	f9 01       	movw	r30, r18
+ 152:	31 97       	sbiw	r30, 0x01	; 1
+ 154:	f1 f7       	brne	.-4      	; 0x152 <main+0x30>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 156:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 158:	d9 f7       	brne	.-10     	; 0x150 <main+0x2e>
+ 15a:	ef cf       	rjmp	.-34     	; 0x13a <main+0x18>
+
+0000015c <_exit>:
+ 15c:	f8 94       	cli
+
+0000015e <__stop_program>:
+ 15e:	ff cf       	rjmp	.-2      	; 0x15e <__stop_program>

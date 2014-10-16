@@ -1,0 +1,297 @@
+   1               		.file	"SPIMASTER.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  17               	.Ltext0:
+  18               	.global	Serial_Init
+  20               	Serial_Init:
+  21               	.LFB2:
+  22               	.LM1:
+  23               	/* prologue: function */
+  24               	/* frame size = 0 */
+  25               	.LBB20:
+  26               	.LBB21:
+  27               	.LM2:
+  28 0000 1092 9800 		sts 152,__zero_reg__
+  29               	.LM3:
+  30 0004 87E6      		ldi r24,lo8(103)
+  31 0006 8093 9900 		sts 153,r24
+  32               	.LM4:
+  33 000a 88E1      		ldi r24,lo8(24)
+  34 000c 8093 9A00 		sts 154,r24
+  35               	.LM5:
+  36 0010 8EE0      		ldi r24,lo8(14)
+  37 0012 8093 9D00 		sts 157,r24
+  38               	/* epilogue start */
+  39               	.LBE21:
+  40               	.LBE20:
+  41               	.LM6:
+  42 0016 0895      		ret
+  43               	.LFE2:
+  45               	.global	USART_Init
+  47               	USART_Init:
+  48               	.LFB3:
+  49               	.LM7:
+  50               	.LVL0:
+  51               	/* prologue: function */
+  52               	/* frame size = 0 */
+  53               	.LM8:
+  54 0018 9093 9800 		sts 152,r25
+  55               	.LVL1:
+  56               	.LM9:
+  57 001c 8093 9900 		sts 153,r24
+  58               	.LM10:
+  59 0020 88E1      		ldi r24,lo8(24)
+  60               	.LVL2:
+  61 0022 8093 9A00 		sts 154,r24
+  62               	.LM11:
+  63 0026 8EE0      		ldi r24,lo8(14)
+  64 0028 8093 9D00 		sts 157,r24
+  65               	/* epilogue start */
+  66               	.LM12:
+  67 002c 0895      		ret
+  68               	.LFE3:
+  70               	.global	USART_Receive
+  72               	USART_Receive:
+  73               	.LFB4:
+  74               	.LM13:
+  75               	/* prologue: function */
+  76               	/* frame size = 0 */
+  77               	.L6:
+  78               	.LM14:
+  79 002e 8091 9B00 		lds r24,155
+  80 0032 87FF      		sbrs r24,7
+  81 0034 00C0      		rjmp .L6
+  82               	.LM15:
+  83 0036 8091 9C00 		lds r24,156
+  84               	/* epilogue start */
+  85               	.LM16:
+  86 003a 0895      		ret
+  87               	.LFE4:
+  89               	.global	USART_Transmit
+  91               	USART_Transmit:
+  92               	.LFB5:
+  93               	.LM17:
+  94               	.LVL3:
+  95               	/* prologue: function */
+  96               	/* frame size = 0 */
+  97 003c 982F      		mov r25,r24
+  98               	.LVL4:
+  99               	.L10:
+ 100               	.LM18:
+ 101 003e 8091 9B00 		lds r24,155
+ 102 0042 85FF      		sbrs r24,5
+ 103 0044 00C0      		rjmp .L10
+ 104               	.LM19:
+ 105 0046 9093 9C00 		sts 156,r25
+ 106               	/* epilogue start */
+ 107               	.LM20:
+ 108 004a 0895      		ret
+ 109               	.LFE5:
+ 111               	.global	print_string
+ 113               	print_string:
+ 114               	.LFB6:
+ 115               	.LM21:
+ 116               	.LVL5:
+ 117               	/* prologue: function */
+ 118               	/* frame size = 0 */
+ 119 004c FC01      		movw r30,r24
+ 120 004e 00C0      		rjmp .L14
+ 121               	.LVL6:
+ 122               	.L17:
+ 123               	.LBB22:
+ 124               	.LBB23:
+ 125               	.LM22:
+ 126 0050 8091 9B00 		lds r24,155
+ 127 0054 85FF      		sbrs r24,5
+ 128 0056 00C0      		rjmp .L17
+ 129               	.LBE23:
+ 130               	.LBE22:
+ 131               	.LM23:
+ 132 0058 3196      		adiw r30,1
+ 133               	.LBB25:
+ 134               	.LBB24:
+ 135               	.LM24:
+ 136 005a 9093 9C00 		sts 156,r25
+ 137               	.LVL7:
+ 138               	.L14:
+ 139               	.LBE24:
+ 140               	.LBE25:
+ 141               	.LM25:
+ 142 005e 9081      		ld r25,Z
+ 143 0060 9923      		tst r25
+ 144 0062 01F4      		brne .L17
+ 145               	/* epilogue start */
+ 146               	.LM26:
+ 147 0064 0895      		ret
+ 148               	.LFE6:
+ 150               	.global	SPI_MasterInit
+ 152               	SPI_MasterInit:
+ 153               	.LFB7:
+ 154               	.LM27:
+ 155               	/* prologue: function */
+ 156               	/* frame size = 0 */
+ 157               	.LM28:
+ 158 0066 86E0      		ldi r24,lo8(6)
+ 159 0068 87BB      		out 55-32,r24
+ 160               	.LM29:
+ 161 006a 81E5      		ldi r24,lo8(81)
+ 162 006c 8DB9      		out 45-32,r24
+ 163               	/* epilogue start */
+ 164               	.LM30:
+ 165 006e 0895      		ret
+ 166               	.LFE7:
+ 168               	.global	SPI_MasterTransmit
+ 170               	SPI_MasterTransmit:
+ 171               	.LFB8:
+ 172               	.LM31:
+ 173               	.LVL8:
+ 174               	/* prologue: function */
+ 175               	/* frame size = 0 */
+ 176               	.LM32:
+ 177 0070 8FB9      		out 47-32,r24
+ 178               	.L22:
+ 179               	.LM33:
+ 180 0072 779B      		sbis 46-32,7
+ 181 0074 00C0      		rjmp .L22
+ 182               	.LM34:
+ 183 0076 8FB1      		in r24,47-32
+ 184               	.LVL9:
+ 185               	/* epilogue start */
+ 186               	.LM35:
+ 187 0078 0895      		ret
+ 188               	.LFE8:
+ 190               		.data
+ 191               	.LC0:
+ 192 0000 0A4D 4149 		.string	"\nMAIN SPI MASTER TEST\n"
+ 192      4E20 5350 
+ 192      4920 4D41 
+ 192      5354 4552 
+ 192      2054 4553 
+ 193               		.text
+ 194               	.global	main
+ 196               	main:
+ 197               	.LFB9:
+ 198               	.LM36:
+ 199               	/* prologue: function */
+ 200               	/* frame size = 0 */
+ 201               	.LBB26:
+ 202               	.LBB27:
+ 203               	.LBB28:
+ 204               	.LBB29:
+ 205               	.LM37:
+ 206 007a 1092 9800 		sts 152,__zero_reg__
+ 207               	.LM38:
+ 208 007e 87E6      		ldi r24,lo8(103)
+ 209 0080 8093 9900 		sts 153,r24
+ 210               	.LM39:
+ 211 0084 88E1      		ldi r24,lo8(24)
+ 212 0086 8093 9A00 		sts 154,r24
+ 213               	.LM40:
+ 214 008a 8EE0      		ldi r24,lo8(14)
+ 215 008c 8093 9D00 		sts 157,r24
+ 216               	.LBE29:
+ 217               	.LBE28:
+ 218               	.LBE27:
+ 219               	.LBE26:
+ 220               	.LBB30:
+ 221               	.LBB31:
+ 222               	.LM41:
+ 223 0090 86E0      		ldi r24,lo8(6)
+ 224 0092 87BB      		out 55-32,r24
+ 225               	.LM42:
+ 226 0094 81E5      		ldi r24,lo8(81)
+ 227 0096 8DB9      		out 45-32,r24
+ 228               	.LBE31:
+ 229               	.LBE30:
+ 230               	.LM43:
+ 231 0098 C49A      		sbi 56-32,4
+ 232               	.LM44:
+ 233 009a C498      		cbi 56-32,4
+ 234               	.LM45:
+ 235 009c C498      		cbi 56-32,4
+ 236               	.LM46:
+ 237 009e C498      		cbi 56-32,4
+ 238 00a0 E0E0      		ldi r30,lo8(.LC0)
+ 239 00a2 F0E0      		ldi r31,hi8(.LC0)
+ 240               	.LVL10:
+ 241 00a4 00C0      		rjmp .L26
+ 242               	.L32:
+ 243               	.LBB32:
+ 244               	.LBB33:
+ 245               	.LBB34:
+ 246               	.LBB35:
+ 247               	.LM47:
+ 248 00a6 8091 9B00 		lds r24,155
+ 249 00aa 85FF      		sbrs r24,5
+ 250 00ac 00C0      		rjmp .L32
+ 251               	.LBE35:
+ 252               	.LBE34:
+ 253               	.LM48:
+ 254 00ae 3196      		adiw r30,1
+ 255               	.LBB37:
+ 256               	.LBB36:
+ 257               	.LM49:
+ 258 00b0 9093 9C00 		sts 156,r25
+ 259               	.L26:
+ 260               	.LBE36:
+ 261               	.LBE37:
+ 262               	.LM50:
+ 263 00b4 9081      		ld r25,Z
+ 264 00b6 9923      		tst r25
+ 265 00b8 01F4      		brne .L32
+ 266               	.L36:
+ 267               	.LBE33:
+ 268               	.LBE32:
+ 269               	.LBB38:
+ 270               	.LBB39:
+ 271               	.LM51:
+ 272 00ba 8091 9B00 		lds r24,155
+ 273 00be 87FF      		sbrs r24,7
+ 274 00c0 00C0      		rjmp .L36
+ 275               	.LM52:
+ 276 00c2 8091 9C00 		lds r24,156
+ 277               	.LVL11:
+ 278               	.LBE39:
+ 279               	.LBE38:
+ 280               	.LBB40:
+ 281               	.LBB41:
+ 282               	.LM53:
+ 283 00c6 8FB9      		out 47-32,r24
+ 284               	.L29:
+ 285               	.LM54:
+ 286 00c8 779B      		sbis 46-32,7
+ 287 00ca 00C0      		rjmp .L29
+ 288               	.LM55:
+ 289 00cc 8FB1      		in r24,47-32
+ 290               	.LVL12:
+ 291 00ce 00C0      		rjmp .L36
+ 292               	.LBE41:
+ 293               	.LBE40:
+ 294               	.LFE9:
+ 376               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 SPIMASTER.c
+     /tmp/ccgNmDOv.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccgNmDOv.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccgNmDOv.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccgNmDOv.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccgNmDOv.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccgNmDOv.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccgNmDOv.s:20     .text:00000000 Serial_Init
+     /tmp/ccgNmDOv.s:47     .text:00000018 USART_Init
+     /tmp/ccgNmDOv.s:72     .text:0000002e USART_Receive
+     /tmp/ccgNmDOv.s:91     .text:0000003c USART_Transmit
+     /tmp/ccgNmDOv.s:113    .text:0000004c print_string
+     /tmp/ccgNmDOv.s:152    .text:00000066 SPI_MasterInit
+     /tmp/ccgNmDOv.s:170    .text:00000070 SPI_MasterTransmit
+     /tmp/ccgNmDOv.s:196    .text:0000007a main
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

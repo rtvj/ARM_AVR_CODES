@@ -1,0 +1,93 @@
+   1               		.file	"mainBUZZ.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  17               	.Ltext0:
+  18               	.global	Buzzer_Init
+  20               	Buzzer_Init:
+  21               	.LFB2:
+  22               	.LM1:
+  23               	/* prologue: function */
+  24               	/* frame size = 0 */
+  25               	.LM2:
+  26 0000 D39A      		sbi 58-32,3
+  27               	/* epilogue start */
+  28               	.LM3:
+  29 0002 0895      		ret
+  30               	.LFE2:
+  32               	.global	main
+  34               	main:
+  35               	.LFB3:
+  36               	.LM4:
+  37 0004 DF93      		push r29
+  38 0006 CF93      		push r28
+  39 0008 00D0      		rcall .
+  40 000a 0F92      		push __tmp_reg__
+  41 000c CDB7      		in r28,__SP_L__
+  42 000e DEB7      		in r29,__SP_H__
+  43               	/* prologue: function */
+  44               	/* frame size = 3 */
+  45               	.LBB4:
+  46               	.LBB5:
+  47               	.LM5:
+  48 0010 D39A      		sbi 58-32,3
+  49               	.LBE5:
+  50               	.LBE4:
+  51               	.LM6:
+  52 0012 DB9A      		sbi 59-32,3
+  53               	.LM7:
+  54 0014 1982      		std Y+1,__zero_reg__
+  55               	.LVL0:
+  56 0016 00C0      		rjmp .L4
+  57               	.LVL1:
+  58               	.L7:
+  59               	.LM8:
+  60 0018 1B82      		std Y+3,__zero_reg__
+  61 001a 1A82      		std Y+2,__zero_reg__
+  62               	.LVL2:
+  63 001c 00C0      		rjmp .L5
+  64               	.L6:
+  65 001e 8A81      		ldd r24,Y+2
+  66 0020 9B81      		ldd r25,Y+3
+  67 0022 0196      		adiw r24,1
+  68 0024 9B83      		std Y+3,r25
+  69 0026 8A83      		std Y+2,r24
+  70               	.LVL3:
+  71               	.L5:
+  72 0028 8A81      		ldd r24,Y+2
+  73 002a 9B81      		ldd r25,Y+3
+  74 002c 8055      		subi r24,lo8(-15536)
+  75 002e 934C      		sbci r25,hi8(-15536)
+  76 0030 00F0      		brlo .L6
+  77               	.LM9:
+  78 0032 8981      		ldd r24,Y+1
+  79 0034 8F5F      		subi r24,lo8(-(1))
+  80 0036 8983      		std Y+1,r24
+  81               	.LVL4:
+  82               	.L4:
+  83 0038 8981      		ldd r24,Y+1
+  84 003a 8A30      		cpi r24,lo8(10)
+  85 003c 00F0      		brlo .L7
+  86               	.L10:
+  87 003e 00C0      		rjmp .L10
+  88               	.LFE3:
+ 122               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 mainBUZZ.c
+     /tmp/ccAVlBcD.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccAVlBcD.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccAVlBcD.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccAVlBcD.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccAVlBcD.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccAVlBcD.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccAVlBcD.s:20     .text:00000000 Buzzer_Init
+     /tmp/ccAVlBcD.s:34     .text:00000004 main
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

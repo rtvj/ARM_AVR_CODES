@@ -1,0 +1,197 @@
+   1               		.file	"switch.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__ = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  15               	.Ltext0:
+  16               	.global	switch_init
+  18               	switch_init:
+  19               	.LFB6:
+  20               	.LM1:
+  21               	/* prologue: function */
+  22               	/* frame size = 0 */
+  23               	/* stack size = 0 */
+  24               	.L__stack_usage = 0
+  25               	.LM2:
+  26 0000 81B3      		in r24,49-32
+  27 0002 8F73      		andi r24,lo8(63)
+  28 0004 81BB      		out 49-32,r24
+  29               	.LM3:
+  30 0006 82B3      		in r24,50-32
+  31 0008 806C      		ori r24,lo8(-64)
+  32 000a 82BB      		out 50-32,r24
+  33               	.LM4:
+  34 000c D39A      		sbi 58-32,3
+  35               	.LM5:
+  36 000e 8FEF      		ldi r24,lo8(-1)
+  37 0010 84BB      		out 52-32,r24
+  38               	/* epilogue start */
+  39               	.LM6:
+  40 0012 0895      		ret
+  41               	.LFE6:
+  43               	.global	main
+  45               	main:
+  46               	.LFB7:
+  47               	.LM7:
+  48               	/* prologue: function */
+  49               	/* frame size = 0 */
+  50               	/* stack size = 0 */
+  51               	.L__stack_usage = 0
+  52               	.LM8:
+  53 0014 0E94 0000 		call switch_init
+  54               	.LM9:
+  55 0018 EFEF      		ldi r30,lo8(-1)
+  56               	.LM10:
+  57 001a 21E0      		ldi r18,lo8(1)
+  58 001c 30E0      		ldi r19,hi8(1)
+  59               	.L9:
+  60               	.LM11:
+  61 001e 8699      		sbic 48-32,6
+  62 0020 00C0      		rjmp .L4
+  63               	.LM12:
+  64 0022 DB9A      		sbi 59-32,3
+  65               	.LVL0:
+  66               	.LBB12:
+  67               	.LBB13:
+  68               	.LM13:
+  69 0024 4FEF      		 ldi r20,lo8(3199999)
+  70 0026 53ED      	    ldi r21,hi8(3199999)
+  71 0028 60E3      	    ldi r22,hlo8(3199999)
+  72 002a 4150      	    1:subi r20,1
+  73 002c 5040      	    sbci r21,0
+  74 002e 6040      	    sbci r22,0
+  75 0030 01F4      	    brne 1b
+  76 0032 00C0      		rjmp .
+  77 0034 0000      		nop
+  78               	.LBE13:
+  79               	.LBE12:
+  80               	.LM14:
+  81 0036 DB98      		cbi 59-32,3
+  82               	.LVL1:
+  83               	.LBB14:
+  84               	.LBB15:
+  85               	.LM15:
+  86 0038 6FEF      		 ldi r22,lo8(3199999)
+  87 003a 73ED      	    ldi r23,hi8(3199999)
+  88 003c 80E3      	    ldi r24,hlo8(3199999)
+  89 003e 6150      	    1:subi r22,1
+  90 0040 7040      	    sbci r23,0
+  91 0042 8040      	    sbci r24,0
+  92 0044 01F4      	    brne 1b
+  93 0046 00C0      		rjmp .L10
+  94               	.LVL2:
+  95               	.L4:
+  96               	.LBE15:
+  97               	.LBE14:
+  98               	.LM16:
+  99 0048 8799      		sbic 48-32,7
+ 100 004a 00C0      		rjmp .L6
+ 101               	.LM17:
+ 102 004c 80E0      		ldi r24,lo8(0)
+ 103 004e 90E0      		ldi r25,hi8(0)
+ 104               	.L7:
+ 105               	.LM18:
+ 106 0050 E5BB      		out 53-32,r30
+ 107               	.LM19:
+ 108 0052 75B3      		in r23,53-32
+ 109 0054 A901      		movw r20,r18
+ 110 0056 082E      		mov r0,r24
+ 111 0058 00C0      		rjmp 2f
+ 112 005a 440F      	1:	lsl r20
+ 113 005c 551F      		rol r21
+ 114 005e 0A94      	2:	dec r0
+ 115 0060 02F4      		brpl 1b
+ 116 0062 4095      		com r20
+ 117 0064 4723      		and r20,r23
+ 118 0066 45BB      		out 53-32,r20
+ 119               	.LM20:
+ 120 0068 75B3      		in r23,53-32
+ 121 006a 0196      		adiw r24,1
+ 122 006c A901      		movw r20,r18
+ 123 006e 082E      		mov r0,r24
+ 124 0070 00C0      		rjmp 2f
+ 125 0072 440F      	1:	lsl r20
+ 126 0074 551F      		rol r21
+ 127 0076 0A94      	2:	dec r0
+ 128 0078 02F4      		brpl 1b
+ 129 007a 4095      		com r20
+ 130 007c 4723      		and r20,r23
+ 131 007e 45BB      		out 53-32,r20
+ 132               	.LVL3:
+ 133               	.LBB16:
+ 134               	.LBB17:
+ 135               	.LM21:
+ 136 0080 4FEF      		 ldi r20,lo8(3199999)
+ 137 0082 53ED      	    ldi r21,hi8(3199999)
+ 138 0084 60E3      	    ldi r22,hlo8(3199999)
+ 139 0086 4150      	    1:subi r20,1
+ 140 0088 5040      	    sbci r21,0
+ 141 008a 6040      	    sbci r22,0
+ 142 008c 01F4      	    brne 1b
+ 143 008e 00C0      		rjmp .
+ 144 0090 0000      		nop
+ 145               	.LBE17:
+ 146               	.LBE16:
+ 147               	.LM22:
+ 148 0092 E5BB      		out 53-32,r30
+ 149               	.LVL4:
+ 150               	.LM23:
+ 151 0094 8730      		cpi r24,7
+ 152 0096 9105      		cpc r25,__zero_reg__
+ 153 0098 01F4      		brne .L7
+ 154 009a 00C0      		rjmp .L9
+ 155               	.LVL5:
+ 156               	.L6:
+ 157               	.LM24:
+ 158 009c 15BA      		out 53-32,__zero_reg__
+ 159               	.LVL6:
+ 160               	.LBB18:
+ 161               	.LBB19:
+ 162               	.LM25:
+ 163 009e 6FEF      		 ldi r22,lo8(1599999)
+ 164 00a0 79E6      	    ldi r23,hi8(1599999)
+ 165 00a2 88E1      	    ldi r24,hlo8(1599999)
+ 166 00a4 6150      	    1:subi r22,1
+ 167 00a6 7040      	    sbci r23,0
+ 168 00a8 8040      	    sbci r24,0
+ 169 00aa 01F4      	    brne 1b
+ 170 00ac 00C0      		rjmp .
+ 171 00ae 0000      		nop
+ 172               	.LBE19:
+ 173               	.LBE18:
+ 174               	.LM26:
+ 175 00b0 E5BB      		out 53-32,r30
+ 176               	.LVL7:
+ 177               	.LBB20:
+ 178               	.LBB21:
+ 179               	.LM27:
+ 180 00b2 8FEF      		 ldi r24,lo8(1599999)
+ 181 00b4 99E6      	    ldi r25,hi8(1599999)
+ 182 00b6 A8E1      	    ldi r26,hlo8(1599999)
+ 183 00b8 8150      	    1:subi r24,1
+ 184 00ba 9040      	    sbci r25,0
+ 185 00bc A040      	    sbci r26,0
+ 186 00be 01F4      	    brne 1b
+ 187               	.LVL8:
+ 188               	.L10:
+ 189 00c0 00C0      		rjmp .
+ 190 00c2 0000      		nop
+ 191 00c4 00C0      		rjmp .L9
+ 192               	.LBE21:
+ 193               	.LBE20:
+ 194               	.LFE7:
+ 228               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 switch.c
+     /tmp/ccQGxWOr.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccQGxWOr.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccQGxWOr.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccQGxWOr.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccQGxWOr.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccQGxWOr.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccQGxWOr.s:18     .text:00000000 switch_init
+     /tmp/ccQGxWOr.s:45     .text:00000014 main
+
+NO UNDEFINED SYMBOLS

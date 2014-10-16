@@ -1,0 +1,1 @@
+mainBUZZ.o: mainBUZZ.c

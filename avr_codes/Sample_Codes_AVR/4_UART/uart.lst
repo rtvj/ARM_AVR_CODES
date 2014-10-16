@@ -1,0 +1,91 @@
+   1               		.file	"uart.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  15               	.Ltext0:
+  16               	.global	main
+  18               	main:
+  19               	.LFB6:
+  20               	.LM1:
+  21               	/* prologue: function */
+  22               	/* frame size = 0 */
+  23               	.LM2:
+  24 0000 87E6      		ldi r24,lo8(103)
+  25 0002 8093 9900 		sts 153,r24
+  26               	.LM3:
+  27 0006 1092 9800 		sts 152,__zero_reg__
+  28               	.LM4:
+  29 000a 88E1      		ldi r24,lo8(24)
+  30 000c 8093 9A00 		sts 154,r24
+  31               	.LM5:
+  32 0010 86E8      		ldi r24,lo8(-122)
+  33 0012 8093 9D00 		sts 157,r24
+  34               	.LM6:
+  35 0016 8BE0      		ldi r24,lo8(11)
+  36 0018 60E0      		ldi r22,lo8(0)
+  37 001a 0E94 0000 		call __udivmodqi4
+  38               	.LM7:
+  39 001e 482F      		mov r20,r24
+  40 0020 405D      		subi r20,lo8(-(48))
+  41               	.LBB12:
+  42               	.LBB13:
+  43               	.LBB14:
+  44               	.LBB15:
+  45               	.LM8:
+  46 0022 20E9      		ldi r18,lo8(400)
+  47 0024 31E0      		ldi r19,hi8(400)
+  48               	.LVL0:
+  49               	.L8:
+  50               	.LBE15:
+  51               	.LBE14:
+  52               	.LBE13:
+  53               	.LBE12:
+  54               	.LM9:
+  55 0026 8091 9B00 		lds r24,155
+  56               	.LVL1:
+  57 002a 85FF      		sbrs r24,5
+  58 002c 00C0      		rjmp .L8
+  59               	.LM10:
+  60 002e 4093 9C00 		sts 156,r20
+  61 0032 80E1      		ldi r24,lo8(10000)
+  62 0034 97E2      		ldi r25,hi8(10000)
+  63               	.LVL2:
+  64               	.L3:
+  65               	.LBB19:
+  66               	.LBB18:
+  67               	.LBB17:
+  68               	.LBB16:
+  69               	.LM11:
+  70 0036 F901      		movw r30,r18
+  71               	/* #APP */
+  72               	 ;  105 "c:/program files/lib/gcc/../../avr/include/util/delay_basic.h" 1
+  73 0038 3197      		1: sbiw r30,1
+  74 003a 01F4      		brne 1b
+  75               	 ;  0 "" 2
+  76               	/* #NOAPP */
+  77               	.LBE16:
+  78               	.LBE17:
+  79               	.LM12:
+  80 003c 0197      		sbiw r24,1
+  81               	.LM13:
+  82 003e 01F4      		brne .L3
+  83 0040 00C0      		rjmp .L8
+  84               	.LBE18:
+  85               	.LBE19:
+  86               	.LFE6:
+ 112               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 uart.c
+C:\Users\Nikhil\AppData\Local\Temp/ccldFTHt.s:2      *ABS*:0000003f __SREG__
+C:\Users\Nikhil\AppData\Local\Temp/ccldFTHt.s:3      *ABS*:0000003e __SP_H__
+C:\Users\Nikhil\AppData\Local\Temp/ccldFTHt.s:4      *ABS*:0000003d __SP_L__
+C:\Users\Nikhil\AppData\Local\Temp/ccldFTHt.s:5      *ABS*:00000034 __CCP__
+C:\Users\Nikhil\AppData\Local\Temp/ccldFTHt.s:6      *ABS*:00000000 __tmp_reg__
+C:\Users\Nikhil\AppData\Local\Temp/ccldFTHt.s:7      *ABS*:00000001 __zero_reg__
+C:\Users\Nikhil\AppData\Local\Temp/ccldFTHt.s:18     .text:00000000 main
+
+UNDEFINED SYMBOLS
+__udivmodqi4
